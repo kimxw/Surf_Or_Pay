@@ -66,7 +66,7 @@ export const DesktopSidebar = ({
         className
       )}
       animate={{
-        width: animate ? (open ? "300px" : "60px") : "300px",
+        width: animate ? (open ? "415px" : "120px") : "415px",
       }}
       onMouseEnter={() => setOpen(true)}
       onMouseLeave={() => setOpen(false)}
@@ -127,19 +127,18 @@ export const SidebarLink = ({
 }) => {
   const { open, animate } = useSidebar();
   return (
-    (<Link
-      href={link.href}
-      className={cn("flex items-center justify-start gap-2  group/sidebar py-2", className)}
-      {...props}>
-      {link.icon}
-      <motion.span
-        animate={{
-          display: animate ? (open ? "inline-block" : "none") : "inline-block",
-          opacity: animate ? (open ? 1 : 0) : 1,
-        }}
-        className="text-neutral-700 dark:text-neutral-200 text-sm group-hover/sidebar:translate-x-1 transition duration-150 whitespace-pre inline-block !p-0 !m-0">
-        {link.label}
-      </motion.span>
-    </Link>)
+    <Link href={link.href} {...props} className="group/sidebar">
+      <button className={cn("bg-white flex items-center justify-start gap-2 py-2 w-full h-16 text-left my-2 rounded-xl", className)}>
+        {link.icon}
+        <motion.span
+          animate={{
+            display: animate ? (open ? "inline-block" : "none") : "inline-block",
+            opacity: animate ? (open ? 1 : 0) : 1,
+          }}
+          className="text-neutral-700 dark:text-neutral-200 text-sm group-hover/sidebar:translate-x-1 transition duration-150 whitespace-pre inline-block !p-0 !m-0">
+          {link.label}
+        </motion.span>
+      </button>
+    </Link>
   );
 };
