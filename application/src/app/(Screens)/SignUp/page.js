@@ -2,50 +2,48 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { handleSignIn } from "@/app/firebase/auth";
-import { useAuth } from "@/app/contexts/AuthContext";
+import { handleSignUp } from "@/app/firebase/auth";
 
-
-export function LoginPage() {
+export function SignUpPage() {
   return (
     <div className="flex items-center justify-center min-h-screen bg-black py-10">
       <div className="bg-white shadow-lg rounded-lg p-5 w-full max-w-md mx-4" style={{borderRadius:'20px'}}>
-        <LoginComponent />
+        <SignUpComponent />
       </div>
     </div>
   );
 }
 
-function LoginComponent() {
+function SignUpComponent() {
   const [passwordShown, setPasswordShown] = useState(false);
   const togglePasswordVisibility = () => setPasswordShown((prev) => !prev);
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [isSigningIn, setIsSigningIn] = useState(false);
+  const [isSigningUp, setIsSigningUp] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const router = useRouter();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setErrorMessage('');
-    setIsSigningIn(true);
+    setIsSigningUp(true);
 
     try {
-      await handleSignIn(email, password);
-      console.log('Login successful!');
+      await handleSignUp(email, password);
+      console.log('Sign up successful!');
       router.push("/MyOcean");
     } catch (error) {
-      setErrorMessage(error.message || 'Failed to log in. Please try again.');
+      setErrorMessage(error.message || 'Failed to sign up. Please try again.');
     } finally {
-      setIsSigningIn(false);
+        setIsSigningUp(false);
     }
   };
 
   return (
     <section className="bg-white grid text-center items-center p-8">
       <div>
-        <h3 className="text-3xl text-gray-800 mb-2">Log in</h3>
+        <h3 className="text-3xl text-gray-800 mb-2">Sign Up</h3>
         <p className="text-gray-600 mb-16 text-lg">Enter your email and password to log in</p>
         <form action="#" className="mx-auto max-w-[24rem] text-left">
           <div className="mb-6">
@@ -89,12 +87,12 @@ function LoginComponent() {
             <p className="text-red-500 text-sm mb-4">{errorMessage}" </p>
           )}
           <button
-            type="Login"
+            type="Sign Up"
             className="w-full bg-black text-white p-3 rounded-lg mt-6 style={on-click: handleSubmit()}"
             onClick={handleSubmit}
-            disabled={isSigningIn}
+            disabled={isSigningUp}
             >
-                {isSigningIn ? 'Signing in...' : 'Sign in'}
+                {isSigningUp ? 'Signing Up...' : 'Sign up'}
             </button>
         </form>
       </div>
@@ -102,4 +100,4 @@ function LoginComponent() {
   );
 }
 
-export default LoginPage;
+export default SignUpPage;
