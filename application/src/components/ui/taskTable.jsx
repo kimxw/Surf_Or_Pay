@@ -104,9 +104,9 @@ const TaskTable = ({ tasks }) => {
                 onClick={() => handleVerify(index)}
               >
                 <img
-                  src="/icons/OMPM.svg"
+                  src="/icons/OMPMIcon.svg"
                   alt="Icon"
-                  className="w-36 h-auto mt-2"
+                  className="w-36 h-auto mt-2 ml-1"
                 />
               </button>
             ) : (
