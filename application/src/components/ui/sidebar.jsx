@@ -5,6 +5,8 @@ import React, { useState, createContext, useContext } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { IconMenu2, IconX } from "@tabler/icons-react";
 
+// import 'C:/Users/kimay/Projects/Hackathons/HacknRoll2025/Surf_Or_Pay/application/src/styles/fonts.css';
+
 const SidebarContext = createContext(undefined);
 
 export const useSidebar = () => {
@@ -128,6 +130,18 @@ export const SidebarLink = ({
   const { open, animate } = useSidebar();
   const { href, icon, label, bgcolour = "#ffffff" } = link; // Destructure bgcolour from the link
 
+  const lightModeStyles = {
+    backgroundColor: bgcolour,
+    color: "#4CAF50", // Light mode text color (green)
+    fontFamily: "'Luckiest Guy', sans-serif", // Apply Luckiest Guy font in light mode
+  };
+
+  const darkModeStyles = {
+    backgroundColor: bgcolour,
+    color: "#00FF00", // Dark mode text color (green)
+    fontFamily: "'Luckiest Guy', sans-serif", // Apply Luckiest Guy font in dark mode
+  };
+
   return (
     <Link href={href} {...props} className="group/sidebar">
       <button
@@ -135,19 +149,26 @@ export const SidebarLink = ({
           `flex items-center justify-start gap-2 py-2 w-full h-16 text-left my-2 rounded-xl`,
           className
         )}
-        style={{ backgroundColor: bgcolour }} // Apply the background color directly
+        style={{
+          backgroundColor: bgcolour, // Background color will come from the link object
+        }}
       >
-        {icon}
+        {link.icon}
         <motion.span
           animate={{
             display: animate ? (open ? "inline-block" : "none") : "inline-block",
             opacity: animate ? (open ? 1 : 0) : 1,
           }}
-          className="text-neutral-700 dark:text-neutral-200 text-sm group-hover/sidebar:translate-x-1 transition duration-150 whitespace-pre inline-block !p-0 !m-0"
+          className={`${
+            // Apply light/dark mode styles conditionally
+            `text-${open ? "green-500" : "green-700"} dark:text-green-500`
+          }`}
+          style={darkModeStyles} // Adjust this to handle the styles you need for each mode
         >
-          {label}
+          {link.label}
         </motion.span>
       </button>
     </Link>
   );
 };
+

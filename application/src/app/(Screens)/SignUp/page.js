@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { handleSignUp } from "@/app/firebase/auth";
 
+
 export function SignUpPage() {
   return (
     <div className="flex items-center justify-center min-h-screen bg-black py-10">

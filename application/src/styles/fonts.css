@@ -1,0 +1,7 @@
+/* @import url('https://fonts.googleapis.com/css2?family=Luckiest+Guy&display=swap'); */
+
+.nav-label {
+  /*font-family: 'Luckiest Guy', sans-serif;  Corrected font-family */
+  font-size: 10px; /* Use font-size instead of size */
+  color: #00ff00; /* Corrected color format */
+}
