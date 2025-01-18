@@ -76,7 +76,7 @@ export default function MyOcean() {
   return (
     <div
       className={cn(
-        "rounded-md flex flex-col md:flex-row bg-gray-100 dark:bg-neutral-800 flex-1 max-w-screen mx-auto border border-neutral-200 dark:border-neutral-700 overflow-hidden",
+        "flex flex-col md:flex-row bg-[#2F436D] dark:bg-[#2F436D] flex-1 max-w-screen mx-auto border border-[#165d97] dark:border-[#165d97] overflow-hidden",
         "h-screen p-5" // Set the main container to full screen height
       )}
     >
