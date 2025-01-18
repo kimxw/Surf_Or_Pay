@@ -128,13 +128,14 @@ export const Logo = () => {
       <motion.span
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        className="font-medium lucky-guy text-[#8ab5d6] dark:[#8ab5d6] whitespace-pre"
+        className="font-medium lucky-guy text-4xl text-[#8ab5d6] dark:[#8ab5d6] whitespace-pre"
       >
         Surf or Pay
       </motion.span>
     </Link>
   );
 };
+
 export const LogoIcon = () => {
   return (
     <Link
@@ -150,7 +151,7 @@ export const LogoIcon = () => {
 const Dashboard = () => {
   return (
     <div className="flex flex-1 flex-col">
-    <div className="p-2 md:p-10 rounded-tl-2xl border border-neutral-200 border-neutral-700 flex flex-col gap-2 flex-1 w-full h-full bg-[url('/Background.png')]"
+    <div className="p-2 md:p-10 rounded-tl-2xl border border-neutral-200 dark:border-neutral-700 flex flex-col gap-2 flex-1 w-full h-full bg-[url('/Background.png')]"
         style={{ backgroundSize: 'cover', backgroundPosition: 'center' }}>
       <div className="flex gap-2">
           {[...new Array(4)].map((_, idx) => (
