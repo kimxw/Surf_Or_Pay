@@ -41,17 +41,29 @@ export default function SurferMode() {
       ),
     },
     {
-      label: "Settings",
-      href: "#",
+      label: "Shark Mode",
+      href: "#",  
       icon: (
-        <IconSettings className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
+        <Image
+          src="/icons/SharkModeIcon.png"
+          className="h-18 w-20 flex-shrink-0 rounded-xl"
+          width={50}
+          height={50}
+          alt="Shark Mode"
+        />
       ),
     },
     {
-      label: "Logout",
-      href: "#",
+      label: "My Friends",
+      href: "#",  
       icon: (
-        <IconArrowLeft className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
+        <Image
+          src="/icons/PeopleIcon.png"
+          className="h-18 w-20 flex-shrink-0 rounded-xl"
+          width={50}
+          height={50}
+          alt="My Friends"
+        />
       ),
     },
   ];
