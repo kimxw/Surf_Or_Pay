@@ -11,10 +11,11 @@ const cardStyles = `
     margin-bottom: 8px;
     padding: 10px;
     display: grid;
-    grid-template-columns: 3% 22% 30% 8% 15% 13% 8%; /* Adjusted column widths */
+    grid-template-columns: 3% 12% 33% 8% 15% 13% 8% 8%; /* Adjusted column widths */
     text-align: left;
     color: black;
     transition: transform 0.2s ease, box-shadow 0.3s ease;
+    align-items: center; /* Vertically center items */
   }
 
   .card:hover {
@@ -63,34 +64,76 @@ const TaskTable = ({ tasks }) => {
           <div className="card-section">Forfeit</div>
           <div className="card-section">Deadline</div>
           <div className="card-section">Status</div>
-          <div className="card-section">Verify</div>
+          <div className="card-section">Verification</div>
+          <div className="card-section"></div>
         </div>
 
         {/* Task Rows */}
         {tasks.map((task, index) => (
           <div className="card" key={index}>
             <div className="card-section">{index + 1}</div>
-            <div className="card-section">{task.friend}</div>
+            <div className="card-section">{task.friendUsername}</div>
             <div className="card-section">{task.desc}</div>
             <div className="card-section">{task.credits}</div>
             <div className="card-section">{task.deadline}</div>
             <div className="card-section">{task.completionStatus}</div>
             <div className="card-section">
-              {task.verificationStatus === "Verified" ? (
-                <button
-                  disabled
-                  className="bg-[#6bb266] text-[#e8ffe7] py-1 px-4 rounded-lg"
-                >
-                  Verified
-                </button>
-              ) : (
-                <button
-                  onClick={() => handleVerify(index)}
-                  className="bg-[#29597e] text-white py-1 px-6 rounded-lg"
-                >
-                  Verify
-                </button>
-              )}
+            {task.completionStatus === "Complete" && task.verificationStatus == 'Verified' ? (
+              <button
+                disabled
+                className="bg-[#6bb266] text-[#e8ffe7] py-1 px-4 rounded-lg"
+              >
+                Verified
+              </button>
+            ) : task.completionStatus === "Complete" && task.verificationStatus == 'Pending' ? (
+              <button
+                disabled
+                className="bg-[#fed45f] text-[#936d21] py-1 px-3.5 rounded-lg"
+              >
+                Pending
+              </button>
+            ) : task.completionStatus === "Incomplete" ? (
+              <button
+                onClick={() => handleVerify(index)}
+                className="bg-[#29597e] text-white py-1 px-5 rounded-lg"
+              >
+                Submit
+              </button>
+            ) : task.completionStatus === "Overdue" ? (
+              <button
+                onClick={() => handleVerify(index)}
+              >
+                <img
+                  src="/icons/OMPM.svg"
+                  alt="Icon"
+                  className="w-36 h-auto mt-2"
+                />
+              </button>
+            ) : (
+              <button
+                onClick={() => handleVerify(index)}
+                className="bg-[#7b7b7b] text-gray-700 py-1 px-5 rounded-lg"
+              >
+                Unknown
+              </button>
+            )}
+            </div>
+            <div className="card-section">
+            {task.verificationStatus === "Verified" ? (
+            <button
+              className="p-2 rounded-lg flex items-center justify-center pt-0"
+              style={{ width: "40px", height: "40px" }} // Adjust size to match icon size
+            >
+              <img
+                  src="/icons/deleteIcon.png" // Replace with your verified icon
+                  alt="Verified"
+                  className="w-full h-full object-contain" // Make the icon fill the button
+                />
+              </button>
+            ) : (
+              <button>
+              </button>
+            )}
             </div>
           </div>
         ))}

@@ -145,44 +145,54 @@ export const LogoIcon = () => {
 
 // Dummy dashboard component with content
 const Dashboard = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleAddClick = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleCancelClick = () => {
+    setIsModalOpen(false);
+  };
+
   const tasks = [
     {
-      friend: "alice@example.com",
+      friendUsername: "Alice Tan",
       desc: "Complete report on market trends.",
       credits: "$5.00",
       deadline: "2025-01-25",
       completionStatus: "Incomplete",
-      verificationStatus: "Unverified",
+      verificationStatus: "Submit",
     },
     {
-      friend: "bob@example.com",
+      friendUsername: "Bob Builder",
       desc: "Prepare presentation for client meeting.",
       credits: "$3.00",
       deadline: "2025-01-20",
-      completionStatus: "Incomplete",
-      verificationStatus: "Unverified",
+      completionStatus: "Overdue",
+      verificationStatus: "Submit",
     },
     {
-      friend: "charlie@example.com",
-      desc: "Update the project roadmap.",
-      credits: "$4.00",
-      deadline: "2025-01-22",
+      friendUsername: "David Hsu",
+      desc: "Review code for the latest features.",
+      credits: "$2.00",
+      deadline: "2025-01-30",
+      completionStatus: "Complete",
+      verificationStatus: "Pending",
+    },
+    {
+      friendUsername: "Eve Well",
+      desc: "Organize team lunch event.",
+      credits: "$1.00",
+      deadline: "2025-01-23",
       completionStatus: "Complete",
       verificationStatus: "Verified",
     },
     {
-      friend: "david@example.com",
-      desc: "Review code for the latest features.",
-      credits: "$2.00",
-      deadline: "2025-01-30",
-      completionStatus: "Incomplete",
-      verificationStatus: "Unverified",
-    },
-    {
-      friend: "eve@example.com",
-      desc: "Organize team lunch event.",
-      credits: "$1.00",
-      deadline: "2025-01-23",
+      friendUsername: "Charlie Chan",
+      desc: "Update the project roadmap.",
+      credits: "$4.00",
+      deadline: "2025-01-22",
       completionStatus: "Complete",
       verificationStatus: "Verified",
     },
@@ -190,14 +200,31 @@ const Dashboard = () => {
   
 
   return (
-    <div className="flex flex-1 flex-col">
+    <div className="relative flex flex-1 flex-col">
+      {/* Main content */}
       <div
-        className="p-2 md:p-10 rounded-tl-2xl border border-neutral-200 dark:border-neutral-700 flex flex-col gap-2 flex-1 w-full h-full bg-[url('/Background.png')]"
-        style={{ backgroundSize: 'cover', backgroundPosition: 'center' }}
+        className={`p-2 md:p-10 rounded-tl-2xl border-transparent flex flex-col gap-2 flex-1 w-full h-full bg-[url('/Background.png')] ${
+          isModalOpen ? "" : ""
+        }`}
+        style={{ backgroundSize: "cover", backgroundPosition: "center" }}
       >
-        <h1 className="lucky-guy text-4xl text-[#29597e] dark:[#29597e]">
-          Surfer Mode - Tasks
-        </h1>
+        <div className="flex justify-between items-center">
+          <h1 className="lucky-guy text-4xl text-[#29597e] dark:[#29597e]">
+            Surfer Mode - Tasks
+          </h1>
+          <button
+            type="button"
+            onClick={handleAddClick}
+            className="bg-[#29597e] text-white pb-0.5 m-2 mt-5 rounded-lg flex-shrink-0 w-auto px-4 flex items-center space-x-2"
+          >
+            <img
+              src="/icons/AddTask.svg"
+              alt="Icon"
+              className="h-10 w-auto mt-0.5"
+            />
+            <span className="lucky-guy text-2xl text-[#c6e5fc]">Add</span>
+          </button>
+        </div>
 
         <div className="flex gap-2 flex-1">
           <div className="h-full w-full rounded-lg bg-transparent opacity-75">
@@ -205,6 +232,76 @@ const Dashboard = () => {
           </div>
         </div>
       </div>
+
+      {/* Modal */}
+      {isModalOpen && (
+        <div className="absolute inset-0 flex rounded-tl-2xl items-center justify-center bg-black bg-opacity-50">
+          <div className="bg-white rounded-lg p-6 w-3/4 max-w-lg shadow-lg relative mb-36 ">
+            <h2 className="text-xl font-bold mb-4 text-center text-black">Promise your task!</h2>
+
+              <div className="mb-3">
+                <input
+                  id="taskDescription"
+                  type="text"
+                  name="taskDescription"
+                  // value={username}
+                  // onChange={(e) => setUsername(e.target.value)}
+                  placeholder="Task Description"
+                  className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-black"
+                />
+              </div>
+              <div className="-col-start-2 flex gap-x-4">
+                <div className="mb-3 flex-1">
+                  <input
+                    id="shark"
+                    type="text"
+                    name="shark"
+                    placeholder="Shark"
+                    className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-black"
+                  />
+                </div>
+                <div className="mb-3 flex-1">
+                  <input
+                    id="forfeitAmount"
+                    type="text"
+                    name="forfeitAmount"
+                    placeholder="Forfeit amount ($)"
+                    className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-black"
+                  />
+                </div>
+              </div>
+
+              <div className="mb-6">
+                <input
+                  id="deadline"
+                  type="datetime-local"
+                  name="deadline"
+                  className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-black"
+                />
+              </div>
+
+
+              <div className="flex justify-end gap-4">
+                <button
+                  type="button"
+                  onClick={handleAddClick}
+                  className="bg-[#29597e] text-white px-4 py-2 rounded-lg"
+                >
+                  CreateTask
+                </button>
+                <button
+                  type="button"
+                  onClick={handleCancelClick}
+                  className="bg-[#ca4949] text-white px-4 py-2 rounded-lg"
+                >
+                  Cancel
+                </button>
+              </div>
+
+          </div>
+        </div>
+      )}
     </div>
   );
 };
+
