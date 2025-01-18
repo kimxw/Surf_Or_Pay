@@ -17,7 +17,6 @@
 
   .nav-label {
     font-family: 'Luckiest Guy', sans-serif;
-    color: "text-neutral-700 dark:text-neutral-200";
     font-size: 30px; /* Set the font size */
-  font-weight: "lighter"; /* or "bold", "lighter", or numeric values like 400, 700 */
+    font-weight: "lighter"; /* or "bold", "lighter", or numeric values like 400, 700 */
   } 
