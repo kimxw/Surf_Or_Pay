@@ -1,11 +1,12 @@
-'use client'
+'use client';
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { handleSignIn } from "@/app/firebase/auth";
 import { useAuth } from "@/app/contexts/AuthContext";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { authentication } from "@/app/firebase/configuration"; // Import authentication
 
-import '@/styles/fonts.css'; 
+import '@/styles/fonts.css';
 
 export function LoginPage() {
   return (
@@ -25,19 +26,18 @@ function LoginComponent() {
   const [password, setPassword] = useState('');
   const [isSigningIn, setIsSigningIn] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+  const { setLoggedInUser } = useAuth();
   const router = useRouter();
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setErrorMessage('');
+  const handleSignIn = async () => {
     setIsSigningIn(true);
-
+  
     try {
-      await handleSignIn(email, password);
-      console.log('Login successful!');
+      const res = await signInWithEmailAndPassword(authentication, email, password);
+      setLoggedInUser(res.user); // Set the logged-in user state
       router.push("/MyOcean");
-    } catch (error) {
-      setErrorMessage(error.message || 'Failed to log in. Please try again.');
+    } catch (err) {
+      setErrorMessage("Incorrect Email/Password");
     } finally {
       setIsSigningIn(false);
     }
@@ -87,16 +87,16 @@ function LoginComponent() {
           </div>
 
           {errorMessage && (
-            <p className="text-red-500 text-sm mb-4">{errorMessage}" </p>
+            <p className="text-red-500 text-sm mb-4">{errorMessage}</p>
           )}
           <button
-            type="Login"
-            className="w-full bg-[#273a67] text-white p-3 rounded-lg mt-6 style={on-click: handleSubmit()}"
-            onClick={handleSubmit}
+            type="button" // Change the type to button
+            className="w-full bg-[#273a67] text-white p-3 rounded-lg mt-6"
+            onClick={handleSignIn}
             disabled={isSigningIn}
-            >
-                {isSigningIn ? 'Logging in...' : 'Log in'}
-            </button>
+          >
+            {isSigningIn ? 'Logging in...' : 'Log in'}
+          </button>
         </form>
       </div>
     </section>
@@ -104,3 +104,4 @@ function LoginComponent() {
 }
 
 export default LoginPage;
+

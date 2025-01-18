@@ -1,6 +1,7 @@
+"use client"
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { collection, query, where, onSnapshot, updateDoc, deleteDoc, doc, orderBy, getDoc, getDocs, addDoc } from "firebase/firestore";
-import { db } from '../firebase/config';
+import { db } from '../firebase/configuration';
 import { useAuth } from './AuthContext';
 
 const SurferContext = createContext();
