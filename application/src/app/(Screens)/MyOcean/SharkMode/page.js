@@ -12,13 +12,20 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
 
+
 export default function SharMode() {
   const links = [
     {
-      label: "Dashboard",
+      label: "My Ocean",
       href: "#",
       icon: (
-        <IconBrandTabler className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
+        <Image
+          src="/icons/MyOceanIcon.png"
+          className="h-18 w-20 flex-shrink-0 rounded-xl"
+          width={50}
+          height={50}
+          alt="Avatar"
+        />
       ),
     },
     {
