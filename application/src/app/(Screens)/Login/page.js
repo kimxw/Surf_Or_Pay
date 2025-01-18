@@ -1,7 +1,8 @@
 'use client'
 
 import { useState } from "react";
-import { handleSignIn, handleSignUp } from "@/app/firebase/auth";
+import { useRouter } from "next/navigation";
+import { handleSignIn } from "@/app/firebase/auth";
 import { useAuth } from "@/app/contexts/AuthContext";
 
 
@@ -23,19 +24,21 @@ function LoginComponent() {
   const [password, setPassword] = useState('');
   const [isSigningIn, setIsSigningIn] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+  const router = useRouter();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setErrorMessage('');
-    setIsSubmitting(true);
+    setIsSigningIn(true);
 
     try {
       await handleSignIn(email, password);
       console.log('Login successful!');
+      router.push("/MyOcean");
     } catch (error) {
       setErrorMessage(error.message || 'Failed to log in. Please try again.');
     } finally {
-      setIsSubmitting(false);
+      setIsSigningIn(false);
     }
   };
 

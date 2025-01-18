@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import { authentication } from "../firebase/config";
+import { authentication } from "../firebase/configuration";
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword, updatePassword, sendPasswordResetEmail} from "firebase/auth";
 
 export const handleSignIn = async (email, password) => {

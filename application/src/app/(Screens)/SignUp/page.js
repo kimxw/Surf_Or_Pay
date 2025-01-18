@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { handleSignUp } from "@/app/firebase/auth";
 
 export function SignUpPage() {
@@ -21,26 +22,28 @@ function SignUpComponent() {
   const [password, setPassword] = useState('');
   const [isSigningUp, setIsSigningUp] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+  const router = useRouter();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setErrorMessage('');
-    setIsSubmitting(true);
+    setIsSigningUp(true);
 
     try {
       await handleSignUp(email, password);
       console.log('Sign up successful!');
+      router.push("/MyOcean");
     } catch (error) {
       setErrorMessage(error.message || 'Failed to sign up. Please try again.');
     } finally {
-      setIsSubmitting(false);
+        setIsSigningUp(false);
     }
   };
 
   return (
     <section className="bg-white grid text-center items-center p-8">
       <div>
-        <h3 className="text-3xl text-gray-800 mb-2">Log in</h3>
+        <h3 className="text-3xl text-gray-800 mb-2">Sign Up</h3>
         <p className="text-gray-600 mb-16 text-lg">Enter your email and password to log in</p>
         <form action="#" className="mx-auto max-w-[24rem] text-left">
           <div className="mb-6">
