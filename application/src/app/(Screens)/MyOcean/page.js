@@ -22,7 +22,7 @@ export default function MyOcean() {
       href: "#",
       icon: (
         <Image
-          src="/icons/MyOceanIcon.png"
+          src="/icons/MyOceanIcon.svg"
           className="h-18 w-20 flex-shrink-0 rounded-xl"
           width={50}
           height={50}
@@ -37,7 +37,7 @@ export default function MyOcean() {
       href: "#",
       icon: (
         <Image
-          src="/icons/SurferModeIcon.png"
+          src="/icons/SurferModeIcon.svg"
           className="h-18 w-20 flex-shrink-0 rounded-xl"
           width={50}
           height={50}
@@ -52,7 +52,7 @@ export default function MyOcean() {
       href: "#",  
       icon: (
         <Image
-          src="/icons/SharkModeIcon.png"
+          src="/icons/SharkModeIcon.svg"
           className="h-18 w-20 flex-shrink-0 rounded-xl"
           width={50}
           height={50}
@@ -67,7 +67,7 @@ export default function MyOcean() {
       href: "#",  
       icon: (
         <Image
-          src="/icons/PeopleIcon.png"
+          src="/icons/PeopleIcon.svg"
           className="h-18 w-20 flex-shrink-0 rounded-xl"
           width={50}
           height={50}
