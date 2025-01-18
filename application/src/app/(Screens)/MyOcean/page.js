@@ -1,13 +1,13 @@
 "use client";
 import React, { useState } from "react";
 import { Sidebar, SidebarBody, SidebarLink } from "@/components/ui/sidebar";
+import Link from "next/link";
 import {
   IconArrowLeft,
   IconBrandTabler,
   IconSettings,
   IconUserBolt,
 } from "@tabler/icons-react";
-import Link from "next/link";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
@@ -15,10 +15,16 @@ import { cn } from "@/lib/utils";
 export default function Home() {
   const links = [
     {
-      label: "Dashboard",
+      label: "My Ocean",
       href: "#",
       icon: (
-        <IconBrandTabler className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
+        <Image
+          src="/icons/MyOceanIcon.png"
+          className="h-18 w-20 flex-shrink-0 rounded-xl"
+          width={50}
+          height={50}
+          alt="Avatar"
+        />
       ),
     },
     {

@@ -15,12 +15,12 @@ export default function Home() {
 
       <div className="flex space-x-4 mt-4">
         {/* Wrap the button with Link to navigate to the login page */}
-        <Link href="/Screens/Login">
+        <Link href="/Login">
           <button className="button-27" role="button">
             Log in
           </button>
         </Link>
-        <Link href="/Screens/MyOcean">
+        <Link href="/SignUp">
           <button className="button-27" role="button">
             Sign up
           </button>
