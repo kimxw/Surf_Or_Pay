@@ -135,7 +135,6 @@ export const Logo = () => {
     </Link>
   );
 };
-
 export const LogoIcon = () => {
   return (
     <Link
