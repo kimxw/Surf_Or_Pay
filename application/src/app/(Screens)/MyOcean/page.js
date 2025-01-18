@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Sidebar, SidebarBody, SidebarLink } from "@/components/ui/sidebar";
 import {
   IconArrowLeft,
@@ -11,9 +11,35 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
-import '@/styles/fonts.css'; 
+import { onSnapshot, doc } from "firebase/firestore"; // Import doc function
+import { db } from "@/app/firebase/configuration";
+import { useAuth } from "@/app/contexts/AuthContext";
+import '@/styles/fonts.css';
 
 export default function MyOcean() {
+  const { loggedInUser } = useAuth();
+  const [username, setUsername] = useState('');
+
+  useEffect(() => {
+    if (!loggedInUser?.email) return;
+
+    const unsubscribe = onSnapshot(doc(db, 'Users', loggedInUser?.email), (doc) => {
+        if (doc.exists()) {
+          const userData = doc.data();
+          setUsername(userData?.username);
+        } else {
+          setUsername("Star");
+        }
+      },
+      (error) => {
+        console.error("Error fetching username:", error);
+        setUsername("Star");
+      }
+    );
+
+    return unsubscribe;
+  }, [loggedInUser]);
+
   const links = [
     {
       label: "My Ocean",
@@ -97,7 +123,7 @@ export default function MyOcean() {
           <div>
             <SidebarLink
               link={{
-                label: "Manu Arora",
+                label: username,
                 href: "#",
                 icon: (
                   <Image
