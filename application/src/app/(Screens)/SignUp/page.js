@@ -3,6 +3,8 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { handleSignUp } from "@/app/firebase/auth";
+import { db } from "@/app/firebase/configuration";
+import { collection, setDoc, doc } from "firebase/firestore";
 
 export function SignUpPage() {
   return (
@@ -20,9 +22,11 @@ function SignUpComponent() {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [username, setUsername] = useState('');
   const [isSigningUp, setIsSigningUp] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const router = useRouter();
+  const ref = collection(db, "Users");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -30,8 +34,14 @@ function SignUpComponent() {
     setIsSigningUp(true);
 
     try {
+      console.log("Starting sign-up process with email:", email);
       await handleSignUp(email, password);
-      console.log('Sign up successful!');
+      console.log("Sign-up successful!");
+  
+      console.log("Attempting to write user data:", email, username);
+      await setDoc(doc(ref, email.replace('.', '_')), { username: username });
+      console.log("User data written successfully.");
+  
       router.push("/MyOcean");
     } catch (error) {
       setErrorMessage(error.message || 'Failed to sign up. Please try again.');
@@ -81,6 +91,20 @@ function SignUpComponent() {
                 {passwordShown ? 'Hide' : 'Show'}
               </span>
             </div>
+            <div className="mb-6">
+            <label htmlFor="username" className="block font-medium text-gray-900 mb-2">
+              Your Username
+            </label>
+            <input
+              id="username"
+              type="username"
+              name="username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              placeholder="Username"
+              className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
           </div>
 
           {errorMessage && (
