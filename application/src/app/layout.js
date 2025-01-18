@@ -27,7 +27,9 @@ export default function RootLayout({ children }) {
       >
         <AuthProvider>
           <FriendProvider>
-            {children}
+            <SurferProvider>
+              {children}
+            </SurferProvider>
           </FriendProvider>
         </AuthProvider>
       </body>
