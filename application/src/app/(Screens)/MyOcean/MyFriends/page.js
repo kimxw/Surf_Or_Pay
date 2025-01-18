@@ -12,10 +12,12 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
 
+
 export default function MyFriends() {
   const links = [
     {
       label: "My Ocean",
+      bgcolour: "#68c5c0",
       href: "#",
       icon: (
         <Image
@@ -29,7 +31,8 @@ export default function MyFriends() {
     },
     {
       label: "Surfer Mode",
-      href: "#",  
+      bgcolour: "#86caa8",
+      href: "#",
       icon: (
         <Image
           src="/icons/SurferModeIcon.png"
@@ -42,6 +45,7 @@ export default function MyFriends() {
     },
     {
       label: "Shark Mode",
+      bgcolour: "#2da09b",
       href: "#",  
       icon: (
         <Image
@@ -55,6 +59,7 @@ export default function MyFriends() {
     },
     {
       label: "My Friends",
+      bgcolour: "#aaa4d4",
       href: "#",  
       icon: (
         <Image

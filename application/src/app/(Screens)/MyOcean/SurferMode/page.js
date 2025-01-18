@@ -16,6 +16,7 @@ export default function SurferMode() {
   const links = [
     {
       label: "My Ocean",
+      bgcolour: "#68c5c0",
       href: "#",
       icon: (
         <Image
@@ -29,7 +30,8 @@ export default function SurferMode() {
     },
     {
       label: "Surfer Mode",
-      href: "#",  
+      bgcolour: "#86caa8",
+      href: "#",
       icon: (
         <Image
           src="/icons/SurferModeIcon.png"
@@ -42,6 +44,7 @@ export default function SurferMode() {
     },
     {
       label: "Shark Mode",
+      bgcolour: "#2da09b",
       href: "#",  
       icon: (
         <Image
@@ -55,6 +58,7 @@ export default function SurferMode() {
     },
     {
       label: "My Friends",
+      bgcolour: "#aaa4d4",
       href: "#",  
       icon: (
         <Image
@@ -67,6 +71,7 @@ export default function SurferMode() {
       ),
     },
   ];
+  
   const [open, setOpen] = useState(false);
   return (
     <div

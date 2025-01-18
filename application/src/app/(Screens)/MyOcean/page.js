@@ -1,21 +1,23 @@
 "use client";
 import React, { useState } from "react";
 import { Sidebar, SidebarBody, SidebarLink } from "@/components/ui/sidebar";
-import Link from "next/link";
 import {
   IconArrowLeft,
   IconBrandTabler,
   IconSettings,
   IconUserBolt,
 } from "@tabler/icons-react";
+import Link from "next/link";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
 
-export default function Home() {
+
+export default function MyOcean() {
   const links = [
     {
       label: "My Ocean",
+      bgcolour: "#68c5c0",
       href: "#",
       icon: (
         <Image
@@ -29,19 +31,21 @@ export default function Home() {
     },
     {
       label: "Surfer Mode",
-      href: "#",  
+      bgcolour: "#86caa8",
+      href: "#",
       icon: (
         <Image
           src="/icons/SurferModeIcon.png"
           className="h-18 w-20 flex-shrink-0 rounded-xl"
           width={50}
           height={50}
-          alt="Surfer Mode"
+          alt="Avatar"
         />
       ),
     },
     {
       label: "Shark Mode",
+      bgcolour: "#2da09b",
       href: "#",  
       icon: (
         <Image
@@ -55,6 +59,7 @@ export default function Home() {
     },
     {
       label: "My Friends",
+      bgcolour: "#aaa4d4",
       href: "#",  
       icon: (
         <Image
