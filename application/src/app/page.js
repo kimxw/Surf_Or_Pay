@@ -9,7 +9,7 @@ export default function Home() {
   return (
     <div
       className="flex flex-col justify-center items-center h-screen"
-      style={{ backgroundImage: 'url(/oceanbg.png)', backgroundSize: 'cover', backgroundPosition: 'center' }}
+      style={{ backgroundImage: 'url(/Background.png)', backgroundSize: 'cover', backgroundPosition: 'center' }}
     >
       <div className="text-8xl font-extrabold animate-surf pb-10">Surf or Pay</div>
 
