@@ -90,7 +90,7 @@ export const MobileSidebar = ({
       {...props}>
       <div className="flex justify-end z-20 w-full">
         <IconMenu2
-          className="text-neutral-800 dark:text-neutral-200"
+          className="text-neutral-800 dark:"
           onClick={() => setOpen(!open)} />
       </div>
       <AnimatePresence>
