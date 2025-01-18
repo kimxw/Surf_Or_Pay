@@ -9,6 +9,8 @@ import { onSnapshot, doc } from "firebase/firestore"; // Import doc function
 import { db } from "@/app/firebase/configuration";
 import { useAuth } from "@/app/contexts/AuthContext";
 import '@/styles/fonts.css';
+import '@/components/ui/taskCalendar';
+import CalendarComponent from "@/components/ui/taskCalendar";
 
 export default function MyOcean() {
   const { loggedInUser } = useAuth();
@@ -182,11 +184,21 @@ const Dashboard = () => {
         </h1>
 
         <div className="flex gap-2 flex-1">
+
+          {/* Left component */}
+          <div className="h-50 flex-grow flex-basis[55%] bg-gray-200">
+            {/* This is your blank component */}
+            <p className="text-center text-gray-600">Left Component</p>
+          </div>
+
+          {/* Right component */}
           {[...new Array(1)].map((_, idx) => (
             <div
               key={`second-array-${idx}`} // Use `idx` to generate a unique key
-              className="h-20 w-1/2"
-            ></div>
+              className="h-20 flex-shrink"
+            >
+              <CalendarComponent></CalendarComponent>
+            </div>
           ))}
         </div>
     </div>
