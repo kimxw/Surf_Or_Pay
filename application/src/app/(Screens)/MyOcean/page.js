@@ -1,12 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { Sidebar, SidebarBody, SidebarLink } from "@/components/ui/sidebar";
-import {
-  IconArrowLeft,
-  IconBrandTabler,
-  IconSettings,
-  IconUserBolt,
-} from "@tabler/icons-react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import Image from "next/image";
@@ -15,26 +9,28 @@ import { onSnapshot, doc } from "firebase/firestore"; // Import doc function
 import { db } from "@/app/firebase/configuration";
 import { useAuth } from "@/app/contexts/AuthContext";
 import '@/styles/fonts.css';
-import '@/styles/colortheme.css';
 
 export default function MyOcean() {
   const { loggedInUser } = useAuth();
   const [username, setUsername] = useState('');
+  const [loading, setLoading] = useState(true);  // Add loading state
 
   useEffect(() => {
     if (!loggedInUser?.email) return;
 
-    const unsubscribe = onSnapshot(doc(db, 'Users', loggedInUser?.email), (doc) => {
+    const unsubscribe = onSnapshot(
+      doc(db, "Users", loggedInUser?.email),
+      (doc) => {
         if (doc.exists()) {
           const userData = doc.data();
           setUsername(userData?.username);
-        } else {
-          setUsername("Star");
         }
+        setLoading(false);
       },
       (error) => {
         console.error("Error fetching username:", error);
-        setUsername("Star");
+        setUsername("sleep time");
+        setLoading(false);
       }
     );
 

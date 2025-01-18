@@ -44,7 +44,7 @@ function SignUpComponent() {
           console.error("Error adding document: ", error);
           setErrorMessage(error.message || "Failed to Sign up. Please try again");
         }
-        setLoggedInUser(res.user);  // Ensure this is defined in your context
+        setLoggedInUser(res.user);
         router.push("/MyOcean");
       })
       .catch((error) => {
