@@ -77,7 +77,7 @@ export default function MyFriends() {
     <div
       className={cn(
         "flex flex-col md:flex-row bg-[#1E2D4F] dark:bg-[#1E2D4F] flex-1 max-w-screen mx-auto border border-[#1E2D4F] border-[#1E2D4F] overflow-hidden",
-        "h-screen p-5" // Set the main container to full screen height
+        "min-h-screen h-auto p-5" // Set the main container to full screen height
       )}
     >
       <Sidebar open={open} setOpen={setOpen}>
@@ -124,7 +124,7 @@ export const Logo = () => {
       <motion.span
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        className="font-medium lucky-guy text-[#8ab5d6] dark:[#8ab5d6] whitespace-pre"
+        className="font-medium lucky-guy text-4xl text-[#8ab5d6] dark:[#8ab5d6] whitespace-pre"
       >
         Surf or Pay
       </motion.span>
@@ -151,6 +151,17 @@ const Dashboard = () => {
     { username: "Charlie", email: "charlie@example.com" },
     { username: "David", email: "david@example.com" },
     { username: "Eve", email: "eve@example.com" },
+    { username: "Alice", email: "alice@example.com" },
+    { username: "Bob", email: "bob@example.com" },
+    { username: "Charlie", email: "charlie@example.com" },
+    { username: "David", email: "david@example.com" },
+    { username: "Eve", email: "eve@example.com" },
+    { username: "Alice", email: "alice@example.com" },
+    { username: "Bob", email: "bob@example.com" },
+    { username: "Charlie", email: "charlie@example.com" },
+    { username: "David", email: "david@example.com" },
+    { username: "Eve", email: "eve@example.com" },
+    
   ];
   
 
@@ -177,13 +188,18 @@ const Dashboard = () => {
               id="username"
               type="username"
               name="username"
-              className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:box-shadow-[0_0_5px_rgba(81,_203,_238,_1)] text-black"
+              className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:box-shadow-[0_0_5px_rgba(81,_203,_238,_1)] text-black opacity-70"
             />
             <button
               type="button"
-              className="bg-[#29597e] text-white p-2 rounded-lg flex-shrink-0 w-auto px-4"
+              className="bg-[#29597e] text-white p-0.5 rounded-lg flex-shrink-0 w-auto px-4 flex items-center space-x-2"
             >
-              Add Friend
+              <img
+                src="/icons/AddFriendIcon.svg"
+                alt="Icon"
+                className="h-10 m-0 w-auto" // Adjust size as needed
+              />
+              <span className="lucky-guy text-2xl text-[#c6e5fc]">Add</span>
             </button>
           </div>          
           ))}
