@@ -19,7 +19,7 @@ export default function SurferMode() {
       label: "My Ocean",
       bgcolour: "#68c5c0",
       textcolour: "#357b78",
-      href: "#",
+      href: "/MyOcean",
       icon: (
         <Image
           src="/icons/MyOceanIcon.svg"
@@ -34,7 +34,7 @@ export default function SurferMode() {
       label: "Surfer Mode",
       bgcolour: "#86caa8",
       textcolour: "#5a806d",
-      href: "#",
+      href: "/MyOcean/SurferMode",
       icon: (
         <Image
           src="/icons/SurferModeIcon.svg"
@@ -49,7 +49,7 @@ export default function SurferMode() {
       label: "Shark Mode",
       bgcolour: "#2da09b",
       textcolour: "#245956",
-      href: "#",  
+      href: "/MyOcean/SharkMode",  
       icon: (
         <Image
           src="/icons/SharkModeIcon.svg"
@@ -64,7 +64,7 @@ export default function SurferMode() {
       label: "My Friends",
       bgcolour: "#aaa4d4",
       textcolour: "#6e6894",
-      href: "#",  
+      href: "/MyOcean/MyFriends",  
       icon: (
         <Image
           src="/icons/PeopleIcon.svg"
