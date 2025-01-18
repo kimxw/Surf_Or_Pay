@@ -19,8 +19,10 @@
     "firebase": "^11.2.0",
     "framer-motion": "^11.18.1",
     "lucide-react": "^0.473.0",
+    "moment": "^2.30.1",
     "next": "15.1.5",
     "react": "^19.0.0",
+    "react-big-calendar": "^1.17.1",
     "react-dom": "^19.0.0",
     "tailwind-merge": "^2.6.0"
   },

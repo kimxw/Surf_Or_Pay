@@ -1,0 +1,49 @@
+/* custom-calendar.css */
+.rbc-calendar {
+    background-color: #c4def2; 
+    color: #29597e;
+  }
+  
+  .rbc-event {
+    background-color: #267984; /* Custom event color */
+    color: white;
+    font-size: 12px;
+
+  }
+
+  .rbc-off-range-bg {
+    background-color: #91b5d9; 
+    color: #91b5d9; 
+  }
+
+  .rbc-off-range {
+    color: #29597e; 
+  }
+
+ /* Toolbar container: make all child elements align horizontally */
+.rbc-toolbar {
+    display: flex;
+    justify-content: space-between; /* Spread items to the left and right */
+    align-items: center; /* Vertically center align items */
+    flex-wrap: nowrap; /* Prevent items from wrapping to the next row */
+  }
+  
+  /* Style for the navigation buttons ("Today, Back, Next") */
+  .rbc-toolbar .rbc-btn-group:first-child {
+    display: flex;
+    gap: 10px; /* Add spacing between buttons */
+  }
+  
+  /* Style for the view buttons ("Month, Week, Day, Agenda") */
+  .rbc-toolbar .rbc-btn-group:last-child {
+    display: flex;
+    gap: 10px; /* Add spacing between buttons */
+  }
+  
+  /* Center the month label */
+  .rbc-toolbar label {
+    text-align: center;
+    flex: 1; /* Allow the label to take up remaining space */
+  }
+
+  
