@@ -9,6 +9,7 @@ import { onSnapshot, doc } from "firebase/firestore"; // Import doc function
 import { db } from "@/app/firebase/configuration";
 import { useAuth } from "@/app/contexts/AuthContext";
 import '@/styles/fonts.css';
+import Calendar from "@/components/ui/calendar";
 
 export default function MyOcean() {
   const { loggedInUser } = useAuth();
@@ -104,7 +105,7 @@ export default function MyOcean() {
     <div
       className={cn(
         "flex flex-col md:flex-row main-purplish-blue-background flex-1 max-w-screen mx-auto border border-[#1E2D4F] border-[#1E2D4F] overflow-hidden",
-        "h-screen p-5" // Set the main container to full screen height
+        "min-h-screen h-auto p-5" // Set the main container to full screen height
       )}
     >
       <Sidebar open={open} setOpen={setOpen}>
@@ -167,7 +168,14 @@ export const LogoIcon = () => {
       href="#"
       className="font-normal flex space-x-2 items-center text-sm text-white py-1 relative z-20"
     >
-      <div className="h-5 w-6 bg-white rounded-br-lg rounded-tr-sm rounded-tl-lg rounded-bl-sm flex-shrink-0" />
+      <Image
+          src="/icons/AppLogo.svg"
+          className="h-18 w-20 flex-shrink-0 rounded-xl"
+          width={50}
+          height={50}
+          alt="My Friends"
+        />
+
     </Link>
   );
 };
@@ -182,17 +190,9 @@ const Dashboard = () => {
         <h1 className="lucky-guy text-4xl text-[#29597e] dark:[#29597e]">
           My Ocean
         </h1>
+            </div>
 
-        <div className="flex gap-2 flex-1">
-          {[...new Array(1)].map((_, idx) => (
-            <div
-              key={`second-array-${idx}`} // Use `idx` to generate a unique key
-              className="h-20 w-1/2"
-            ></div>
-          ))}
-        </div>
-    </div>
+             
+            </div>
 
-    </div>
-  );
-};
+          )}
