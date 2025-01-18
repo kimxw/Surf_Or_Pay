@@ -186,15 +186,17 @@ export default function MyFriends() {
           
           <div className="flex gap-2">
             <div className="h-20 w-1/2 rounded-lg flex items-center space-x-2">
-              <input
-                id="username"
-                type="email"
-                name="username"
-                placeholder="Enter your friend's email address"
-                value={newFriend}
-                onChange={(e) => setNewFriend(e.target.value)}
-                className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 text-black opacity-70"
-              />
+            <input
+              id="username"
+              type="email"
+              name="username"
+              placeholder="Enter your friend's email address"
+              onChange={(e) => {
+                console.log("Current newFriend value:", e.target.value); // Log the newFriend value
+                
+              }}
+              className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 text-black opacity-70"
+            />
               <button
                 type="button"
                 onClick={() => handleAddFriend(newFriend)}
