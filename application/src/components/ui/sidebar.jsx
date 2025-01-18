@@ -5,6 +5,8 @@ import React, { useState, createContext, useContext } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { IconMenu2, IconX } from "@tabler/icons-react";
 
+import '@/styles/fonts.css'; 
+
 const SidebarContext = createContext(undefined);
 
 export const useSidebar = () => {
@@ -126,7 +128,13 @@ export const SidebarLink = ({
   ...props
 }) => {
   const { open, animate } = useSidebar();
-  const { href, icon, label, bgcolour = "#ffffff" } = link; // Destructure bgcolour from the link
+  const { href, icon, label, bgcolour = "#ffffff", textcolour = "#000000" } = link; // Destructure bgcolour from the link
+
+  // Function to decide the color based on dark/light mode
+  const dynamicTextColour = textcolour || 'black'; // default to black if no colour is passed
+  const textColorStyle = {
+    color: dynamicTextColour,
+  };
 
   return (
     <Link href={href} {...props} className="group/sidebar">
@@ -143,7 +151,8 @@ export const SidebarLink = ({
             display: animate ? (open ? "inline-block" : "none") : "inline-block",
             opacity: animate ? (open ? 1 : 0) : 1,
           }}
-          className="text-neutral-700 dark:text-neutral-200 text-sm group-hover/sidebar:translate-x-1 transition duration-150 whitespace-pre inline-block !p-0 !m-0"
+          className="nav-label text-neutral-700 dark:text-neutral-200 text-sm group-hover/sidebar:translate-x-1 transition duration-150 whitespace-pre inline-block !p-0 !m-0"
+          style={textColorStyle} // Apply dynamic text color
         >
           {label}
         </motion.span>
