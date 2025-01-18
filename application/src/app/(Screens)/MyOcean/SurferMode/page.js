@@ -76,7 +76,7 @@ export default function SurferMode() {
   return (
     <div
       className={cn(
-        "flex flex-col md:flex-row bg-[#2F436D] dark:bg-[#2F436D] flex-1 max-w-screen mx-auto border border-[#165d97] dark:border-[#165d97] overflow-hidden",
+        "flex flex-col md:flex-row bg-[#1E2D4F] dark:bg-[#1E2D4F] flex-1 max-w-screen mx-auto border border-[#165d97] dark:border-[#165d97] overflow-hidden",
         "h-screen p-5" // Set the main container to full screen height
       )}
     >
