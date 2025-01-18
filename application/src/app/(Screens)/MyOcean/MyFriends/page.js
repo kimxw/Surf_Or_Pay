@@ -1,15 +1,66 @@
 "use client";
-import React, { useState } from "react";
+import React, { use, useState, useEffect } from "react";
 import { Sidebar, SidebarBody, SidebarLink } from "@/components/ui/sidebar";
 import FriendsTable from "@/components/ui/friendsTable";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
+import { db } from "@/app/firebase/configuration"
+import { useFriends } from "@/app/contexts/FriendContext";
+import { useAuth } from "@/app/contexts/AuthContext";
+import {doc, getDoc, onSnapshot} from "firebase/firestore";
 
 import '@/styles/fonts.css'; 
 
 export default function MyFriends() {
+  const { loggedInUser } = useAuth();
+  const { friend, handleAddFriend } = useFriends();
+  const [friendList, setFriendList] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  const getUserDataByEmail = async (email) => {
+    try {
+      const userDoc = await getDoc(doc(db, "Users", email));
+      if (userDoc.exists()) {
+        const userData = userDoc.data();
+        return {
+          username: userData.username,
+          email: email
+        };
+      } else {
+        console.warn(`No user found with email: ${email}`);
+        return null;
+      }
+    } catch (error) {
+      console.error(`Error fetching user data for ${email}:`, error);
+      return null;
+    }
+};
+
+  
+
+  useEffect(() => {
+    if (!loggedInUser?.email) return;
+
+    const fetchFriendData = async () => {
+      setLoading(true);
+      const updatedFriendList = [];
+      for (const f of friend) {
+        const friendData = await getUserDataByEmail(f);
+        if (friendData) {
+          updatedFriendList.push(friendData);
+        }
+      }
+      console.log(updatedFriendList)
+      setFriendList(updatedFriendList);
+      setLoading(false);
+    };
+
+    fetchFriendData();
+  }, [loggedInUser, friend]);
+
+
   const links = [
     {
       label: "My Ocean",
@@ -109,7 +160,7 @@ export default function MyFriends() {
           </div>
         </SidebarBody>
       </Sidebar>
-      <Dashboard />
+      <Dashboard friendList={friendList}/>
     </div>
   );
 }
@@ -144,25 +195,8 @@ export const LogoIcon = () => {
 };
 
 // Dummy dashboard component with content
-const Dashboard = () => {
-  const friends = [
-    { username: "Alice", email: "alice@example.com" },
-    { username: "Bob", email: "bob@example.com" },
-    { username: "Charlie", email: "charlie@example.com" },
-    { username: "David", email: "david@example.com" },
-    { username: "Eve", email: "eve@example.com" },
-    { username: "Alice", email: "alice@example.com" },
-    { username: "Bob", email: "bob@example.com" },
-    { username: "Charlie", email: "charlie@example.com" },
-    { username: "David", email: "david@example.com" },
-    { username: "Eve", email: "eve@example.com" },
-    { username: "Alice", email: "alice@example.com" },
-    { username: "Bob", email: "bob@example.com" },
-    { username: "Charlie", email: "charlie@example.com" },
-    { username: "David", email: "david@example.com" },
-    { username: "Eve", email: "eve@example.com" },
-    
-  ];
+const Dashboard = ({friendList}) => {
+  const friends = friendList;
   
 
   return (

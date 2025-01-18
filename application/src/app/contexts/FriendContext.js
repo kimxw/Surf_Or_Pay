@@ -15,31 +15,21 @@ export const FriendProvider = ({ children }) => {
   
     useEffect(() => {
         if (!loggedInUser?.email) return;
-
-        const fetchFriends = async() => {
-            try {
-                const q = query(collection(db, "friends"), where("email", "==", loggedInUser?.email),orderBy("friend", "asc"));
-                const unsubscribe = onSnapshot(q, (querySnapshot) => {
-                    const friendData = [];
-                    querySnapshot.forEach((doc) => {
-                      const data = doc.data();
-                      friendData.push({
-                        id: doc.id,
-                        friend: data.friend,
-                      });
-                    });
-                    setFriend(friendData);
-                    setLoading(false);
-                });
-
-                return unsubscribe;
-            } catch (error) {
-                console.error("Error fetching friends:", error);
-            }
-        };
-
-        const unsubscribe = fetchFriends();
-        return () => unsubscribe && unsubscribe();
+    
+        const q = query(collection(db, "friends"), where("email", "==", loggedInUser?.email), orderBy("friend", "asc"));
+        
+        const unsubscribe = onSnapshot(q, (querySnapshot) => {
+            const friendData = [];
+            querySnapshot.forEach((doc) => {
+                const data = doc.data();
+                friendData.push(data.friend);
+            });
+            console.log(friendData, "my friends");
+            setFriend(friendData);
+            setLoading(false);
+        });
+    
+        return () => unsubscribe();
     }, [loggedInUser]);
 
     const searchFriend = async(friendEmail) => {
