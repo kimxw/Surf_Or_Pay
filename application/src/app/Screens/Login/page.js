@@ -1,6 +1,9 @@
 'use client'
 
 import { useState } from "react";
+import { handleSignIn, handleSignUp } from "@/app/firebase/auth";
+import { useAuth } from "@/app/contexts/AuthContext";
+
 
 export function LoginPage() {
   return (
@@ -14,7 +17,27 @@ export function LoginPage() {
 
 function LoginComponent() {
   const [passwordShown, setPasswordShown] = useState(false);
-  const togglePasswordVisiblity = () => setPasswordShown((cur) => !cur);
+  const togglePasswordVisibility = () => setPasswordShown((prev) => !prev);
+
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [isSigningIn, setIsSigningIn] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setErrorMessage('');
+    setIsSubmitting(true);
+
+    try {
+      await handleSignIn(email, password);
+      console.log('Login successful!');
+    } catch (error) {
+      setErrorMessage(error.message || 'Failed to log in. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   return (
     <section className="bg-white grid text-center items-center p-8">
@@ -30,7 +53,9 @@ function LoginComponent() {
               id="email"
               type="email"
               name="email"
-              placeholder="name@mail.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="name@gmail.com"
               className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
@@ -40,31 +65,34 @@ function LoginComponent() {
             </label>
             <div className="relative">
               <input
+                id="password"
                 size="lg"
                 placeholder="********"
                 type={passwordShown ? "text" : "password"}
+                name="password"
+                onChange={(e) => setPassword(e.target.value)}
                 className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
               <span
-                onClick={togglePasswordVisiblity}
+                onClick={togglePasswordVisibility}
                 className="absolute top-1/2 right-3 transform -translate-y-1/2 cursor-pointer text-gray-500"
               >
                 {passwordShown ? 'Hide' : 'Show'}
               </span>
             </div>
           </div>
-          <button className="w-full bg-black text-white p-3 rounded-lg mt-6">Sign in</button>
-          <div className="mt-4 text-right">
-            <a href="#" className="text-[#000000] text-sm">
-              Forgot password
-            </a>
-          </div>
-          <p className="text-center text-gray-600 text-sm mt-4">
-            Not registered?{" "}
-            <a href="#" className="text-[#000000]">
-              Create account
-            </a>
-          </p>
+
+          {errorMessage && (
+            <p className="text-red-500 text-sm mb-4">{errorMessage}" </p>
+          )}
+          <button
+            type="Login"
+            className="w-full bg-black text-white p-3 rounded-lg mt-6 style={on-click: handleSubmit()}"
+            onClick={handleSubmit}
+            disabled={isSigningIn}
+            >
+                {isSigningIn ? 'Signing in...' : 'Sign in'}
+            </button>
         </form>
       </div>
     </section>
