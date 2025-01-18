@@ -20,7 +20,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const authentication = getAuth(app);
 const db = getFirestore(app); // database
-const storage = getStorage(app); // Firebase storage
+const storage = getStorage(app); // Firebase storage new
 
 // Exporting necessary Firebase functions
 export { authentication, db, getFirestore, collection, addDoc, getDocs, doc, updateDoc, deleteDoc, storage, sendPasswordResetEmail };
