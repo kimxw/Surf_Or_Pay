@@ -1,11 +1,10 @@
-
 "use client";
 import React, { useState } from "react";
-import Calendar from "@/components/ui/calendar";
+import PinnedSubheaderList from "@/components/ui/pinnedSubheaderList";
 
 export function TestPage() {
   return (
-    <Calendar />
+    <PinnedSubheaderList />
   );
 }
 
