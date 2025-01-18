@@ -10,7 +10,7 @@ import '@/styles/fonts.css';
 
 export function SignUpPage() {
   return (
-    <div className="bg-[#1e2d4f] flex items-center justify-center min-h-screen bg-black py-10">
+    <div className="bg-[#ffffff] flex items-center justify-center min-h-screen bg-black py-10">
       <div className="bg-white shadow-lg rounded-lg p-5 w-full max-w-md mx-4" style={{borderRadius:'20px'}}>
         <SignUpComponent />
       </div>

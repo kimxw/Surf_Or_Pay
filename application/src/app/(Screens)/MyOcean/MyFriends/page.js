@@ -1,17 +1,13 @@
 "use client";
 import React, { useState } from "react";
 import { Sidebar, SidebarBody, SidebarLink } from "@/components/ui/sidebar";
-import {
-  IconArrowLeft,
-  IconBrandTabler,
-  IconSettings,
-  IconUserBolt,
-} from "@tabler/icons-react";
+import FriendsTable from "@/components/ui/friendsTable";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
 
+import '@/styles/fonts.css'; 
 
 export default function MyFriends() {
   const links = [
@@ -149,28 +145,60 @@ export const LogoIcon = () => {
 
 // Dummy dashboard component with content
 const Dashboard = () => {
+  const friends = [
+    { username: "Alice", email: "alice@example.com" },
+    { username: "Bob", email: "bob@example.com" },
+    { username: "Charlie", email: "charlie@example.com" },
+    { username: "David", email: "david@example.com" },
+    { username: "Eve", email: "eve@example.com" },
+  ];
+  
+
   return (
     <div className="flex flex-1 flex-col">
-    <div className="p-2 md:p-10 rounded-tl-2xl border border-neutral-200 dark:border-neutral-700 flex flex-col gap-2 flex-1 w-full h-full bg-[url('/Background.png')]"
-        style={{ backgroundSize: 'cover', backgroundPosition: 'center' }}>
-      <div className="flex gap-2">
+      <div
+        className="p-2 md:p-10 rounded-tl-2xl border border-neutral-200 dark:border-neutral-700 flex flex-col gap-2 flex-1 w-full h-full bg-[url('/Background.png')]"
+        style={{ backgroundSize: 'cover', backgroundPosition: 'center' }}
+      >
+        <h1 className="lucky-guy text-4xl text-[#29597e] dark:[#29597e]">
+          My Friends
+        </h1>
+        
+        <div className="flex gap-2">
           {[...new Array(1)].map((_, idx) => (
             <div
-              key={`first-array-${idx}`} // Use `idx` to generate a unique key
-              className="h-20 w-1/2 rounded-lg bg-gray-100 opacity-40"
-            ></div>
+            key={`first-array-${idx}`} // Use `idx` to generate a unique key
+            className="h-20 w-1/2 rounded-lg flex items-center space-x-2"
+          >
+            
+            <input
+              id="username"
+              type="username"
+              name="username"
+              className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:box-shadow-[0_0_5px_rgba(81,_203,_238,_1)] text-black"
+            />
+            <button
+              type="button"
+              className="bg-[#29597e] text-white p-2 rounded-lg flex-shrink-0 w-auto px-4"
+            >
+              Add Friend
+            </button>
+          </div>          
           ))}
         </div>
+  
         <div className="flex gap-2 flex-1">
           {[...new Array(1)].map((_, idx) => (
             <div
               key={`second-array-${idx}`} // Use `idx` to generate a unique key
-              className="h-full w-full rounded-lg bg-gray-100 opacity-40"
-            ></div>
+              className="h-full w-full rounded-lg bg-transparent opacity-75"
+            >
+              <FriendsTable friends={friends} />
+            </div>
           ))}
         </div>
-    </div>
-
+      </div>
     </div>
   );
+  
 };
