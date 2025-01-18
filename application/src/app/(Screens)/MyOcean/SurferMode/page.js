@@ -1,17 +1,13 @@
 "use client";
 import React, { useState } from "react";
 import { Sidebar, SidebarBody, SidebarLink } from "@/components/ui/sidebar";
-import {
-  IconArrowLeft,
-  IconBrandTabler,
-  IconSettings,
-  IconUserBolt,
-} from "@tabler/icons-react";
+import TaskTable from "@/components/ui/taskTable";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
 
+import '@/styles/fonts.css'; 
 
 export default function SurferMode() {
   const links = [
@@ -80,8 +76,8 @@ export default function SurferMode() {
   return (
     <div
       className={cn(
-        "flex flex-col md:flex-row bg-[#1E2D4F] dark:bg-[#1E2D4F] flex-1 max-w-screen mx-auto border border-[#1E2D4F] dark:border-[#1E2D4F] overflow-hidden",
-        "h-screen p-5" // Set the main container to full screen height
+        "flex flex-col md:flex-row bg-[#1E2D4F] dark:bg-[#1E2D4F] flex-1 max-w-screen mx-auto border border-[#1E2D4F] border-[#1E2D4F] overflow-hidden",
+        "min-h-screen h-auto p-5" // Set the main container to full screen height
       )}
     >
       <Sidebar open={open} setOpen={setOpen}>
@@ -128,13 +124,14 @@ export const Logo = () => {
       <motion.span
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        className="font-medium lucky-guy text-[#8ab5d6] dark:[#8ab5d6] whitespace-pre"
+        className="font-medium lucky-guy text-4xl text-[#8ab5d6] dark:[#8ab5d6] whitespace-pre"
       >
         Surf or Pay
       </motion.span>
     </Link>
   );
 };
+
 export const LogoIcon = () => {
   return (
     <Link
@@ -148,28 +145,66 @@ export const LogoIcon = () => {
 
 // Dummy dashboard component with content
 const Dashboard = () => {
+  const tasks = [
+    {
+      friend: "alice@example.com",
+      desc: "Complete report on market trends.",
+      credits: "$5.00",
+      deadline: "2025-01-25",
+      completionStatus: "Incomplete",
+      verificationStatus: "Unverified",
+    },
+    {
+      friend: "bob@example.com",
+      desc: "Prepare presentation for client meeting.",
+      credits: "$3.00",
+      deadline: "2025-01-20",
+      completionStatus: "Incomplete",
+      verificationStatus: "Unverified",
+    },
+    {
+      friend: "charlie@example.com",
+      desc: "Update the project roadmap.",
+      credits: "$4.00",
+      deadline: "2025-01-22",
+      completionStatus: "Complete",
+      verificationStatus: "Verified",
+    },
+    {
+      friend: "david@example.com",
+      desc: "Review code for the latest features.",
+      credits: "$2.00",
+      deadline: "2025-01-30",
+      completionStatus: "Incomplete",
+      verificationStatus: "Unverified",
+    },
+    {
+      friend: "eve@example.com",
+      desc: "Organize team lunch event.",
+      credits: "$1.00",
+      deadline: "2025-01-23",
+      completionStatus: "Complete",
+      verificationStatus: "Verified",
+    },
+  ];
+  
+
   return (
     <div className="flex flex-1 flex-col">
-    <div className="p-2 md:p-10 rounded-tl-2xl border border-neutral-200 border-neutral-700 flex flex-col gap-2 flex-1 w-full h-full bg-[url('/Background.png')]"
-        style={{ backgroundSize: 'cover', backgroundPosition: 'center' }}>
-      <div className="flex gap-2">
-          {[...new Array(4)].map((_, idx) => (
-            <div
-              key={`first-array-${idx}`} // Use `idx` to generate a unique key
-              className="h-20 w-full rounded-lg bg-gray-100 opacity-40"
-            ></div>
-          ))}
-        </div>
-        <div className="flex gap-2 flex-1">
-          {[...new Array(2)].map((_, idx) => (
-            <div
-              key={`second-array-${idx}`} // Use `idx` to generate a unique key
-              className="h-full w-full rounded-lg bg-gray-100 opacity-40"
-            ></div>
-          ))}
-        </div>
-    </div>
+      <div
+        className="p-2 md:p-10 rounded-tl-2xl border border-neutral-200 dark:border-neutral-700 flex flex-col gap-2 flex-1 w-full h-full bg-[url('/Background.png')]"
+        style={{ backgroundSize: 'cover', backgroundPosition: 'center' }}
+      >
+        <h1 className="lucky-guy text-4xl text-[#29597e] dark:[#29597e]">
+          Surfer Mode - Tasks
+        </h1>
 
+        <div className="flex gap-2 flex-1">
+          <div className="h-full w-full rounded-lg bg-transparent opacity-75">
+            <TaskTable tasks={tasks} />
+          </div>
+        </div>
+      </div>
     </div>
   );
 };

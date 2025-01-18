@@ -188,6 +188,7 @@ const Dashboard = () => {
               id="username"
               type="username"
               name="username"
+              placeholder="   Enter your friend's email address"
               className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:box-shadow-[0_0_5px_rgba(81,_203,_238,_1)] text-black opacity-70"
             />
             <button
