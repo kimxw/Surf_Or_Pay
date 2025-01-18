@@ -143,7 +143,7 @@ export const LogoIcon = () => {
   );
 };
 
-// Dummy dashboard component with content
+// dashboard component with content
 const Dashboard = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
