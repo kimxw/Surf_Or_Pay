@@ -43,6 +43,8 @@ export default function MyFriends() {
         });
 
         alert("Friend added successfully!");
+      } else {
+        alert("Friend not found!")
       }
     } catch (error) {
       console.error("Error adding friend:", error);

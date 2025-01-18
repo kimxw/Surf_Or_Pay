@@ -11,6 +11,7 @@ import { useAuth } from "@/app/contexts/AuthContext";
 import '@/styles/fonts.css';
 import '@/components/ui/taskCalendar';
 import CalendarComponent from "@/components/ui/taskCalendar";
+import PinnedSubheaderList from "@/components/ui/pinnedSubheaderList";
 
 export default function MyOcean() {
   const { loggedInUser } = useAuth();
@@ -201,9 +202,11 @@ const Dashboard = () => {
         <div className="flex gap-2 flex-1">
 
           {/* Left component */}
-          <div className="h-50 flex-grow flex-basis[55%] bg-gray-200">
+          <div className="h-50 flex-grow flex-basis[55%]">
             {/* This is your blank component */}
-            <p className="text-center text-gray-600">Left Component</p>
+            
+            <PinnedSubheaderList/>
+            
           </div>
 
           {/* Right component */}
