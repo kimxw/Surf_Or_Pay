@@ -186,15 +186,18 @@ export default function MyFriends() {
           
           <div className="flex gap-2">
             <div className="h-20 w-1/2 rounded-lg flex items-center space-x-2">
-              <input
-                id="username"
-                type="email"
-                name="username"
-                placeholder="Enter your friend's email address"
-                value={newFriend}
-                onChange={(e) => setNewFriend(e.target.value)}
-                className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 text-black opacity-70"
-              />
+            <input
+              id="username"
+              type="email"
+              name="username"
+              placeholder="Enter your friend's email address"
+              // value={newFriend} <-bug
+              onChange={(e) => {
+                console.log("Current newFriend value:", e.target.value); // Log the newFriend value
+                setNewFriend(e.target.value);
+              }}
+              className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 text-black opacity-70"
+            />
               <button
                 type="button"
                 onClick={() => handleAddFriend(newFriend)}
@@ -267,7 +270,15 @@ export const Logo = () => {
       href="#"
       className="font-normal flex space-x-5 items-center text-sm text-black py-1 relative z-20"
     >
-      <div className="h-5 w-6 bg-black dark:bg-white rounded-br-lg rounded-tr-sm rounded-tl-lg rounded-bl-sm flex-shrink-0" />
+      <div>
+        <Image
+          src="/icons/AppLogo.svg"
+          className="h-18 w-20 flex-shrink-0 rounded-xl"
+          width={50}
+          height={50}
+          alt="Avatar"
+        />
+      </div>
       <motion.span
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -283,9 +294,16 @@ export const LogoIcon = () => {
   return (
     <Link
       href="#"
-      className="font-normal flex space-x-2 items-center text-sm text-black py-1 relative z-20"
+      className="font-normal flex space-x-2 items-center text-sm text-white py-1 relative z-20"
     >
-      <div className="h-5 w-6 bg-black dark:bg-white rounded-br-lg rounded-tr-sm rounded-tl-lg rounded-bl-sm flex-shrink-0" />
-    </Link>
+    <div>
+        <Image
+          src="/icons/AppLogo.svg"
+          className="h-18 w-20 flex-shrink-0 rounded-xl"
+          width={50}
+          height={50}
+          alt="Avatar"
+        />
+      </div>    </Link>
   );
-}
+};

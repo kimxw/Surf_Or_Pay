@@ -9,6 +9,8 @@ import { onSnapshot, doc } from "firebase/firestore"; // Import doc function
 import { db } from "@/app/firebase/configuration";
 import { useAuth } from "@/app/contexts/AuthContext";
 import '@/styles/fonts.css';
+import '@/components/ui/taskCalendar';
+import CalendarComponent from "@/components/ui/taskCalendar";
 
 export default function MyOcean() {
   const { loggedInUser } = useAuth();
@@ -147,7 +149,15 @@ export const Logo = () => {
       href="#"
       className="font-normal flex space-x-5 items-center text-sm text-black py-1 relative z-20"
     >
-      <div className="h-5 w-6 bg-black dark:bg-white rounded-br-lg rounded-tr-sm rounded-tl-lg rounded-bl-sm flex-shrink-0" />
+      <div>
+        <Image
+          src="/icons/AppLogo.svg"
+          className="h-18 w-20 flex-shrink-0 rounded-xl"
+          width={50}
+          height={50}
+          alt="Avatar"
+        />
+      </div>
       <motion.span
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -165,8 +175,15 @@ export const LogoIcon = () => {
       href="#"
       className="font-normal flex space-x-2 items-center text-sm text-white py-1 relative z-20"
     >
-      <div className="h-5 w-6 bg-white rounded-br-lg rounded-tr-sm rounded-tl-lg rounded-bl-sm flex-shrink-0" />
-    </Link>
+    <div>
+        <Image
+          src="/icons/AppLogo.svg"
+          className="h-18 w-20 flex-shrink-0 rounded-xl"
+          width={50}
+          height={50}
+          alt="Avatar"
+        />
+      </div>    </Link>
   );
 };
 
@@ -182,11 +199,21 @@ const Dashboard = () => {
         </h1>
 
         <div className="flex gap-2 flex-1">
+
+          {/* Left component */}
+          <div className="h-50 flex-grow flex-basis[55%] bg-gray-200">
+            {/* This is your blank component */}
+            <p className="text-center text-gray-600">Left Component</p>
+          </div>
+
+          {/* Right component */}
           {[...new Array(1)].map((_, idx) => (
             <div
               key={`second-array-${idx}`} // Use `idx` to generate a unique key
-              className="h-20 w-1/2"
-            ></div>
+              className="h-20 flex-shrink"
+            >
+              <CalendarComponent></CalendarComponent>
+            </div>
           ))}
         </div>
     </div>
