@@ -32,53 +32,8 @@ export const FriendProvider = ({ children }) => {
         return () => unsubscribe();
     }, [loggedInUser]);
 
-    const searchFriend = async(friendEmail) => {
-        try {
-            const q = query(collection(db, "Users"), where("email", "==", friendEmail));
-            const query = await getDoc(q);
-    
-            if(query != null){
-                const data = doc.data();
-                return data.friend;
-            } else {
-                console.log("No friend found with that email.");
-                return null;
-            }
-        } catch (error) {
-            console.error("Error searching for friend:", error);
-            return null;
-        }
-    };
-    
-    const handleAddFriend = async (friendEmail) => {
-        const { loggedInUser } = useAuth();
-    
-        try{
-            const existingFriend = await searchFriend(friendEmail);
-            if (!existingFriend) {
-              alert("User not found.");
-              return;
-            }
-        
-            await addDoc(collection(db, "friends"), {
-              email: loggedInUser?.email,
-              friend: friendEmail,
-            });
-
-            await addDoc(collection(db, "friends"), {
-                email: friendEmail,
-                friend: email,
-            });
-        
-            alert("Friend added successfully!");
-        } catch (error) {
-            console.error("Error adding friend:", error);
-            alert("Failed to add friend. Please try again.");
-        }
-    };
-
     return (
-        <FriendContext.Provider value={{ friend, loading, searchFriend, handleAddFriend }}>
+        <FriendContext.Provider value={{ friend, loading}}>
           {children}
         </FriendContext.Provider>
       );

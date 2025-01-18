@@ -1,23 +1,54 @@
 "use client";
-import React, { use, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Sidebar, SidebarBody, SidebarLink } from "@/components/ui/sidebar";
 import FriendsTable from "@/components/ui/friendsTable";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
-import { db } from "@/app/firebase/configuration"
+import { db } from "@/app/firebase/configuration";
 import { useFriends } from "@/app/contexts/FriendContext";
 import { useAuth } from "@/app/contexts/AuthContext";
-import {doc, getDoc, onSnapshot} from "firebase/firestore";
+import { collection, query, where, getDocs, addDoc, doc, getDoc, onSnapshot } from "firebase/firestore";
 
 import '@/styles/fonts.css'; 
 
 export default function MyFriends() {
   const { loggedInUser } = useAuth();
-  const { friend, handleAddFriend } = useFriends();
+  const { friend } = useFriends();
   const [friendList, setFriendList] = useState([]);
+  const [newFriend, setNewFriend] = useState("");
+  const [username, setUsername] = useState('');
   const [loading, setLoading] = useState(true);
+
+  const handleAddFriend = async (friendEmail) => {
+    if (!loggedInUser?.email) return;
+
+    try {
+      const userDoc = await getDoc(doc(db, "Users", friendEmail));
+      if (userDoc.exists()) {
+        const userData = userDoc.data();
+        const friendUsername = userData.username;
+
+        await addDoc(collection(db, "friends"), {
+          email: loggedInUser?.email,
+          friend: friendEmail,
+          friendUsername: friendUsername
+        });
+
+        await addDoc(collection(db, "friends"), {
+          email: friendEmail,
+          friend: loggedInUser?.email,
+          friendUsername: username
+        });
+
+        alert("Friend added successfully!");
+      }
+    } catch (error) {
+      console.error("Error adding friend:", error);
+      alert("Failed to add friend. Please try again.");
+    }
+  };
 
   const getUserDataByEmail = async (email) => {
     try {
@@ -26,7 +57,7 @@ export default function MyFriends() {
         const userData = userDoc.data();
         return {
           username: userData.username,
-          email: email
+          email: email,
         };
       } else {
         console.warn(`No user found with email: ${email}`);
@@ -36,12 +67,26 @@ export default function MyFriends() {
       console.error(`Error fetching user data for ${email}:`, error);
       return null;
     }
-};
-
-  
+  };
 
   useEffect(() => {
     if (!loggedInUser?.email) return;
+
+    const unsubscribe = onSnapshot(
+      doc(db, "Users", loggedInUser?.email),
+      (doc) => {
+        if (doc.exists()) {
+          const userData = doc.data();
+          setUsername(userData?.username);
+        }
+        setLoading(false);
+      },
+      (error) => {
+        console.error("Error fetching username:", error);
+        setUsername("sleep time");
+        setLoading(false);
+      }
+    );
 
     const fetchFriendData = async () => {
       setLoading(true);
@@ -52,14 +97,14 @@ export default function MyFriends() {
           updatedFriendList.push(friendData);
         }
       }
-      console.log(updatedFriendList)
       setFriendList(updatedFriendList);
       setLoading(false);
     };
 
     fetchFriendData();
-  }, [loggedInUser, friend]);
 
+    return () => unsubscribe();
+  }, [loggedInUser, friend]);
 
   const links = [
     {
@@ -123,12 +168,63 @@ export default function MyFriends() {
       ),
     },
   ];
+  
   const [open, setOpen] = useState(false);
+
+  const Dashboard = ({ friendList }) => {
+    const friends = friendList;
+
+    return (
+      <div className="flex flex-1 flex-col">
+        <div
+          className="p-2 md:p-10 rounded-tl-2xl border border-neutral-200 dark:border-neutral-700 flex flex-col gap-2 flex-1 w-full h-full bg-[url('/Background.png')]"
+          style={{ backgroundSize: 'cover', backgroundPosition: 'center' }}
+        >
+          <h1 className="lucky-guy text-4xl text-[#29597e] dark:[#29597e]">
+            My Friends
+          </h1>
+          
+          <div className="flex gap-2">
+            <div className="h-20 w-1/2 rounded-lg flex items-center space-x-2">
+              <input
+                id="username"
+                type="email"
+                name="username"
+                placeholder="Enter your friend's email address"
+                value={newFriend}
+                onChange={(e) => setNewFriend(e.target.value)}
+                className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 text-black opacity-70"
+              />
+              <button
+                type="button"
+                onClick={() => handleAddFriend(newFriend)}
+                className="bg-[#29597e] text-white p-0.5 rounded-lg flex-shrink-0 w-auto px-4 flex items-center space-x-2"
+              >
+                <img
+                  src="/icons/AddFriendIcon.svg"
+                  alt="Add Friend"
+                  className="h-10 m-0 w-auto"
+                />
+                <span className="lucky-guy text-2xl text-[#c6e5fc]">Add</span>
+              </button>
+            </div>          
+          </div>
+    
+          <div className="flex gap-2 flex-1">
+            <div className="h-full w-full rounded-lg bg-transparent opacity-75">
+              <FriendsTable friends={friends} />
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
   return (
     <div
       className={cn(
-        "flex flex-col md:flex-row bg-[#1E2D4F] dark:bg-[#1E2D4F] flex-1 max-w-screen mx-auto border border-[#1E2D4F] border-[#1E2D4F] overflow-hidden",
-        "min-h-screen h-auto p-5" // Set the main container to full screen height
+        "flex flex-col md:flex-row bg-[#1E2D4F] dark:bg-[#1E2D4F] flex-1 max-w-screen mx-auto border border-[#1E2D4F] overflow-hidden",
+        "min-h-screen h-auto p-5"
       )}
     >
       <Sidebar open={open} setOpen={setOpen}>
@@ -160,7 +256,7 @@ export default function MyFriends() {
           </div>
         </SidebarBody>
       </Sidebar>
-      <Dashboard friendList={friendList}/>
+      <Dashboard friendList={friendList} />
     </div>
   );
 }
@@ -192,66 +288,3 @@ export const LogoIcon = () => {
       <div className="h-5 w-6 bg-black dark:bg-white rounded-br-lg rounded-tr-sm rounded-tl-lg rounded-bl-sm flex-shrink-0" />
     </Link>
   );
-};
-
-// Dummy dashboard component with content
-const Dashboard = ({friendList}) => {
-  const friends = friendList;
-  
-
-  return (
-    <div className="flex flex-1 flex-col">
-
-      <div
-        className="p-2 md:p-10 rounded-tl-2xl border border-neutral-200 dark:border-neutral-700 flex flex-col gap-2 flex-1 w-full h-full bg-[url('/Background.png')]"
-        style={{ backgroundSize: 'cover', backgroundPosition: 'center' }}
-      >
-        <h1 className="lucky-guy text-4xl text-[#29597e] dark:[#29597e]">
-          My Friends
-        </h1>
-        
-        <div className="flex gap-2">
-
-          {[...new Array(1)].map((_, idx) => (
-            <div
-            key={`first-array-${idx}`} // Use `idx` to generate a unique key
-            className="h-20 w-1/2 rounded-lg flex items-center space-x-2"
-          >
-            
-            <input
-              id="username"
-              type="username"
-              name="username"
-              placeholder="   Enter your friend's email address"
-              className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:box-shadow-[0_0_5px_rgba(81,_203,_238,_1)] text-black opacity-70"
-            />
-            <button
-              type="button"
-              className="bg-[#29597e] text-white p-0.5 rounded-lg flex-shrink-0 w-auto px-4 flex items-center space-x-2"
-            >
-              <img
-                src="/icons/AddFriendIcon.svg"
-                alt="Icon"
-                className="h-10 m-0 w-auto" // Adjust size as needed
-              />
-              <span className="lucky-guy text-2xl text-[#c6e5fc]">Add</span>
-            </button>
-          </div>          
-          ))}
-        </div>
-  
-        <div className="flex gap-2 flex-1">
-          {[...new Array(1)].map((_, idx) => (
-            <div
-              key={`second-array-${idx}`} // Use `idx` to generate a unique key
-              className="h-full w-full rounded-lg bg-transparent opacity-75"
-            >
-              <FriendsTable friends={friends} />
-            </div>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-  
-};
