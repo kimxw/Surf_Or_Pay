@@ -24,12 +24,12 @@ export const SurferProvider = ({ children }) => {
                     querySnapshot.forEach((doc) => {
                       const data = doc.data();
                       taskData.push({
-                        id: doc.id,
-                        friend: data.friend,
-                        desc: data.desc, 
+                        friendUsername: data.friendUsername,
+                        desc: data.desc,
                         credits: data.credits, 
-                        deadline: data.deadline.toDate(),
-                        status: "uncompleted"
+                        deadline: data.deadline, 
+                        completionStatus: data.completionStatus,
+                        verificationStatus: data.verificationStatus
                       });
                     });
                     setTask(taskData);
@@ -45,40 +45,14 @@ export const SurferProvider = ({ children }) => {
         const unsubscribe = fetchTasks();
         return () => unsubscribe && unsubscribe();
     }, [loggedInUser]);
-
-    const handleAddTasks = async (friendEmail, description, credits, deadline) => {
-        const { loggedInUser } = useAuth();
-    
-        try{
-            await addDoc(collection(db, "Surfer"), {
-              email: loggedInUser?.email,
-              friend: friendEmail,
-              desc: description, 
-              credits: credits, 
-              deadline: deadline,
-              status: "uncompleted"
-            });
-        
-            console.log("Task added successfully!");
-        } catch (error) {
-            console.error("Error adding task:", error);
-        }
-    };
     
     const deleteTask = async (taskId) => {
         const taskDoc = doc(db, "Surfer", taskId);
         await deleteDoc(taskDoc);
     };
 
-    const completedTask = async(taskId) => {
-        const taskDoc = doc(db, "Surfer", taskId);
-        await updateDoc(taskDoc, {
-            status: "completed",
-        });
-    }
-
     return (
-        <SurferContext.Provider value={{ task, loading, handleAddTasks, deleteTask, completedTask }}>
+        <SurferContext.Provider value={{ task, loading, deleteTask }}>
           {children}
         </SurferContext.Provider>
       );
