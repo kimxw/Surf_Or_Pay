@@ -193,7 +193,7 @@ export default function MyFriends() {
               type="email"
               name="username"
               placeholder="Enter your friend's email address"
-              // value={newFriend} <-bug
+              value={newFriend}
               onChange={(e) => {
                 console.log("Current newFriend value:", e.target.value); // Log the newFriend value
                 setNewFriend(e.target.value);
