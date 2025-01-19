@@ -9,8 +9,8 @@ import { onSnapshot, doc } from "firebase/firestore"; // Import doc function
 import { db } from "@/app/firebase/configuration";
 import { useAuth } from "@/app/contexts/AuthContext";
 import '@/styles/fonts.css';
-import '@/components/ui/taskCalendar';
-import CalendarComponent from "@/components/ui/taskCalendar";
+// import '@/components/ui/taskCalendar';
+// import CalendarComponent from "@/components/ui/taskCalendar";
 import PinnedSubheaderList from "@/components/ui/pinnedSubheaderList";
 
 export default function MyOcean() {
@@ -215,7 +215,7 @@ const Dashboard = () => {
               key={`second-array-${idx}`} // Use `idx` to generate a unique key
               className="h-20 flex-shrink"
             >
-              <CalendarComponent></CalendarComponent>
+              {/* <CalendarComponent></CalendarComponent> */}
             </div>
           ))}
         </div>
