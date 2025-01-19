@@ -101,7 +101,7 @@ export default function SharkMode() {
                 href: "#",
                 icon: (
                   <Image
-                    src="https://assets.aceternity.com/manu.png"
+                  src="/icons/AddFriendIcon.svg"
                     className="h-7 w-7 flex-shrink-0 rounded-full"
                     width={50}
                     height={50}
@@ -118,48 +118,49 @@ export default function SharkMode() {
   );
 }
 
-export const Logo = () => {
-  return (
-    <Link
-      href="#"
-      className="font-normal flex space-x-5 items-center text-sm text-black py-1 relative z-20"
-    >
-      <div>
-        <Image
-          src="/icons/AppLogo.svg"
-          className="h-18 w-20 flex-shrink-0 rounded-xl"
-          width={50}
-          height={50}
-          alt="Avatar"
-        />
-      </div>
-      <motion.span
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        className="font-medium lucky-guy text-4xl text-[#8ab5d6] dark:[#8ab5d6] whitespace-pre"
-      >
-        Surf or Pay
-      </motion.span>
-    </Link>
-  );
-};
-
-export const LogoIcon = () => {
-  return (
-    <Link
-      href="#"
-      className="font-normal flex space-x-2 items-center text-sm text-white py-1 relative z-20"
-    >
-    <div>
-        <Image
-          src="/icons/AppLogo.svg"
-          className="h-18 w-20 flex-shrink-0 rounded-xl"
-          width={50}
-          height={50}
-          alt="Avatar"
-        />
-      </div>    </Link>
-  );
+export const Logo = () => { 
+  return ( 
+    <Link 
+      href="#" 
+      className="font-normal flex space-x-5 items-center text-sm text-black py-1 relative z-20" 
+    > 
+      <div> 
+        <Image 
+          src="/icons/AppLogo.svg" 
+          className="h-18 w-20 flex-shrink-0 rounded-xl" 
+          width={50} 
+          height={50} 
+          alt="Avatar" 
+        /> 
+      </div> 
+      <motion.span 
+        initial={{ opacity: 0 }} 
+        animate={{ opacity: 1 }} 
+        className="font-medium lucky-guy text-4xl text-[#8ab5d6] dark:[#8ab5d6] whitespace-pre" 
+      > 
+        Surf or Pay 
+      </motion.span> 
+    </Link> 
+  ); 
+}; 
+ 
+export const LogoIcon = () => { 
+  return ( 
+    <Link 
+      href="#" 
+      className="font-normal flex space-x-2 items-center text-sm text-white py-1 relative z-20" 
+    > 
+    <div> 
+        <Image 
+          src="/icons/AppLogo.svg" 
+          className="h-18 w-20 flex-shrink-0 rounded-xl" 
+          width={50} 
+          height={50} 
+          alt="Avatar" 
+        /> 
+      </div>    
+    </Link> 
+  ); 
 };
 
 

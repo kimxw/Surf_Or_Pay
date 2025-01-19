@@ -228,8 +228,8 @@ export default function MyFriends() {
   return (
     <div
       className={cn(
-        "flex flex-col md:flex-row bg-[#1E2D4F] dark:bg-[#1E2D4F] flex-1 max-w-screen mx-auto border border-[#1E2D4F] overflow-hidden",
-        "min-h-screen h-auto p-5"
+        "flex flex-col md:flex-row bg-[#1E2D4F] dark:bg-[#1E2D4F] flex-1 max-w-screen mx-auto border border-[#1E2D4F] dark:border-[#1E2D4F] overflow-hidden",
+        "h-screen p-5" // Set the main container to full screen height
       )}
     >
       <Sidebar open={open} setOpen={setOpen}>
@@ -249,7 +249,7 @@ export default function MyFriends() {
                 href: "#",
                 icon: (
                   <Image
-                    src="https://assets.aceternity.com/manu.png"
+                    src="/icons/AddFriendIcon.svg"
                     className="h-7 w-7 flex-shrink-0 rounded-full"
                     width={50}
                     height={50}
@@ -266,46 +266,47 @@ export default function MyFriends() {
   );
 }
 
-export const Logo = () => {
-  return (
-    <Link
-      href="#"
-      className="font-normal flex space-x-5 items-center text-sm text-black py-1 relative z-20"
-    >
-      <div>
-        <Image
-          src="/icons/AppLogo.svg"
-          className="h-18 w-20 flex-shrink-0 rounded-xl"
-          width={50}
-          height={50}
-          alt="Avatar"
-        />
-      </div>
-      <motion.span
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        className="font-medium lucky-guy text-4xl text-[#8ab5d6] dark:[#8ab5d6] whitespace-pre"
-      >
-        Surf or Pay
-      </motion.span>
-    </Link>
-  );
-};
-
-export const LogoIcon = () => {
-  return (
-    <Link
-      href="#"
-      className="font-normal flex space-x-2 items-center text-sm text-white py-1 relative z-20"
-    >
-    <div>
-        <Image
-          src="/icons/AppLogo.svg"
-          className="h-18 w-20 flex-shrink-0 rounded-xl"
-          width={50}
-          height={50}
-          alt="Avatar"
-        />
-      </div>    </Link>
-  );
+export const Logo = () => { 
+  return ( 
+    <Link 
+      href="#" 
+      className="font-normal flex space-x-5 items-center text-sm text-black py-1 relative z-20" 
+    > 
+      <div> 
+        <Image 
+          src="/icons/AppLogo.svg" 
+          className="h-18 w-20 flex-shrink-0 rounded-xl" 
+          width={50} 
+          height={50} 
+          alt="Avatar" 
+        /> 
+      </div> 
+      <motion.span 
+        initial={{ opacity: 0 }} 
+        animate={{ opacity: 1 }} 
+        className="font-medium lucky-guy text-4xl text-[#8ab5d6] dark:[#8ab5d6] whitespace-pre" 
+      > 
+        Surf or Pay 
+      </motion.span> 
+    </Link> 
+  ); 
+}; 
+ 
+export const LogoIcon = () => { 
+  return ( 
+    <Link 
+      href="#" 
+      className="font-normal flex space-x-2 items-center text-sm text-white py-1 relative z-20" 
+    > 
+    <div> 
+        <Image 
+          src="/icons/AppLogo.svg" 
+          className="h-18 w-20 flex-shrink-0 rounded-xl" 
+          width={50} 
+          height={50} 
+          alt="Avatar" 
+        /> 
+      </div>    
+    </Link> 
+  ); 
 };
