@@ -233,13 +233,15 @@ export default function MyFriends() {
                 type="email"
                 name="username"
                 placeholder="Enter your friend's email address"
-                value={newFriend}
-                onChange={(e) => setNewFriend(e.target.value)}
                 className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 text-black opacity-70"
               />
               <button
                 type="button"
-                onClick={() => handleAddFriend(newFriend)}
+                onClick={() => {
+                  const inputValue = document.getElementById('username').value;
+                  setNewFriend(inputValue);
+                  handleAddFriend(inputValue);
+                }}
                 className="bg-[#29597e] text-white p-0.5 rounded-lg flex-shrink-0 w-auto px-4 flex items-center space-x-2"
               >
                 <img
