@@ -103,10 +103,10 @@ export const SurferProvider = ({ children }) => {
             });
           }
   
-          console.log("Forfeit IDs:", forfeitIds);
-          console.log("Forfeit Data:", forfeits);
-          setForfeit(forfeitIds);
-          setForfeitId(forfeits); 
+          console.log("Forfeit IDs to be set:", forfeitIds);
+          console.log("Forfeits to be set:", forfeits);
+          setForfeit(forfeits);
+          setForfeitId(forfeitIds); 
         });
         
 
