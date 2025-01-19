@@ -173,8 +173,8 @@ export default function SharkMode() {
   return (
     <div
       className={cn(
-        "flex flex-col md:flex-row bg-[#1E2D4F] dark:bg-[#1E2D4F] flex-1 max-w-screen mx-auto border border-[#1E2D4F] overflow-hidden",
-        "min-h-screen h-auto p-5"
+        "flex flex-col md:flex-row bg-[#1E2D4F] dark:bg-[#1E2D4F] flex-1 max-w-screen mx-auto border border-[#1E2D4F] dark:border-[#1E2D4F] overflow-hidden",
+        "h-screen p-5" // Set the main container to full screen height
       )}
     >
       <Sidebar>
