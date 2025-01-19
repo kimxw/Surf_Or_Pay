@@ -10,6 +10,7 @@ export const useSurfer = () => useContext(SurferContext);
 
 export const SurferProvider = ({ children }) => {
   const [task, setTask] = useState([]);
+  const [taskId, setTaskId] = useState([]);
   const [friends, setFriends] = useState([]);
   const [loading, setLoading] = useState(true);
   const { loggedInUser } = useAuth();
@@ -36,21 +37,17 @@ export const SurferProvider = ({ children }) => {
         // Subscribe to task updates
         const unsubscribeTasks = onSnapshot(taskQuery, async (querySnapshot) => {
           const taskData = [];
+          const taskIds = querySnapshot.docs.map((docSnapshot) => docSnapshot.id);
           for (const docSnapshot of querySnapshot.docs) {
             const data = docSnapshot.data();
             const friendEmail = data.friendUsername;
-        
-            // Create a document reference
             const userDocRef = doc(db, "Users", friendEmail);
-        
-            // Fetch the document data asynchronously
             try {
               const userDoc = await getDoc(userDocRef);
         
               if (userDoc.exists()) {
                 const userData = userDoc.data();
                 const name = userData.username;
-        
                 taskData.push({
                   friendUsername: name,
                   desc: data.desc,
@@ -66,8 +63,11 @@ export const SurferProvider = ({ children }) => {
               console.error(`Error fetching user document for email: ${friendEmail}`, error);
             }
           }
-        
-          // Update state with fetched task data
+          
+          console.log("Task IDs:", taskIds);
+          console.log("Task Data:", taskData);
+
+          setTaskId(taskIds)
           setTask(taskData);
         });
         
@@ -92,8 +92,13 @@ export const SurferProvider = ({ children }) => {
     await deleteDoc(taskDoc);
   };
 
+  const completed = async (taskId) => {
+    const taskDoc = doc(db, "Surfer", taskId);
+    await updateDoc(taskDoc, { completionStatus: "Completed", verificationStatus: "Pending"});
+  };
+
   return (
-    <SurferContext.Provider value={{ task, friends, loading, deleteTask }}>
+    <SurferContext.Provider value={{ task, friends, loading, deleteTask, completed, taskId }}>
       {children}
     </SurferContext.Provider>
   );

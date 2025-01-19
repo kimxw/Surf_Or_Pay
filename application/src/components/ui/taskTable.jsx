@@ -1,5 +1,8 @@
 "use client";
 
+import React from "react";
+import { useSurfer } from "@/app/contexts/SurferContext";
+
 // Inline CSS for card styles
 const cardStyles = `
   .card {
@@ -45,12 +48,7 @@ const cardStyles = `
 `;
 
 const TaskTable = ({ tasks }) => {
-  const handleVerify = (index) => {
-    const updatedTasks = [...tasks];
-    updatedTasks[index].verificationStatus = "verified";
-    // Assuming you have a setState function to update the tasks list
-    // setTasks(updatedTasks);
-  };
+  const { deleteTask, completed, taskId } = useSurfer();
 
   return (
     <div>
@@ -78,30 +76,29 @@ const TaskTable = ({ tasks }) => {
             <div className="card-section">{task.deadline}</div>
             <div className="card-section">{task.completionStatus}</div>
             <div className="card-section">
-            {task.completionStatus === "Complete" && task.verificationStatus == 'Verified' ? (
+            {(task.completionStatus === "Complete" && task.verificationStatus === "Verified") ? (
               <button
                 disabled
                 className="bg-[#6bb266] text-[#e8ffe7] py-1 px-4 rounded-lg"
               >
                 Verified
               </button>
-            ) : task.completionStatus === "Complete" && task.verificationStatus == 'Pending' ? (
+            ) : (task.verificationStatus === "Pending") ? (
               <button
                 disabled
                 className="bg-[#fed45f] text-[#936d21] py-1 px-3.5 rounded-lg"
               >
                 Pending
               </button>
-            ) : task.completionStatus === "Incomplete" ? (
+            ) : (task.completionStatus === "Incomplete") ? (
               <button
-                onClick={() => handleVerify(index)}
+                onClick={() => completed(taskId[index])}
                 className="bg-[#29597e] text-white py-1 px-5 rounded-lg"
               >
                 Submit
               </button>
-            ) : task.completionStatus === "Overdue" ? (
+            ) : (task.completionStatus === "Overdue" )? (
               <button
-                onClick={() => handleVerify(index)}
               >
                 <img
                   src="/icons/OMPMIcon.svg"
@@ -111,7 +108,7 @@ const TaskTable = ({ tasks }) => {
               </button>
             ) : (
               <button
-                onClick={() => handleVerify(index)}
+                disabled
                 className="bg-[#7b7b7b] text-gray-700 py-1 px-5 rounded-lg"
               >
                 Unknown
@@ -121,6 +118,7 @@ const TaskTable = ({ tasks }) => {
             <div className="card-section">
             {task.verificationStatus === "Verified" ? (
             <button
+              onClick = {() => deleteTask(taskId[index])}
               className="p-2 rounded-lg flex items-center justify-center pt-0"
               style={{ width: "40px", height: "40px" }} // Adjust size to match icon size
             >

@@ -52,11 +52,6 @@ export default function SurferMode() {
 
   const handleAddTasks = async () => {
     try {
-      const isFriend = friends.some(friend => friend.email === sharkEmail);
-      if (!isFriend) {
-        throw new Error("The specified friend is not in your friends list.");
-      }
-      
       await addDoc(collection(db, "Surfer"), {
         email: loggedInUser?.email,
         friendUsername: sharkEmail,
@@ -84,7 +79,7 @@ export default function SurferMode() {
   const handleCancelClick = () => {
     setIsModalOpen(false);
     setTaskDescription("");
-    setShark("");
+    setSharkEmail("");
     setForfeit("");
     setDeadline("");
   };
