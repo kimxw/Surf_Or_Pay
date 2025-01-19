@@ -135,6 +135,21 @@ export default function MyFriends() {
 
   const links = [
     {
+      label: "Surf or Pay",
+      bgcolour: "transparent",
+      textcolour: "#8ab5d6",
+      href: "#",
+      icon: (
+        <Image
+          src="/icons/AppLogo.svg"
+          className="h-18 w-20 flex-shrink-0 rounded-xl"
+          width={50}
+          height={50}
+          alt="Avatar"
+        />
+      ),
+    },
+    {
       label: "My Ocean",
       bgcolour: "#68c5c0",
       textcolour: "#357b78",
@@ -257,7 +272,6 @@ export default function MyFriends() {
       <Sidebar open={open} setOpen={setOpen}>
         <SidebarBody className="justify-between gap-10">
           <div className="flex flex-col flex-1 overflow-y-auto overflow-x-hidden">
-            {open ? <Logo /> : <LogoIcon />}
             <div className="mt-8 flex flex-col gap-2">
               {links.map((link, idx) => (
                 <SidebarLink key={idx} link={link} />
@@ -285,34 +299,5 @@ export default function MyFriends() {
       </Sidebar>
       <Dashboard friendList={friendList} />
     </div>
-  );
-}
-
-export const Logo = () => {
-  return (
-    <Link
-      href="#"
-      className="font-normal flex space-x-5 items-center text-sm text-black py-1 relative z-20"
-    >
-      <div className="h-5 w-6 bg-black dark:bg-white rounded-br-lg rounded-tr-sm rounded-tl-lg rounded-bl-sm flex-shrink-0" />
-      <motion.span
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        className="font-medium lucky-guy text-4xl text-[#8ab5d6] dark:[#8ab5d6] whitespace-pre"
-      >
-        Surf or Pay
-      </motion.span>
-    </Link>
-  );
-};
-
-export const LogoIcon = () => {
-  return (
-    <Link
-      href="#"
-      className="font-normal flex space-x-2 items-center text-sm text-black py-1 relative z-20"
-    >
-      <div className="h-5 w-6 bg-black dark:bg-white rounded-br-lg rounded-tr-sm rounded-tl-lg rounded-bl-sm flex-shrink-0" />
-    </Link>
   );
 }
