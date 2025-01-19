@@ -9,7 +9,7 @@
 // import { format } from 'date-fns'; // Import date-fns for formatting
 
 // // TaskDisplay component to show task details
-// function TaskDisplay({ task }) {
+// function TaskDisplay({ task }) { 
 //   // Format the deadline for "Next Week" tasks to show date and time
 //   const isNextWeek = task.deadline > new Date() && task.deadline <= new Date().setDate(new Date().getDate() + 7);
 
