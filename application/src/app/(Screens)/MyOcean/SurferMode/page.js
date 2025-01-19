@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import { Sidebar, SidebarBody, SidebarLink } from "@/components/ui/sidebar";
-import { addDoc, collection } from "firebase/firestore";
+import { collection, query, where, onSnapshot, updateDoc, deleteDoc, doc, orderBy, getDoc, getDocs, addDoc } from "firebase/firestore";
 import TaskTable from "@/components/ui/taskTable";
 import Link from "next/link";
 import { motion } from "framer-motion";
@@ -14,19 +14,24 @@ import { db } from "@/app/firebase/configuration";
 
 export default function SurferMode() {
   const { loggedInUser } = useAuth();
-  const { task, loading } = useSurfer();
+  const { task, loading, friends } = useSurfer();
 
   const [taskDescription, setTaskDescription] = useState("");
-  const [shark, setShark] = useState("");
+  const [sharkEmail, setSharkEmail] = useState("");
   const [forfeit, setForfeit] = useState("");
   const [deadline, setDeadline] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleAddTasks = async () => {
     try {
+      const isFriend = friends.some(friend => friend.email === sharkEmail);
+      if (!isFriend) {
+        throw new Error("The specified friend is not in your friends list.");
+      }
+      
       await addDoc(collection(db, "Surfer"), {
         email: loggedInUser?.email,
-        friendUsername: shark,
+        friendUsername: sharkEmail,
         desc: taskDescription,
         credits: parseFloat(forfeit),
         deadline: deadline,
@@ -35,7 +40,7 @@ export default function SurferMode() {
       });
       console.log("Task added successfully!");
       setTaskDescription("");
-      setShark("");
+      setSharkEmail("");
       setForfeit("");
       setDeadline("");
       setIsModalOpen(false);
@@ -55,6 +60,8 @@ export default function SurferMode() {
     setForfeit("");
     setDeadline("");
   };
+
+
 
   const links = [
     {
@@ -190,9 +197,9 @@ export default function SurferMode() {
                   id="shark"
                   type="text"
                   name="shark"
-                  value={shark}
-                  onChange={(e) => setShark(e.target.value)}
-                  placeholder="Shark"
+                  value={sharkEmail}
+                  onChange={(e) => setSharkEmail(e.target.value)}
+                  placeholder="SharkEmail"
                   className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-black"
                 />
                 <input
