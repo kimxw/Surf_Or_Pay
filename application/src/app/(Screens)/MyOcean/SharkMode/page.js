@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Sidebar, SidebarBody, SidebarLink } from "@/components/ui/sidebar";
 import { collection, query, where, onSnapshot, updateDoc, deleteDoc, doc, orderBy, getDoc, getDocs, addDoc } from "firebase/firestore";
 import ForfeitTable from "@/components/ui/forfeitTable";
@@ -14,13 +14,42 @@ import { db } from "@/app/firebase/configuration";
 
 export default function SharkMode() {
   const { loggedInUser } = useAuth();
-  const { task, loading, friends } = useSurfer();
+  const { task, friends } = useSurfer();
+  const [loading, setLoading] = useState(true);
+  const [username, setUsername] = useState('');
 
   const [taskDescription, setTaskDescription] = useState("");
   const [sharkEmail, setSharkEmail] = useState("");
   const [forfeit, setForfeit] = useState("");
   const [deadline, setDeadline] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  useEffect(() => {
+    if (!loggedInUser?.email) {
+      setLoading(false);
+      return;
+    }
+
+    const unsubscribe = onSnapshot(
+      doc(db, "Users", loggedInUser?.email),
+      (doc) => {
+        if (doc.exists()) {
+          setUsername(doc.data()?.username || "User");
+        } else {
+          setUsername("User");
+        }
+        setLoading(false);
+      },
+      (error) => {
+        console.error("Error fetching username:", error);
+        setUsername("User");
+        setLoading(false);
+      }
+    );
+
+    return unsubscribe;
+  }, [loggedInUser]);
+
 
   const handleAddTasks = async () => {
     try {
@@ -173,8 +202,8 @@ export default function SharkMode() {
   return (
     <div
       className={cn(
-        "flex flex-col md:flex-row bg-[#1E2D4F] dark:bg-[#1E2D4F] flex-1 max-w-screen mx-auto border border-[#1E2D4F] overflow-hidden",
-        "min-h-screen h-auto p-5"
+        "flex flex-col md:flex-row bg-[#1E2D4F] dark:bg-[#1E2D4F] flex-1 max-w-screen mx-auto border border-[#1E2D4F] dark:border-[#1E2D4F] overflow-hidden",
+        "h-screen p-5" // Set the main container to full screen height
       )}
     >
       <Sidebar>
@@ -186,6 +215,23 @@ export default function SharkMode() {
                 <SidebarLink key={idx} link={link} />
               ))}
             </div>
+          </div>
+          <div>
+            <SidebarLink
+              link={{
+                label: username,
+                href: "#",
+                icon: (
+                  <Image
+                  src="/icons/AddFriendIcon.svg"
+                    className="h-7 w-7 flex-shrink-0 rounded-full"
+                    width={50}
+                    height={50}
+                    alt="Avatar"
+                  />
+                ),
+              }}
+            />
           </div>
         </SidebarBody>
       </Sidebar>
@@ -277,26 +323,76 @@ export default function SharkMode() {
   );
 }
 
-export const Logo = () => (
-  <Link href="#" className="font-normal flex space-x-5 items-center text-sm py-1">
-    <div className="h-5 w-6 bg-black rounded-lg flex-shrink-0" />
-    <motion.span
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      className="font-medium lucky-guy text-4xl text-[#8ab5d6]"
-    >
-      Surf or Pay
-    </motion.span>
-  </Link>
-);
+export const Logo = () => { 
+  return ( 
+    <Link 
+      href="#" 
+      className="font-normal flex space-x-5 items-center text-sm text-black py-1 relative z-20" 
+    > 
+      <div> 
+        <Image 
+          src="/icons/AppLogo.svg" 
+          className="h-18 w-20 flex-shrink-0 rounded-xl" 
+          width={50} 
+          height={50} 
+          alt="Avatar" 
+        /> 
+      </div> 
+      <motion.span 
+        initial={{ opacity: 0 }} 
+        animate={{ opacity: 1 }} 
+        className="font-medium lucky-guy text-4xl text-[#8ab5d6] dark:[#8ab5d6] whitespace-pre" 
+      > 
+        Surf or Pay 
+      </motion.span> 
+    </Link> 
+  ); 
+}; 
+ 
+export const LogoIcon = () => { 
+  return ( 
+    <Link 
+      href="#" 
+      className="font-normal flex space-x-2 items-center text-sm text-white py-1 relative z-20" 
+    > 
+    <div> 
+        <Image 
+          src="/icons/AppLogo.svg" 
+          className="h-18 w-20 flex-shrink-0 rounded-xl" 
+          width={50} 
+          height={50} 
+          alt="Avatar" 
+        /> 
+      </div>    
+    </Link> 
+  ); 
+};
 
-export const LogoIcon = () => {
+
+// Dummy dashboard component with content
+const Dashboard = () => {
   return (
-    <Link
-      href="#"
-      className="font-normal flex space-x-2 items-center text-sm text-black py-1 relative z-20"
-    >
-      <div className="h-5 w-6 bg-black dark:bg-white rounded-br-lg rounded-tr-sm rounded-tl-lg rounded-bl-sm flex-shrink-0" />
-    </Link>
+    <div className="flex flex-1 flex-col">
+    <div className="p-2 md:p-10 rounded-tl-2xl border border-neutral-200 dark:border-neutral-700 flex flex-col gap-2 flex-1 w-full h-full bg-[url('/Background.png')]"
+        style={{ backgroundSize: 'cover', backgroundPosition: 'center' }}>
+      <div className="flex gap-2">
+          {[...new Array(4)].map((_, idx) => (
+            <div
+              key={`first-array-${idx}`} // Use `idx` to generate a unique key
+              className="h-20 w-full rounded-lg bg-gray-100 opacity-40"
+            ></div>
+          ))}
+        </div>
+        <div className="flex gap-2 flex-1">
+          {[...new Array(2)].map((_, idx) => (
+            <div
+              key={`second-array-${idx}`} // Use `idx` to generate a unique key
+              className="h-full w-full rounded-lg bg-gray-100 opacity-40"
+            ></div>
+          ))}
+        </div>
+    </div>
+
+    </div>
   );
 };

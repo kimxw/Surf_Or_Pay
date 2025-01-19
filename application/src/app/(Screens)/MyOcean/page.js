@@ -130,7 +130,7 @@ export default function MyOcean() {
                 href: "#",
                 icon: (
                   <Image
-                    src="/icons/PeopleIcon.svg"
+                  src="/icons/AddFriendIcon.svg"
                     className="h-7 w-7 flex-shrink-0 rounded-full"
                     width={50}
                     height={50}
