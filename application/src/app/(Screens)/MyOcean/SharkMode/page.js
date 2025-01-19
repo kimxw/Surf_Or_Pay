@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Sidebar, SidebarBody, SidebarLink } from "@/components/ui/sidebar";
 import { collection, query, where, onSnapshot, updateDoc, deleteDoc, doc, orderBy, getDoc, getDocs, addDoc } from "firebase/firestore";
 import ForfeitTable from "@/components/ui/forfeitTable";
@@ -14,13 +14,42 @@ import { db } from "@/app/firebase/configuration";
 
 export default function SharkMode() {
   const { loggedInUser } = useAuth();
-  const { task, loading, friends } = useSurfer();
+  const { task, friends } = useSurfer();
+  const [loading, setLoading] = useState(true);
+  const [username, setUsername] = useState('');
 
   const [taskDescription, setTaskDescription] = useState("");
   const [sharkEmail, setSharkEmail] = useState("");
   const [forfeit, setForfeit] = useState("");
   const [deadline, setDeadline] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  useEffect(() => {
+    if (!loggedInUser?.email) {
+      setLoading(false);
+      return;
+    }
+
+    const unsubscribe = onSnapshot(
+      doc(db, "Users", loggedInUser?.email),
+      (doc) => {
+        if (doc.exists()) {
+          setUsername(doc.data()?.username || "User");
+        } else {
+          setUsername("User");
+        }
+        setLoading(false);
+      },
+      (error) => {
+        console.error("Error fetching username:", error);
+        setUsername("User");
+        setLoading(false);
+      }
+    );
+
+    return unsubscribe;
+  }, [loggedInUser]);
+
 
   const handleAddTasks = async () => {
     try {
@@ -190,7 +219,7 @@ export default function SharkMode() {
           <div>
             <SidebarLink
               link={{
-                label: "Manu Arora",
+                label: username,
                 href: "#",
                 icon: (
                   <Image

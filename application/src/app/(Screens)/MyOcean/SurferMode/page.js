@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Sidebar, SidebarBody, SidebarLink } from "@/components/ui/sidebar";
 import { collection, query, where, onSnapshot, updateDoc, deleteDoc, doc, orderBy, getDoc, getDocs, addDoc } from "firebase/firestore";
 import TaskTable from "@/components/ui/taskTable";
@@ -14,7 +14,8 @@ import { db } from "@/app/firebase/configuration";
 
 export default function SurferMode() {
   const { loggedInUser } = useAuth();
-  const { task, loading, friends } = useSurfer();
+  const { task, friends } = useSurfer();
+  const [loading, setLoading] = useState(true);
   const [username, setUsername] = useState('');
 
   const [taskDescription, setTaskDescription] = useState("");
@@ -22,6 +23,32 @@ export default function SurferMode() {
   const [forfeit, setForfeit] = useState("");
   const [deadline, setDeadline] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  useEffect(() => {
+    if (!loggedInUser?.email) {
+      setLoading(false);
+      return;
+    }
+
+    const unsubscribe = onSnapshot(
+      doc(db, "Users", loggedInUser?.email),
+      (doc) => {
+        if (doc.exists()) {
+          setUsername(doc.data()?.username || "User");
+        } else {
+          setUsername("User");
+        }
+        setLoading(false);
+      },
+      (error) => {
+        console.error("Error fetching username:", error);
+        setUsername("User");
+        setLoading(false);
+      }
+    );
+
+    return unsubscribe;
+  }, [loggedInUser]);
 
   const handleAddTasks = async () => {
     try {
@@ -151,7 +178,7 @@ export default function SurferMode() {
                 href: "#",
                 icon: (
                   <Image
-                    src="/icons/PeopleIcon.svg"
+                    src="/icons/AddFriendIcon.svg"
                     className="h-7 w-7 flex-shrink-0 rounded-full"
                     width={50}
                     height={50}

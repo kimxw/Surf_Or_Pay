@@ -21,6 +21,33 @@ export default function MyFriends() {
   const [username, setUsername] = useState('');
   const [loading, setLoading] = useState(true);
 
+  useEffect(() => {
+    if (!loggedInUser?.email) {
+      setLoading(false);
+      return;
+    }
+
+    const unsubscribe = onSnapshot(
+      doc(db, "Users", loggedInUser?.email),
+      (doc) => {
+        if (doc.exists()) {
+          setUsername(doc.data()?.username || "User");
+        } else {
+          setUsername("User");
+        }
+        setLoading(false);
+      },
+      (error) => {
+        console.error("Error fetching username:", error);
+        setUsername("User");
+        setLoading(false);
+      }
+    );
+
+    return unsubscribe;
+  }, [loggedInUser]);
+
+
   const handleAddFriend = async (friendEmail) => {
     if (!loggedInUser?.email) return;
 
@@ -245,7 +272,7 @@ export default function MyFriends() {
           <div>
             <SidebarLink
               link={{
-                label: "Manu Arora",
+                label: username,
                 href: "#",
                 icon: (
                   <Image
