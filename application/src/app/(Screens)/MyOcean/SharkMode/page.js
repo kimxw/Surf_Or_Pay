@@ -14,14 +14,9 @@ import { db } from "@/app/firebase/configuration";
 
 export default function SharkMode() {
   const { loggedInUser } = useAuth();
-  const { task, friends } = useSurfer();
+  const { forfeit, forfeitId } = useSurfer();
   const [loading, setLoading] = useState(true);
   const [username, setUsername] = useState('');
-
-  const [taskDescription, setTaskDescription] = useState("");
-  const [sharkEmail, setSharkEmail] = useState("");
-  const [forfeit, setForfeit] = useState("");
-  const [deadline, setDeadline] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
@@ -50,34 +45,6 @@ export default function SharkMode() {
     return unsubscribe;
   }, [loggedInUser]);
 
-
-  const handleAddTasks = async () => {
-    try {
-      const isFriend = friends.some(friend => friend.email === sharkEmail);
-      if (!isFriend) {
-        throw new Error("The specified friend is not in your friends list.");
-      }
-      
-      await addDoc(collection(db, "Surfer"), {
-        email: loggedInUser?.email,
-        friendUsername: sharkEmail,
-        desc: taskDescription,
-        credits: parseFloat(forfeit),
-        deadline: deadline,
-        completionStatus: "Incomplete",
-        verificationStatus: "Submit",
-      });
-      console.log("Task added successfully!");
-      setTaskDescription("");
-      setSharkEmail("");
-      setForfeit("");
-      setDeadline("");
-      setIsModalOpen(false);
-    } catch (error) {
-      console.error("Error adding task:", error);
-    }
-  };
-
   const handleAddClick = () => {
     setIsModalOpen(true);
   };
@@ -85,12 +52,10 @@ export default function SharkMode() {
   const handleCancelClick = () => {
     setIsModalOpen(false);
     setTaskDescription("");
-    setShark("");
+    setSharkEmail("");
     setForfeit("");
     setDeadline("");
   };
-
-
 
   const links = [
     {
@@ -155,48 +120,7 @@ export default function SharkMode() {
     },
   ];
 
-  const forfeits = [
-    {
-      friendUsername: "Alice Tan",
-      desc: "Complete report on market trends.",
-      credits: "$5.00",
-      deadline: "2025-01-25",
-      completionStatus: "Incomplete",
-      verificationStatus: "Submit",
-    },
-    {
-      friendUsername: "Bob Builder",
-      desc: "Prepare presentation for client meeting.",
-      credits: "$3.00",
-      deadline: "2025-01-20",
-      completionStatus: "Overdue",
-      verificationStatus: "Submit",
-    },
-    {
-      friendUsername: "David Hsu",
-      desc: "Review code for the latest features.",
-      credits: "$2.00",
-      deadline: "2025-01-30",
-      completionStatus: "Complete",
-      verificationStatus: "Pending",
-    },
-    {
-      friendUsername: "Eve Well",
-      desc: "Organize team lunch event.",
-      credits: "$1.00",
-      deadline: "2025-01-23",
-      completionStatus: "Complete",
-      verificationStatus: "Verified",
-    },
-    {
-      friendUsername: "Charlie Chan",
-      desc: "Update the project roadmap.",
-      credits: "$4.00",
-      deadline: "2025-01-22",
-      completionStatus: "Complete",
-      verificationStatus: "Verified",
-    },
-  ];
+  const forfeits = forfeit;
 
 
   return (

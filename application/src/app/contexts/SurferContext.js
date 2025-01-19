@@ -12,6 +12,8 @@ export const SurferProvider = ({ children }) => {
   const [task, setTask] = useState([]);
   const [taskId, setTaskId] = useState([]);
   const [friends, setFriends] = useState([]);
+  const [forfeit, setForfeit] = useState([]);
+  const [forfeitId, setForfeitId] = useState([]);
   const [loading, setLoading] = useState(true);
   const { loggedInUser } = useAuth();
 
@@ -23,33 +25,40 @@ export const SurferProvider = ({ children }) => {
         // Query tasks
         const taskQuery = query(
           collection(db, "Surfer"),
-          where("email", "==", loggedInUser.email),
+          where("email", "==", loggedInUser?.email),
           orderBy("deadline", "asc")
         );
 
         // Query friends
         const friendsQuery = query(
           collection(db, "friends"),
-          where("email", "==", loggedInUser.email),
+          where("email", "==", loggedInUser?.email),
           orderBy("friend", "asc")
         );
 
-        // Subscribe to task updates
+        const sharkQuery = query(
+          collection(db, "Surfer"),
+          where("friendUsername", "==", loggedInUser?.email),
+          orderBy("deadline", "asc")
+        );
+
         const unsubscribeTasks = onSnapshot(taskQuery, async (querySnapshot) => {
-          const taskData = [];
-          const taskIds = querySnapshot.docs.map((docSnapshot) => docSnapshot.id);
+          const tasks = [];
+          const taskIds = [];
+  
           for (const docSnapshot of querySnapshot.docs) {
             const data = docSnapshot.data();
+            taskIds.push(docSnapshot.id);
+  
+            // Fetch friend details
             const friendEmail = data.friendUsername;
             const userDocRef = doc(db, "Users", friendEmail);
             try {
               const userDoc = await getDoc(userDocRef);
-        
               if (userDoc.exists()) {
                 const userData = userDoc.data();
-                const name = userData.username;
-                taskData.push({
-                  friendUsername: name,
+                tasks.push({
+                  friendUsername: userData.username,
                   desc: data.desc,
                   credits: data.credits,
                   deadline: data.deadline,
@@ -63,12 +72,41 @@ export const SurferProvider = ({ children }) => {
               console.error(`Error fetching user document for email: ${friendEmail}`, error);
             }
           }
-          
+  
           console.log("Task IDs:", taskIds);
-          console.log("Task Data:", taskData);
+          console.log("Task Data:", tasks);
+          setTaskId(taskIds);
+          setTask(tasks);
+        });
+               
 
-          setTaskId(taskIds)
-          setTask(taskData);
+        const unsubscribeFriends = onSnapshot(friendsQuery, (querySnapshot) => {
+          const friendsList = querySnapshot.docs.map((doc) => doc.data().friend);
+          setFriends(friendsList);
+          console.log("Friends List:", friendsList);
+        });
+
+        const unsubscribeForfeits = onSnapshot(sharkQuery, async (querySnapshot) => {
+          const forfeits = [];
+          const forfeitIds = [];
+  
+          for (const docSnapshot of querySnapshot.docs) {
+            const data = docSnapshot.data();
+            forfeitIds.push(docSnapshot.id);
+            forfeits.push({
+              friendUsername: data.email,
+              desc: data.desc,
+              credits: data.credits,
+              deadline: data.deadline,
+              completionStatus: data.completionStatus,
+              verificationStatus: data.verificationStatus,
+            });
+          }
+  
+          console.log("Forfeit IDs:", forfeitIds);
+          console.log("Forfeit Data:", forfeits);
+          setForfeit(forfeitIds);
+          setForfeitId(forfeits); 
         });
         
 
@@ -77,6 +115,7 @@ export const SurferProvider = ({ children }) => {
         return () => {
           unsubscribeTasks();
           unsubscribeFriends();
+          unsubscribeForfeits();
         };
       } catch (error) {
         console.error("Error fetching tasks or friends:", error);
@@ -98,7 +137,7 @@ export const SurferProvider = ({ children }) => {
   };
 
   return (
-    <SurferContext.Provider value={{ task, friends, loading, deleteTask, completed, taskId }}>
+    <SurferContext.Provider value={{ task, friends, loading, deleteTask, completed, taskId, forfeit, forfeitId }}>
       {children}
     </SurferContext.Provider>
   );
