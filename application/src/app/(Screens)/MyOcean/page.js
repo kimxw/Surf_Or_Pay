@@ -1,44 +1,47 @@
-"use client"; 
-import React, { useState, useEffect } from "react"; 
-import { Sidebar, SidebarBody, SidebarLink } from "@/components/ui/sidebar"; 
-import Link from "next/link"; 
-import { motion } from "framer-motion"; 
-import Image from "next/image"; 
-import { cn } from "@/lib/utils"; 
-import { onSnapshot, doc } from "firebase/firestore"; // Import doc function 
-import { db } from "@/app/firebase/configuration"; 
-import { useAuth } from "@/app/contexts/AuthContext"; 
-import '@/styles/fonts.css'; 
-import '@/components/ui/taskCalendar'; 
-import CalendarComponent from "@/components/ui/taskCalendar"; 
- 
-export default function MyOcean() { 
-  const { loggedInUser } = useAuth(); 
-  const [username, setUsername] = useState(''); 
-  const [loading, setLoading] = useState(true);  // Add loading state 
- 
-  useEffect(() => { 
-    if (!loggedInUser?.email) return; 
- 
-    const unsubscribe = onSnapshot( 
-      doc(db, "Users", loggedInUser?.email), 
-      (doc) => { 
-        if (doc.exists()) { 
-          const userData = doc.data(); 
-          setUsername(userData?.username); 
-        } 
-        setLoading(false); 
-      }, 
-      (error) => { 
-        console.error("Error fetching username:", error); 
-        setUsername("sleep time"); 
-        setLoading(false); 
-      } 
-    ); 
- 
-    return unsubscribe; 
-  }, [loggedInUser]); 
- 
+"use client";
+import React, { useState, useEffect } from "react";
+import { Sidebar, SidebarBody, SidebarLink } from "@/components/ui/sidebar";
+import Link from "next/link";
+import { motion } from "framer-motion";
+import Image from "next/image";
+import { cn } from "@/lib/utils";
+import { onSnapshot, doc } from "firebase/firestore";
+import { db } from "@/app/firebase/configuration";
+import { useAuth } from "@/app/contexts/AuthContext";
+import '@/styles/fonts.css';
+
+export default function MyOcean() {
+  const { loggedInUser } = useAuth();
+  const [username, setUsername] = useState('');
+  const [loading, setLoading] = useState(true);
+  const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    if (!loggedInUser?.email) {
+      setLoading(false);
+      return;
+    }
+
+    const unsubscribe = onSnapshot(
+      doc(db, "Users", loggedInUser?.email),
+      (doc) => {
+        if (doc.exists()) {
+          setUsername(doc.data()?.username || "User");
+        } else {
+          setUsername("User");
+        }
+        setLoading(false);
+      },
+      (error) => {
+        console.error("Error fetching username:", error);
+        setUsername("User");
+        setLoading(false);
+      }
+    );
+
+    return unsubscribe;
+  }, [loggedInUser]);
+
   const links = [ 
     { 
       label: "My Ocean", 
@@ -100,49 +103,51 @@ export default function MyOcean() {
         /> 
       ), 
     }, 
-  ]; 
-  const [open, setOpen] = useState(false); 
-  return ( 
-    <div 
-      className={cn( 
-        "flex flex-col md:flex-row main-purplish-blue-background flex-1 max-w-screen mx-auto border border-[#1E2D4F] border-[#1E2D4F] overflow-hidden", 
-        "h-screen p-5" // Set the main container to full screen height 
-      )} 
-    > 
-      <Sidebar open={open} setOpen={setOpen}> 
-        <SidebarBody className="justify-between gap-10"> 
-          <div className="flex flex-col flex-1 overflow-y-auto overflow-x-hidden"> 
-            {open ? <Logo /> : <LogoIcon />} 
-            <div className="mt-8 flex flex-col gap-2"> 
-              {links.map((link, idx) => ( 
-                <SidebarLink key={idx} link={link} /> 
-              ))} 
-            </div> 
-          </div> 
-          <div> 
-            <SidebarLink 
-              link={{ 
-                label: username, 
-                href: "#", 
-                icon: ( 
-                  <Image 
-                    src="https://assets.aceternity.com/manu.png" 
-                    className="h-7 w-7 flex-shrink-0 rounded-full" 
-                    width={50} 
-                    height={50} 
-                    alt="Avatar" 
-                  /> 
-                ), 
-              }} 
-            /> 
+  ];
+
+
+  return (
+    <div
+      className={cn(
+        "flex flex-col md:flex-row main-purplish-blue-background flex-1 max-w-screen mx-auto border border-[#1E2D4F] overflow-hidden",
+        "h-screen p-5"
+      )}
+    >
+      <Sidebar open={open} setOpen={setOpen}>
+        <SidebarBody className="justify-between gap-10">
+          <div className="flex flex-col flex-1 overflow-y-auto overflow-x-hidden">
+            {open ? <Logo /> : <LogoIcon />}
+            <div className="mt-8 flex flex-col gap-2">
+              {links.map((link, idx) => (
+                <SidebarLink key={idx} link={link} />
+              ))}
+            </div>
           </div>
-          </SidebarBody> 
-      </Sidebar> 
-      <Dashboard /> 
-    </div> 
-  ); 
-} 
- 
+          <div>
+            <SidebarLink
+              link={{
+                label: username,
+                href: "#",
+                icon: (
+                  <Image
+                    src="/icons/PeopleIcon.svg"
+                    className="h-7 w-7 flex-shrink-0 rounded-full"
+                    width={50}
+                    height={50}
+                    alt="Avatar"
+                  />
+                ),
+              }}
+            />
+          </div>
+        </SidebarBody>
+      </Sidebar>
+      <Dashboard />
+    </div>
+  );
+}
+
+
 export const Logo = () => { 
   return ( 
     <Link 
@@ -183,11 +188,11 @@ export const LogoIcon = () => {
           height={50} 
           alt="Avatar" 
         /> 
-      </div>    </Link> 
+      </div>    
+    </Link> 
   ); 
-}; 
- 
-// Dummy dashboard component with content 
+};
+
 const Dashboard = () => { 
   return ( 
     <div className="flex flex-1 flex-col"> 
@@ -209,10 +214,10 @@ const Dashboard = () => {
           {/* Right component */} 
           {[...new Array(1)].map((_, idx) => ( 
             <div 
-              key={`second-array-${idx}`} // Use idx to generate a unique key 
+              key={`second-array-${idx}`} // Use `idx` to generate a unique key 
               className="h-20 flex-shrink" 
             > 
-              <CalendarComponent></CalendarComponent> 
+              {/* <CalendarComponent></CalendarComponent>  */}
             </div> 
           ))} 
         </div> 
@@ -221,3 +226,4 @@ const Dashboard = () => {
     </div> 
   ); 
 };
+
