@@ -21,6 +21,33 @@ export default function MyFriends() {
   const [username, setUsername] = useState('');
   const [loading, setLoading] = useState(true);
 
+  useEffect(() => {
+    if (!loggedInUser?.email) {
+      setLoading(false);
+      return;
+    }
+
+    const unsubscribe = onSnapshot(
+      doc(db, "Users", loggedInUser?.email),
+      (doc) => {
+        if (doc.exists()) {
+          setUsername(doc.data()?.username || "User");
+        } else {
+          setUsername("User");
+        }
+        setLoading(false);
+      },
+      (error) => {
+        console.error("Error fetching username:", error);
+        setUsername("User");
+        setLoading(false);
+      }
+    );
+
+    return unsubscribe;
+  }, [loggedInUser]);
+
+
   const handleAddFriend = async (friendEmail) => {
     if (!loggedInUser?.email) return;
 
@@ -223,8 +250,8 @@ export default function MyFriends() {
   return (
     <div
       className={cn(
-        "flex flex-col md:flex-row bg-[#1E2D4F] dark:bg-[#1E2D4F] flex-1 max-w-screen mx-auto border border-[#1E2D4F] overflow-hidden",
-        "min-h-screen h-auto p-5"
+        "flex flex-col md:flex-row bg-[#1E2D4F] dark:bg-[#1E2D4F] flex-1 max-w-screen mx-auto border border-[#1E2D4F] dark:border-[#1E2D4F] overflow-hidden",
+        "h-screen p-5" // Set the main container to full screen height
       )}
     >
       <Sidebar open={open} setOpen={setOpen}>
@@ -240,11 +267,11 @@ export default function MyFriends() {
           <div>
             <SidebarLink
               link={{
-                label: "Manu Arora",
+                label: username,
                 href: "#",
                 icon: (
                   <Image
-                    src="https://assets.aceternity.com/manu.png"
+                    src="/icons/AddFriendIcon.svg"
                     className="h-7 w-7 flex-shrink-0 rounded-full"
                     width={50}
                     height={50}

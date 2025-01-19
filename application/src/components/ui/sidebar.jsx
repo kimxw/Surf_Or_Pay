@@ -129,7 +129,7 @@ export const SidebarLink = ({
   ...props
 }) => {
   const { open, animate } = useSidebar();
-  const { href, icon, label, bgcolour = "#ffffff", textcolour = "#000000" } = link; // Destructure bgcolour from the link
+  const { href, icon, label, bgcolour = "#8ab5d6", textcolour = "#29597e" } = link; // Destructure bgcolour from the link
 
   // Function to decide the color based on dark/light mode
   const dynamicTextColour = textcolour || 'black'; // default to black if no colour is passed
