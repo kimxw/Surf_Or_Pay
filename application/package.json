@@ -13,7 +13,6 @@
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
     "@heroicons/react": "^2.2.0",
-    "@material-tailwind/react": "^2.1.10",
     "@tabler/icons-react": "^3.28.1",
     "clsx": "^2.1.1",
     "firebase": "^11.2.0",
