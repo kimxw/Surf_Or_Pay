@@ -149,6 +149,49 @@ export default function SurferMode() {
     },
   ];
 
+  const task_test = [
+    {
+      friendUsername: "Alice Tan",
+      desc: "Complete report on market trends.",
+      credits: "$5.00",
+      deadline: "2025-01-25",
+      completionStatus: "Incomplete",
+      verificationStatus: "Submit",
+    },
+    {
+      friendUsername: "Bob Builder",
+      desc: "Prepare presentation for client meeting.",
+      credits: "$3.00",
+      deadline: "2025-01-20",
+      completionStatus: "Overdue",
+      verificationStatus: "Submit",
+    },
+    {
+      friendUsername: "David Hsu",
+      desc: "Review code for the latest features.",
+      credits: "$2.00",
+      deadline: "2025-01-30",
+      completionStatus: "Complete",
+      verificationStatus: "Pending",
+    },
+    {
+      friendUsername: "Eve Well",
+      desc: "Organize team lunch event.",
+      credits: "$1.00",
+      deadline: "2025-01-23",
+      completionStatus: "Complete",
+      verificationStatus: "Verified",
+    },
+    {
+      friendUsername: "Charlie Chan",
+      desc: "Update the project roadmap.",
+      credits: "$4.00",
+      deadline: "2025-01-22",
+      completionStatus: "Complete",
+      verificationStatus: "Verified",
+    },
+  ];
+
   return (
     <div
       className={cn(
@@ -210,7 +253,7 @@ export default function SurferMode() {
 
           <div className="flex gap-2 flex-1">
             <div className="h-full w-full rounded-lg bg-transparent opacity-75">
-              <TaskTable tasks={task} />
+              <TaskTable tasks={task_test} />
             </div>
           </div>
         </div>
