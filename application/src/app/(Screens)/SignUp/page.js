@@ -129,4 +129,5 @@ function SignUpComponent() {
   );
 }
 
+
 export default SignUpPage;
