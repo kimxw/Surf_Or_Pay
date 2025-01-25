@@ -1,8 +1,5 @@
 "use client";
 
-import React from "react";
-import { useSurfer } from "@/app/contexts/SurferContext";
-
 // Inline CSS for card styles
 const cardStyles = `
   .card {
@@ -47,8 +44,13 @@ const cardStyles = `
   }
 `;
 
-const TaskTable = ({ tasks }) => {
-  const { deleteTask, completed, taskId } = useSurfer();
+const ForfeitTable = ({ forfeits }) => {
+  const handleVerify = (index) => {
+    const updatedForfeits = [...forfeits];
+    updatedForfeits[index].verificationStatus = "verified";
+    // Assuming you have a setState function to update the tasks list
+    // setTasks(updatedTasks);
+  };
 
   return (
     <div>
@@ -57,7 +59,7 @@ const TaskTable = ({ tasks }) => {
         {/* Header Row Styled as a Card */}
         <div className="card" style={{ fontWeight: "bold", backgroundColor: "#f9f9f9" }}>
           <div className="card-section">#</div>
-          <div className="card-section">Shark</div>
+          <div className="card-section">Surfer</div>
           <div className="card-section">Task Description</div>
           <div className="card-section">Forfeit</div>
           <div className="card-section">Deadline</div>
@@ -67,7 +69,7 @@ const TaskTable = ({ tasks }) => {
         </div>
 
         {/* Task Rows */}
-        {tasks.map((task, index) => (
+        {forfeits.map((task, index) => (
           <div className="card" key={index}>
             <div className="card-section">{index + 1}</div>
             <div className="card-section">{task.friendUsername}</div>
@@ -76,29 +78,29 @@ const TaskTable = ({ tasks }) => {
             <div className="card-section">{task.deadline}</div>
             <div className="card-section">{task.completionStatus}</div>
             <div className="card-section">
-            {(task.completionStatus === "Complete" && task.verificationStatus === "Verified") ? (
+            {task.completionStatus === "Complete" && task.verificationStatus == 'Verified' ? (
               <button
                 disabled
                 className="bg-[#6bb266] text-[#e8ffe7] py-1 px-4 rounded-lg"
               >
                 Verified
               </button>
-            ) : (task.verificationStatus === "Pending") ? (
+            ) : task.completionStatus === "Complete" && task.verificationStatus == 'Pending' ? (
+              <button
+                className="bg-[#fed45f] text-[#936d21] py-1 px-6 rounded-lg"
+              >
+                Verify
+              </button>
+            ) : task.completionStatus === "Incomplete" ? (
               <button
                 disabled
-                className="bg-[#fed45f] text-[#936d21] py-1 px-3.5 rounded-lg"
+                className="bg-[#a8aaab] text-[#3d3d3d] py-1 px-3 rounded-lg"
               >
-                Pending
+                Awaiting
               </button>
-            ) : (task.completionStatus === "Incomplete") ? (
+            ) : task.completionStatus === "Overdue" ? (
               <button
-                onClick={() => completed(taskId[index])}
-                className="bg-[#29597e] text-white py-1 px-5 rounded-lg"
-              >
-                Submit
-              </button>
-            ) : (task.completionStatus === "Overdue" )? (
-              <button
+                onClick={() => handleVerify(index)}
               >
                 <img
                   src="/icons/OMPMIcon.svg"
@@ -108,7 +110,7 @@ const TaskTable = ({ tasks }) => {
               </button>
             ) : (
               <button
-                disabled
+                onClick={() => handleVerify(index)}
                 className="bg-[#7b7b7b] text-gray-700 py-1 px-5 rounded-lg"
               >
                 Unknown
@@ -116,9 +118,8 @@ const TaskTable = ({ tasks }) => {
             )}
             </div>
             <div className="card-section">
-            {task.verificationStatus === "Verified" ? (
+            {task.verificationStatus === "Verified" || task.completionStatus == "Overdue" ? (
             <button
-              onClick = {() => deleteTask(taskId[index])}
               className="p-2 rounded-lg flex items-center justify-center pt-0"
               style={{ width: "40px", height: "40px" }} // Adjust size to match icon size
             >
@@ -140,4 +141,4 @@ const TaskTable = ({ tasks }) => {
   );
 };
 
-export default TaskTable;
+export default ForfeitTable;

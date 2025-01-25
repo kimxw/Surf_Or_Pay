@@ -21,6 +21,33 @@ export default function MyFriends() {
   const [username, setUsername] = useState('');
   const [loading, setLoading] = useState(true);
 
+  useEffect(() => {
+    if (!loggedInUser?.email) {
+      setLoading(false);
+      return;
+    }
+
+    const unsubscribe = onSnapshot(
+      doc(db, "Users", loggedInUser?.email),
+      (doc) => {
+        if (doc.exists()) {
+          setUsername(doc.data()?.username || "User");
+        } else {
+          setUsername("User");
+        }
+        setLoading(false);
+      },
+      (error) => {
+        console.error("Error fetching username:", error);
+        setUsername("User");
+        setLoading(false);
+      }
+    );
+
+    return unsubscribe;
+  }, [loggedInUser]);
+
+
   const handleAddFriend = async (friendEmail) => {
     if (!loggedInUser?.email) return;
 
@@ -43,8 +70,6 @@ export default function MyFriends() {
         });
 
         alert("Friend added successfully!");
-      } else {
-        alert("Friend not found!")
       }
     } catch (error) {
       console.error("Error adding friend:", error);
@@ -109,6 +134,21 @@ export default function MyFriends() {
   }, [loggedInUser, friend]);
 
   const links = [
+    {
+      label: "Surf or Pay",
+      bgcolour: "transparent",
+      textcolour: "#8ab5d6",
+      href: "#",
+      icon: (
+        <Image
+          src="/icons/AppLogo.svg"
+          className="h-18 w-20 flex-shrink-0 rounded-xl"
+          width={50}
+          height={50}
+          alt="Avatar"
+        />
+      ),
+    },
     {
       label: "My Ocean",
       bgcolour: "#68c5c0",
@@ -188,21 +228,20 @@ export default function MyFriends() {
           
           <div className="flex gap-2">
             <div className="h-20 w-1/2 rounded-lg flex items-center space-x-2">
-            <input
-              id="username"
-              type="email"
-              name="username"
-              placeholder="Enter your friend's email address"
-              // value={newFriend} <-bug
-              onChange={(e) => {
-                console.log("Current newFriend value:", e.target.value); // Log the newFriend value
-                setNewFriend(e.target.value);
-              }}
-              className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 text-black opacity-70"
-            />
+              <input
+                id="username"
+                type="email"
+                name="username"
+                placeholder="Enter your friend's email address"
+                className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 text-black opacity-70"
+              />
               <button
                 type="button"
-                onClick={() => handleAddFriend(newFriend)}
+                onClick={() => {
+                  const inputValue = document.getElementById('username').value;
+                  setNewFriend(inputValue);
+                  handleAddFriend(inputValue);
+                }}
                 className="bg-[#29597e] text-white p-0.5 rounded-lg flex-shrink-0 w-auto px-4 flex items-center space-x-2"
               >
                 <img
@@ -228,14 +267,13 @@ export default function MyFriends() {
   return (
     <div
       className={cn(
-        "flex flex-col md:flex-row bg-[#1E2D4F] dark:bg-[#1E2D4F] flex-1 max-w-screen mx-auto border border-[#1E2D4F] overflow-hidden",
-        "min-h-screen h-auto p-5"
+        "flex flex-col md:flex-row bg-[#1E2D4F] dark:bg-[#1E2D4F] flex-1 max-w-screen mx-auto border border-[#1E2D4F] dark:border-[#1E2D4F] overflow-hidden",
+        "h-screen p-5" // Set the main container to full screen height
       )}
     >
       <Sidebar open={open} setOpen={setOpen}>
         <SidebarBody className="justify-between gap-10">
           <div className="flex flex-col flex-1 overflow-y-auto overflow-x-hidden">
-            {open ? <Logo /> : <LogoIcon />}
             <div className="mt-8 flex flex-col gap-2">
               {links.map((link, idx) => (
                 <SidebarLink key={idx} link={link} />
@@ -245,11 +283,11 @@ export default function MyFriends() {
           <div>
             <SidebarLink
               link={{
-                label: "Manu Arora",
+                label: username,
                 href: "#",
                 icon: (
                   <Image
-                    src="https://assets.aceternity.com/manu.png"
+                    src="/icons/AddFriendIcon.svg"
                     className="h-7 w-7 flex-shrink-0 rounded-full"
                     width={50}
                     height={50}
@@ -265,47 +303,3 @@ export default function MyFriends() {
     </div>
   );
 }
-
-export const Logo = () => {
-  return (
-    <Link
-      href="#"
-      className="font-normal flex space-x-5 items-center text-sm text-black py-1 relative z-20"
-    >
-      <div>
-        <Image
-          src="/icons/AppLogo.svg"
-          className="h-18 w-20 flex-shrink-0 rounded-xl"
-          width={50}
-          height={50}
-          alt="Avatar"
-        />
-      </div>
-      <motion.span
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        className="font-medium lucky-guy text-4xl text-[#8ab5d6] dark:[#8ab5d6] whitespace-pre"
-      >
-        Surf or Pay
-      </motion.span>
-    </Link>
-  );
-};
-
-export const LogoIcon = () => {
-  return (
-    <Link
-      href="#"
-      className="font-normal flex space-x-2 items-center text-sm text-white py-1 relative z-20"
-    >
-    <div>
-        <Image
-          src="/icons/AppLogo.svg"
-          className="h-18 w-20 flex-shrink-0 rounded-xl"
-          width={50}
-          height={50}
-          alt="Avatar"
-        />
-      </div>    </Link>
-  );
-};

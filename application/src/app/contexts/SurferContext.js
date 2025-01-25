@@ -10,7 +10,10 @@ export const useSurfer = () => useContext(SurferContext);
 
 export const SurferProvider = ({ children }) => {
   const [task, setTask] = useState([]);
+  const [taskId, setTaskId] = useState([]);
   const [friends, setFriends] = useState([]);
+  const [forfeit, setForfeit] = useState([]);
+  const [forfeitId, setForfeitId] = useState([]);
   const [loading, setLoading] = useState(true);
   const { loggedInUser } = useAuth();
 
@@ -22,53 +25,96 @@ export const SurferProvider = ({ children }) => {
         // Query tasks
         const taskQuery = query(
           collection(db, "Surfer"),
-          where("email", "==", loggedInUser.email),
+          where("email", "==", loggedInUser?.email),
           orderBy("deadline", "asc")
         );
 
         // Query friends
         const friendsQuery = query(
           collection(db, "friends"),
-          where("email", "==", loggedInUser.email),
+          where("email", "==", loggedInUser?.email),
           orderBy("friend", "asc")
         );
 
-        // Subscribe to task updates
+        const sharkQuery = query(
+          collection(db, "Surfer"),
+          where("friendUsername", "==", loggedInUser?.email),
+          orderBy("deadline", "asc")
+        );
+
+        const fetchUsername = async (email) => {
+          try {
+            const docRef = doc(db, "Users", email);
+            const docSnapshot = await getDoc(docRef);
+            if (docSnapshot.exists()) {
+              return docSnapshot.data()?.username || "User";
+            } else {
+              console.log("User not found for email:", email);
+              return "User";
+            }
+          } catch (error) {
+            console.error("Error fetching username:", error);
+            return "User";
+          }
+        };
+        
         const unsubscribeTasks = onSnapshot(taskQuery, async (querySnapshot) => {
-          const taskData = [];
+          const tasks = [];
+          const taskIds = [];
+        
           for (const docSnapshot of querySnapshot.docs) {
             const data = docSnapshot.data();
-            const friendEmail = data.friendUsername;
+            taskIds.push(docSnapshot.id);
         
-            // Create a document reference
-            const userDocRef = doc(db, "Users", friendEmail);
+            // Fetch the friend's username asynchronously
+            const username = await fetchUsername(data.friendUsername);
         
-            // Fetch the document data asynchronously
-            try {
-              const userDoc = await getDoc(userDocRef);
-        
-              if (userDoc.exists()) {
-                const userData = userDoc.data();
-                const name = userData.username;
-        
-                taskData.push({
-                  friendUsername: name,
-                  desc: data.desc,
-                  credits: data.credits,
-                  deadline: data.deadline,
-                  completionStatus: data.completionStatus,
-                  verificationStatus: data.verificationStatus,
-                });
-              } else {
-                console.error(`No user found for email: ${friendEmail}`);
-              }
-            } catch (error) {
-              console.error(`Error fetching user document for email: ${friendEmail}`, error);
-            }
+            // Push the task with the fetched username
+            tasks.push({
+              friendUsername: username,
+              desc: data.desc,
+              credits: data.credits,
+              deadline: data.deadline,
+              completionStatus: data.completionStatus,
+              verificationStatus: data.verificationStatus,
+            });
           }
         
-          // Update state with fetched task data
-          setTask(taskData);
+          console.log("Task IDs:", taskIds);
+          console.log("Task Data:", tasks);
+          setTaskId(taskIds);
+          setTask(tasks);
+        });
+               
+
+        const unsubscribeFriends = onSnapshot(friendsQuery, (querySnapshot) => {
+          const friendsList = querySnapshot.docs.map((doc) => doc.data().friend);
+          setFriends(friendsList);
+          console.log("Friends List:", friendsList);
+        });
+
+        const unsubscribeForfeits = onSnapshot(sharkQuery, async (querySnapshot) => {
+          const forfeits = [];
+          const forfeitIds = [];
+  
+          for (const docSnapshot of querySnapshot.docs) {
+            const data = docSnapshot.data();
+            forfeitIds.push(docSnapshot.id);
+            const username = await fetchUsername(data.email);
+            forfeits.push({
+              friendUsername: username,
+              desc: data.desc,
+              credits: data.credits,
+              deadline: data.deadline,
+              completionStatus: data.completionStatus,
+              verificationStatus: data.verificationStatus,
+            });
+          }
+  
+          console.log("Forfeit IDs to be set:", forfeitIds);
+          console.log("Forfeits to be set:", forfeits);
+          setForfeit(forfeits);
+          setForfeitId(forfeitIds); 
         });
         
 
@@ -77,6 +123,7 @@ export const SurferProvider = ({ children }) => {
         return () => {
           unsubscribeTasks();
           unsubscribeFriends();
+          unsubscribeForfeits();
         };
       } catch (error) {
         console.error("Error fetching tasks or friends:", error);
@@ -92,8 +139,13 @@ export const SurferProvider = ({ children }) => {
     await deleteDoc(taskDoc);
   };
 
+  const completed = async (taskId) => {
+    const taskDoc = doc(db, "Surfer", taskId);
+    await updateDoc(taskDoc, { completionStatus: "Completed", verificationStatus: "Pending"});
+  };
+
   return (
-    <SurferContext.Provider value={{ task, friends, loading, deleteTask }}>
+    <SurferContext.Provider value={{ task, friends, loading, deleteTask, completed, taskId, forfeit, forfeitId }}>
       {children}
     </SurferContext.Provider>
   );
