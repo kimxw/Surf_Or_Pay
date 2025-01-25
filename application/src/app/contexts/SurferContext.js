@@ -42,37 +42,44 @@ export const SurferProvider = ({ children }) => {
           orderBy("deadline", "asc")
         );
 
+        const fetchUsername = async (email) => {
+          try {
+            const docRef = doc(db, "Users", email);
+            const docSnapshot = await getDoc(docRef);
+            if (docSnapshot.exists()) {
+              return docSnapshot.data()?.username || "User";
+            } else {
+              console.log("User not found for email:", email);
+              return "User";
+            }
+          } catch (error) {
+            console.error("Error fetching username:", error);
+            return "User";
+          }
+        };
+        
         const unsubscribeTasks = onSnapshot(taskQuery, async (querySnapshot) => {
           const tasks = [];
           const taskIds = [];
-  
+        
           for (const docSnapshot of querySnapshot.docs) {
             const data = docSnapshot.data();
             taskIds.push(docSnapshot.id);
-  
-            // Fetch friend details
-            const friendEmail = data.friendUsername;
-            const userDocRef = doc(db, "Users", friendEmail);
-            try {
-              const userDoc = await getDoc(userDocRef);
-              if (userDoc.exists()) {
-                const userData = userDoc.data();
-                tasks.push({
-                  friendUsername: userData.username,
-                  desc: data.desc,
-                  credits: data.credits,
-                  deadline: data.deadline,
-                  completionStatus: data.completionStatus,
-                  verificationStatus: data.verificationStatus,
-                });
-              } else {
-                console.error(`No user found for email: ${friendEmail}`);
-              }
-            } catch (error) {
-              console.error(`Error fetching user document for email: ${friendEmail}`, error);
-            }
+        
+            // Fetch the friend's username asynchronously
+            const username = await fetchUsername(data.friendUsername);
+        
+            // Push the task with the fetched username
+            tasks.push({
+              friendUsername: username,
+              desc: data.desc,
+              credits: data.credits,
+              deadline: data.deadline,
+              completionStatus: data.completionStatus,
+              verificationStatus: data.verificationStatus,
+            });
           }
-  
+        
           console.log("Task IDs:", taskIds);
           console.log("Task Data:", tasks);
           setTaskId(taskIds);
@@ -93,8 +100,9 @@ export const SurferProvider = ({ children }) => {
           for (const docSnapshot of querySnapshot.docs) {
             const data = docSnapshot.data();
             forfeitIds.push(docSnapshot.id);
+            const username = await fetchUsername(data.email);
             forfeits.push({
-              friendUsername: data.email,
+              friendUsername: username,
               desc: data.desc,
               credits: data.credits,
               deadline: data.deadline,

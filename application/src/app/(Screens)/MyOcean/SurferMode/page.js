@@ -149,7 +149,9 @@ export default function SurferMode() {
     },
   ];
 
-  const task_test = [
+  const task_test = task;
+  /*
+  [
     {
       friendUsername: "Alice Tan",
       desc: "Complete report on market trends.",
@@ -191,6 +193,7 @@ export default function SurferMode() {
       verificationStatus: "Verified",
     },
   ];
+  */
 
   return (
     <div
