@@ -144,8 +144,13 @@ export const SurferProvider = ({ children }) => {
     await updateDoc(taskDoc, { completionStatus: "Completed", verificationStatus: "Pending"});
   };
 
+  const handleVerify = async (taskId) => {
+    const taskDoc = doc(db, "Surfer", taskId);
+    await updateDoc(taskDoc, { completionStatus: "Completed", verificationStatus: "Verified"});
+  };
+
   return (
-    <SurferContext.Provider value={{ task, friends, loading, deleteTask, completed, taskId, forfeit, forfeitId }}>
+    <SurferContext.Provider value={{ task, friends, loading, deleteTask, completed, taskId, forfeit, forfeitId, handleVerify}}>
       {children}
     </SurferContext.Provider>
   );

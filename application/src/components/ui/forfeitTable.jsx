@@ -1,5 +1,8 @@
 "use client";
 
+import React from "react";
+import { useSurfer } from "@/app/contexts/SurferContext";
+
 // Inline CSS for card styles
 const cardStyles = `
   .card {
@@ -45,12 +48,7 @@ const cardStyles = `
 `;
 
 const ForfeitTable = ({ forfeits }) => {
-  const handleVerify = (index) => {
-    const updatedForfeits = [...forfeits];
-    updatedForfeits[index].verificationStatus = "verified";
-    // Assuming you have a setState function to update the tasks list
-    // setTasks(updatedTasks);
-  };
+  const { forfeitId, handleVerify, deleteTask } = useSurfer();
 
   return (
     <div>
@@ -69,73 +67,78 @@ const ForfeitTable = ({ forfeits }) => {
         </div>
 
         {/* Task Rows */}
-        {forfeits.map((task, index) => (
-          <div className="card" key={index}>
-            <div className="card-section">{index + 1}</div>
-            <div className="card-section">{task.friendUsername}</div>
-            <div className="card-section">{task.desc}</div>
-            <div className="card-section">{task.credits}</div>
-            <div className="card-section">{task.deadline}</div>
-            <div className="card-section">{task.completionStatus}</div>
-            <div className="card-section">
-            {task.completionStatus === "Complete" && task.verificationStatus == 'Verified' ? (
-              <button
-                disabled
-                className="bg-[#6bb266] text-[#e8ffe7] py-1 px-4 rounded-lg"
-              >
-                Verified
-              </button>
-            ) : task.completionStatus === "Complete" && task.verificationStatus == 'Pending' ? (
-              <button
-                className="bg-[#fed45f] text-[#936d21] py-1 px-6 rounded-lg"
-              >
-                Verify
-              </button>
-            ) : task.completionStatus === "Incomplete" ? (
-              <button
-                disabled
-                className="bg-[#a8aaab] text-[#3d3d3d] py-1 px-3 rounded-lg"
-              >
-                Awaiting
-              </button>
-            ) : task.completionStatus === "Overdue" ? (
-              <button
-                onClick={() => handleVerify(index)}
-              >
-                <img
-                  src="/icons/OMPMIcon.svg"
-                  alt="Icon"
-                  className="w-36 h-auto mt-2 ml-1"
-                />
-              </button>
-            ) : (
-              <button
-                onClick={() => handleVerify(index)}
-                className="bg-[#7b7b7b] text-gray-700 py-1 px-5 rounded-lg"
-              >
-                Unknown
-              </button>
-            )}
+        {forfeits.map((task, index) => {
+          console.log(`Task ${index + 1}:`, task);
+          console.log("Completion Status:", task.completionStatus);
+          console.log("Verification Status:", task.verificationStatus);
+
+          return (
+            <div className="card" key={index}>
+              <div className="card-section">{index + 1}</div>
+              <div className="card-section">{task.friendUsername}</div>
+              <div className="card-section">{task.desc}</div>
+              <div className="card-section">{task.credits}</div>
+              <div className="card-section">{task.deadline}</div>
+              <div className="card-section">{task.completionStatus}</div>
+              <div className="card-section">
+                {task.completionStatus === "Completed" && task.verificationStatus === "Verified" ? (
+                  <button
+                    disabled
+                    className="bg-[#6bb266] text-[#e8ffe7] py-1 px-4 rounded-lg"
+                  >
+                    Verified
+                  </button>
+                ) : task.completionStatus === "Completed" && task.verificationStatus === "Pending" ? (
+                  <button
+                    onClick={() => handleVerify(forfeitId[index])}
+                    className="bg-[#fed45f] text-[#936d21] py-1 px-6 rounded-lg"
+                  >
+                    Verify
+                  </button>
+                ) : task.completionStatus === "Incomplete" ? (
+                  <button
+                    disabled
+                    className="bg-[#a8aaab] text-[#3d3d3d] py-1 px-3 rounded-lg"
+                  >
+                    Awaiting
+                  </button>
+                ) : task.completionStatus === "Overdue" ? (
+                  <button onClick={() => handleVerify(forfeitId[index])}>
+                    <img
+                      src="/icons/OMPMIcon.svg"
+                      alt="Icon"
+                      className="w-36 h-auto mt-2 ml-1"
+                    />
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => handleVerify(forfeitId[index])}
+                    className="bg-[#7b7b7b] text-gray-700 py-1 px-5 rounded-lg"
+                  >
+                    Unknown
+                  </button>
+                )}
+              </div>
+              <div className="card-section">
+                {task.verificationStatus === "Verified" || task.completionStatus === "Overdue" ? (
+                  <button
+                    onClick={() => deleteTask(forfeitId[index])}
+                    className="p-2 rounded-lg flex items-center justify-center pt-0"
+                    style={{ width: "40px", height: "40px" }}
+                  >
+                    <img
+                      src="/icons/deleteIcon.png"
+                      alt="Delete"
+                      className="w-full h-full object-contain"
+                    />
+                  </button>
+                ) : (
+                  <button></button>
+                )}
+              </div>
             </div>
-            <div className="card-section">
-            {task.verificationStatus === "Verified" || task.completionStatus == "Overdue" ? (
-            <button
-              className="p-2 rounded-lg flex items-center justify-center pt-0"
-              style={{ width: "40px", height: "40px" }} // Adjust size to match icon size
-            >
-              <img
-                  src="/icons/deleteIcon.png" // Replace with your verified icon
-                  alt="Verified"
-                  className="w-full h-full object-contain" // Make the icon fill the button
-                />
-              </button>
-            ) : (
-              <button>
-              </button>
-            )}
-            </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </div>
   );
