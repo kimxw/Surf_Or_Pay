@@ -37,7 +37,7 @@ export default function Home() {
           {/* <h1 className="lucky-guy-button-text text-9xl mt-20 justify-center items-center pl-40">
               Stop wasting time! Take accountability today
           </h1> */}
-        <div className="mt-[45vh] bg-[#16528a] h-10 flex items-center justify-center">
+        <div className="mt-[45vh] bg-[#16528a] h-10 flex items-center justify-center mb-5">
           <Link href="https://buymeacoffee.com/">
               <button className=" lucky-guy-button-text text-sm animate-pop-up mb-4 bg-[#293c67] p-5 rounded-xl" role="button">
                 Support Us💙
