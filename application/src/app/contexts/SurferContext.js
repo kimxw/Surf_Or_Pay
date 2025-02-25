@@ -14,6 +14,7 @@ export const SurferProvider = ({ children }) => {
   const [friends, setFriends] = useState([]);
   const [forfeit, setForfeit] = useState([]);
   const [forfeitId, setForfeitId] = useState([]);
+  const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
   const { loggedInUser } = useAuth();
 
@@ -117,6 +118,21 @@ export const SurferProvider = ({ children }) => {
           setForfeitId(forfeitIds); 
         });
         
+        const unsubscribeEvents = onSnapshot(taskQuery, async (querySnapshot) => {
+          const events = [];
+        
+          for (const docSnapshot of querySnapshot.docs) {
+            const data = docSnapshot.data();
+
+            events.push({
+              start: data.deadline,
+              end: data.deadline, 
+              title: data.desc
+            });
+          }
+        
+          setEvents(events);
+        });
 
         setLoading(false);
 
@@ -124,6 +140,7 @@ export const SurferProvider = ({ children }) => {
           unsubscribeTasks();
           unsubscribeFriends();
           unsubscribeForfeits();
+          unsubscribeEvents();
         };
       } catch (error) {
         console.error("Error fetching tasks or friends:", error);
@@ -150,7 +167,7 @@ export const SurferProvider = ({ children }) => {
   };
 
   return (
-    <SurferContext.Provider value={{ task, friends, loading, deleteTask, completed, taskId, forfeit, forfeitId, handleVerify}}>
+    <SurferContext.Provider value={{ task, friends, loading, deleteTask, completed, taskId, forfeit, forfeitId, handleVerify, events}}>
       {children}
     </SurferContext.Provider>
   );
