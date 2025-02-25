@@ -10,7 +10,7 @@ import { db } from "@/app/firebase/configuration";
 import { useAuth } from "@/app/contexts/AuthContext";
 import '@/styles/fonts.css';
 import "react-big-calendar/lib/css/react-big-calendar.css";
-import Calendar from "@/components/ui/Calendar";
+import Calendar from "../../../components/ui/Calendar";
 
 export default function MyOcean() {
   const { loggedInUser } = useAuth();
