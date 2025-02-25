@@ -41,3 +41,25 @@
     transform: translateY(0); /* Button goes back to original position */
   }
   
+
+  @keyframes popUp {
+    0% {
+      transform: scale(0);
+      opacity: 0;
+    }
+    50% {
+      transform: scale(1.1);
+      opacity: 1;
+    }
+    100% {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+  
+  .animate-pop-up {
+    animation: popUp 0.5s ease-out forwards;
+    animation-delay: 1s; /* Delay the animation for 1 second */
+    opacity: 0; /* Initially invisible */
+  }
+  
