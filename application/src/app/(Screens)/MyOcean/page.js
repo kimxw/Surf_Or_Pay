@@ -9,6 +9,8 @@ import { onSnapshot, doc } from "firebase/firestore";
 import { db } from "@/app/firebase/configuration";
 import { useAuth } from "@/app/contexts/AuthContext";
 import '@/styles/fonts.css';
+import "react-big-calendar/lib/css/react-big-calendar.css";
+import Calendar from "@/components/ui/Calendar";
 
 export default function MyOcean() {
   const { loggedInUser } = useAuth();
@@ -205,13 +207,24 @@ const Dashboard = () => {
           width: '100%', // Ensure the container takes full width
         }}
       > 
-        <div className="flex gap-2 flex-1 justify-center items-center"> 
-          {/* Adjusted to center the content */}
-          <img 
-            src="/icons/MyOceanDisplay.gif" 
-            alt="Gif display"
-            className="h-200 w-400 object-contain" // Ensure the image scales to fit
-          />
+        <h1 className="lucky-guy text-4xl text-[#29597e] mb-3">
+            My Ocean - Dashboard
+        </h1>
+        <div className="flex gap-2 justify-center items-start"> 
+        
+          {/* left container */}
+          <div className="h-95 w-1/2">
+            <Calendar></Calendar>
+          </div>
+    
+          {/* right container */}
+          <div className="h-20 w-1/2 object-cover">
+            <img 
+              src="/icons/MyOceanDisplay.gif" 
+              alt="Gif display"
+              className="h-200 w-400 object-contain" // Ensure the image scales to fit
+            />
+          </div>
         </div> 
       </div> 
     </div> 
