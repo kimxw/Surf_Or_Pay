@@ -3,6 +3,7 @@ import React, { createContext, useContext, useState, useEffect } from "react";
 import { collection, query, where, onSnapshot, updateDoc, deleteDoc, doc, orderBy, getDoc, getDocs, addDoc } from "firebase/firestore";
 import { db } from "../firebase/configuration";
 import { useAuth } from "./AuthContext";
+import moment from "moment";
 
 const SurferContext = createContext();
 
@@ -125,8 +126,8 @@ export const SurferProvider = ({ children }) => {
             const data = docSnapshot.data();
 
             events.push({
-              start: data.deadline,
-              end: data.deadline, 
+              start: moment(data.deadline).toDate(),
+              end: moment(data.deadline).toDate(), 
               title: data.desc
             });
           }
