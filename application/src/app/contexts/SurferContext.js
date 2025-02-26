@@ -132,6 +132,7 @@ export const SurferProvider = ({ children }) => {
             });
           }
         
+          console.log("events to be set:", events);
           setEvents(events);
         });
 
