@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { authentication, db } from "@/app/firebase/configuration";
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { collection, setDoc, doc } from "firebase/firestore";
+import { collection, query, where, getDocs, setDoc, doc } from "firebase/firestore";
 import { useAuth } from "@/app/contexts/AuthContext";
 
 import '@/styles/fonts.css'; 
@@ -32,27 +32,36 @@ function SignUpComponent() {
   const router = useRouter();
   const ref = collection(db, "Users");
 
-  const handleSignUp = () => {
+  const handleSignUp = async () => {
     setIsSigningUp(true);
-    createUserWithEmailAndPassword(authentication, email, password)
-      .then(async (res) => {
-        try {
-          await setDoc(doc(ref, email), {
-            username: username,
-          });
-          console.log("Document successfully written!");
-        } catch (error) {
-          console.error("Error adding document: ", error);
-          setErrorMessage(error.message || "Failed to Sign up. Please try again");
-        }
-        setLoggedInUser(res.user);
-        router.push("/MyOcean");
-      })
-      .catch((error) => {
-        console.error("Error signing up: ", error);
-        setErrorMessage(error.message || "An error occurred during signup.");
-      })
-      .finally(() => setIsSigningUp(false));
+    setErrorMessage(""); // Reset error messages
+  
+    try {
+      // Step 1: Check if the username already exists in Firestore
+      const usernameQuery = query(collection(db, "Users"), where("username", "==", username));
+      const querySnapshot = await getDocs(usernameQuery);
+  
+      if (!querySnapshot.empty) {
+        setErrorMessage("Username is already taken. Please choose another.");
+        setIsSigningUp(false);
+        return; // Stop execution if username exists
+      }
+  
+      // Step 2: Proceed with account creation
+      const res = await createUserWithEmailAndPassword(authentication, email, password);
+  
+      // Step 3: Store user data in Firestore
+      await setDoc(doc(db, "Users", email), { username });
+  
+      console.log("User successfully created!");
+      setLoggedInUser(res.user);
+      router.push("/MyOcean");
+    } catch (error) {
+      console.error("Error signing up: ", error);
+      setErrorMessage(error.message || "An error occurred during signup.");
+    } finally {
+      setIsSigningUp(false);
+    }
   };
 
   return (
