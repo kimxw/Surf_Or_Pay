@@ -23,7 +23,7 @@ export default function SurferMode() {
   const [forfeit, setForfeit] = useState("");
   const [deadline, setDeadline] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
-
+  
   useEffect(() => {
     if (!loggedInUser?.email) {
       setLoading(false);
@@ -279,15 +279,24 @@ export default function SurferMode() {
                 />
               </div>
               <div className="flex gap-x-4">
-                <input
+                <select
                   id="shark"
-                  type="text"
                   name="shark"
                   value={sharkEmail}
                   onChange={(e) => setSharkEmail(e.target.value)}
-                  placeholder="SharkEmail"
                   className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-black"
-                />
+                >
+                  <option value="" disabled className="">
+                    Choose your shark
+                  </option>
+                  
+                  {friends.map((friend, index) => (
+                    <option key={index} value={friend}>
+                      {friend}
+                    </option>
+                  ))}
+                </select>
+
                 <input
                   id="forfeitAmount"
                   type="number"
@@ -298,7 +307,7 @@ export default function SurferMode() {
                   className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-black"
                 />
               </div>
-              <div className="mb-6">
+              <div className="mb-6 mt-3">
                 <input
                   id="deadline"
                   type="datetime-local"
