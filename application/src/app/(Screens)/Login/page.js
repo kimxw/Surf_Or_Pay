@@ -97,6 +97,11 @@ function LoginComponent() {
           >
             {isSigningIn ? 'Logging in...' : 'Log in'}
           </button>
+          <h1 className="flex justify-center items-center mt-5 text-black w-full text-center">
+            Don't have an account?
+            <a href="/SignUp" className="text-[#4563a9] underline pl-1">Sign up</a>
+          </h1>
+
         </form>
       </div>
     </section>

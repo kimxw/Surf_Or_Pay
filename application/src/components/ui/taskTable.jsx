@@ -76,7 +76,7 @@ const TaskTable = ({ tasks }) => {
             <div className="card-section">{task.deadline}</div>
             <div className="card-section">{task.completionStatus}</div>
             <div className="card-section">
-            {(task.completionStatus === "Complete" && task.verificationStatus === "Verified") ? (
+            {(task.completionStatus === "Completed" && task.verificationStatus === "Verified") ? (
               <button
                 disabled
                 className="bg-[#6bb266] text-[#e8ffe7] py-1 px-4 rounded-lg"

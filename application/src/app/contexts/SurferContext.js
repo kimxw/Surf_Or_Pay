@@ -3,6 +3,7 @@ import React, { createContext, useContext, useState, useEffect } from "react";
 import { collection, query, where, onSnapshot, updateDoc, deleteDoc, doc, orderBy, getDoc, getDocs, addDoc } from "firebase/firestore";
 import { db } from "../firebase/configuration";
 import { useAuth } from "./AuthContext";
+import moment from "moment";
 
 const SurferContext = createContext();
 
@@ -14,6 +15,7 @@ export const SurferProvider = ({ children }) => {
   const [friends, setFriends] = useState([]);
   const [forfeit, setForfeit] = useState([]);
   const [forfeitId, setForfeitId] = useState([]);
+  const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
   const { loggedInUser } = useAuth();
 
@@ -117,6 +119,22 @@ export const SurferProvider = ({ children }) => {
           setForfeitId(forfeitIds); 
         });
         
+        const unsubscribeEvents = onSnapshot(taskQuery, async (querySnapshot) => {
+          const events = [];
+        
+          for (const docSnapshot of querySnapshot.docs) {
+            const data = docSnapshot.data();
+
+            events.push({
+              start: moment(data.deadline).toDate(),
+              end: moment(data.deadline).toDate(), 
+              title: data.desc
+            });
+          }
+        
+          console.log("events to be set:", events);
+          setEvents(events);
+        });
 
         setLoading(false);
 
@@ -124,6 +142,7 @@ export const SurferProvider = ({ children }) => {
           unsubscribeTasks();
           unsubscribeFriends();
           unsubscribeForfeits();
+          unsubscribeEvents();
         };
       } catch (error) {
         console.error("Error fetching tasks or friends:", error);
@@ -144,8 +163,13 @@ export const SurferProvider = ({ children }) => {
     await updateDoc(taskDoc, { completionStatus: "Completed", verificationStatus: "Pending"});
   };
 
+  const handleVerify = async (taskId) => {
+    const taskDoc = doc(db, "Surfer", taskId);
+    await updateDoc(taskDoc, { completionStatus: "Completed", verificationStatus: "Verified"});
+  };
+
   return (
-    <SurferContext.Provider value={{ task, friends, loading, deleteTask, completed, taskId, forfeit, forfeitId }}>
+    <SurferContext.Provider value={{ task, friends, loading, deleteTask, completed, taskId, forfeit, forfeitId, handleVerify, events}}>
       {children}
     </SurferContext.Provider>
   );
