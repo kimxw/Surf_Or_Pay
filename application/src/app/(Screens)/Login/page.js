@@ -4,7 +4,8 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/app/contexts/AuthContext";
 import { signInWithEmailAndPassword } from "firebase/auth";
-import { authentication } from "@/app/firebase/configuration"; 
+import { authentication } from "@/app/firebase/configuration"; // Import authentication
+
 import '@/styles/fonts.css';
 
 export function LoginPage() {
