@@ -31,9 +31,11 @@ jobs:
         key: npm-${{ runner.os }}-${{ hashFiles('package-lock.json', '.github/workflows/*') }}
         restore-keys: |
           npm-${{ runner.os }}-
-    - run: npm ci
+    - run: |
+        cd application
+        npm install  # Ensure dependencies are installed before proceeding
     - name: Build the application
       run: |
         cd application
-        npm run build
+        npm run build  # Run the build command inside the 'application' directory
     - run: npm test
