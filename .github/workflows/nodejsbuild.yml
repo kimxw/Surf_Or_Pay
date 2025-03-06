@@ -5,9 +5,14 @@ name: Node.js CI
 
 on:
   push:
-    branches: [ "deployment", "production" ]
+    branches:
+      - "deployment"
+      - "production"
   pull_request:
-    branches: [ "deployment", "production" ]
+    branches:
+      - "deployment"
+      - "production"
+
 
 concurrency:
   group: ci-${{ github.ref }}
