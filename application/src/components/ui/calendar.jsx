@@ -5,7 +5,7 @@ import {
 } from "react-big-calendar";
 import moment from "moment";
 import "react-big-calendar/lib/css/react-big-calendar.css";
-import "./index.css";
+import "./index.css"; //test
 import CalendarToolbar from "./CalendarToolbar";
 import { useSurfer } from "@/app/contexts/SurferContext";
 
