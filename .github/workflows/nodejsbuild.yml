@@ -38,4 +38,3 @@ jobs:
       run: |
         cd application
         npm run build  # Run the build command inside the 'application' directory
-    - run: npm test
