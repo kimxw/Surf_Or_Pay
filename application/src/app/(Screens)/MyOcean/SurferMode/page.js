@@ -11,50 +11,25 @@ import "@/styles/fonts.css";
 import { useAuth } from "@/app/contexts/AuthContext";
 import { useSurfer } from "@/app/contexts/SurferContext";
 import { db } from "@/app/firebase/configuration";
+import { useFriends } from "@/app/contexts/FriendContext";
 
 export default function SurferMode() {
-  const { loggedInUser } = useAuth();
-  const { task, friends } = useSurfer();
+  const { loggedInUser, username } = useAuth();
+  const { task } = useSurfer();
+  const { friend } = useFriends();
   const [loading, setLoading] = useState(true);
-  const [username, setUsername] = useState('');
 
   const [taskDescription, setTaskDescription] = useState("");
-  const [sharkEmail, setSharkEmail] = useState("");
+  const [sharkName, setSharkName] = useState("");
   const [forfeit, setForfeit] = useState("");
   const [deadline, setDeadline] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
-  
-  useEffect(() => {
-    if (!loggedInUser?.email) {
-      setLoading(false);
-      return;
-    }
-
-    const unsubscribe = onSnapshot(
-      doc(db, "Users", loggedInUser?.email),
-      (doc) => {
-        if (doc.exists()) {
-          setUsername(doc.data()?.username || "User");
-        } else {
-          setUsername("User");
-        }
-        setLoading(false);
-      },
-      (error) => {
-        console.error("Error fetching username:", error);
-        setUsername("User");
-        setLoading(false);
-      }
-    );
-
-    return unsubscribe;
-  }, [loggedInUser]);
 
   const handleAddTasks = async () => {
     try {
-      await addDoc(collection(db, "Surfer"), {
-        email: loggedInUser?.email,
-        friendUsername: sharkEmail,
+      await addDoc(collection(db, "Surfers"), {
+        user: username,
+        friendUsername: sharkName,
         desc: taskDescription,
         credits: parseFloat(forfeit),
         deadline: deadline,
@@ -63,7 +38,7 @@ export default function SurferMode() {
       });
       console.log("Task added successfully!");
       setTaskDescription("");
-      setSharkEmail("");
+      setSharkName("");
       setForfeit("");
       setDeadline("");
       setIsModalOpen(false);
@@ -79,7 +54,7 @@ export default function SurferMode() {
   const handleCancelClick = () => {
     setIsModalOpen(false);
     setTaskDescription("");
-    setSharkEmail("");
+    setSharkName("");
     setForfeit("");
     setDeadline("");
   };
@@ -282,19 +257,20 @@ export default function SurferMode() {
                 <select
                   id="shark"
                   name="shark"
-                  value={sharkEmail}
-                  onChange={(e) => setSharkEmail(e.target.value)}
+                  value={sharkName}
+                  onChange={(e) => setSharkName(e.target.value)}
                   className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-black"
                 >
                   <option value="" disabled className="">
                     Choose your shark
                   </option>
                   
-                  {friends.map((friend, index) => (
-                    <option key={index} value={friend}>
-                      {friend}
-                    </option>
-                  ))}
+                  {Array.isArray(friend) &&
+                    friend.map((friendItem, index) => (
+                      <option key={index} value={friendItem}>
+                        {friendItem}
+                      </option>
+                    ))}
                 </select>
 
                 <input

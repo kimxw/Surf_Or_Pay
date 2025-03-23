@@ -13,37 +13,10 @@ import { useSurfer } from "@/app/contexts/SurferContext";
 import { db } from "@/app/firebase/configuration";
 
 export default function SharkMode() {
-  const { loggedInUser } = useAuth();
+  const { loggedInUser, username } = useAuth();
   const { forfeit, forfeitId } = useSurfer();
   const [loading, setLoading] = useState(true);
-  const [username, setUsername] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
-
-  useEffect(() => {
-    if (!loggedInUser?.email) {
-      setLoading(false);
-      return;
-    }
-
-    const unsubscribe = onSnapshot(
-      doc(db, "Users", loggedInUser?.email),
-      (doc) => {
-        if (doc.exists()) {
-          setUsername(doc.data()?.username || "User");
-        } else {
-          setUsername("User");
-        }
-        setLoading(false);
-      },
-      (error) => {
-        console.error("Error fetching username:", error);
-        setUsername("User");
-        setLoading(false);
-      }
-    );
-
-    return unsubscribe;
-  }, [loggedInUser]);
 
   const handleAddClick = () => {
     setIsModalOpen(true);
@@ -52,7 +25,7 @@ export default function SharkMode() {
   const handleCancelClick = () => {
     setIsModalOpen(false);
     setTaskDescription("");
-    setSharkEmail("");
+    setSharkName("");
     setForfeit("");
     setDeadline("");
   };
@@ -199,7 +172,7 @@ export default function SharkMode() {
                   type="text"
                   name="shark"
                   value={sharkEmail}
-                  onChange={(e) => setSharkEmail(e.target.value)}
+                  onChange={(e) => setSharkName(e.target.value)}
                   placeholder="SharkEmail"
                   className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-black"
                 />
