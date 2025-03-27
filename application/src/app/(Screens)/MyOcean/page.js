@@ -11,6 +11,8 @@ import { useAuth } from "@/app/contexts/AuthContext";
 import '@/styles/fonts.css';
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import Calendar from "../../../components/ui/calendar";
+import UpcomingTaskList from "@/components/ui/UpcomingTasksList";
+import "./myocean.css"
 
 export default function MyOcean() {
   const { loggedInUser } = useAuth();
@@ -111,7 +113,7 @@ export default function MyOcean() {
   return (
     <div
       className={cn(
-        "flex flex-col md:flex-row main-purplish-blue-background flex-1 max-w-screen mx-auto border border-[#1E2D4F] overflow-hidden",
+        "flex flex-col md:flex-row main-purplish-blue-background flex-1 max-w-screen mx-auto border border-[#1E2D4F] overflow-y-auto",
         "h-screen p-5"
       )}
     >
@@ -184,22 +186,16 @@ const Dashboard = () => {
         <h1 className="lucky-guy text-4xl text-[#29597e] mb-3">
             My Ocean - Dashboard
         </h1>
-        <div className="flex gap-2 justify-center items-start"> 
-        
-          {/* left container */}
-          <div className="h-95 w-1/2">
-            <Calendar></Calendar>
+        <div className="dashboard-wrapper flex flex-col md:flex-row gap-2 justify-center items-start">
+         
+          <div className="left-container w-full md:w-1/2">
+            <Calendar />
           </div>
-    
-          {/* right container */}
-          <div className="h-20 w-1/2 object-cover">
-            <img 
-              src="/icons/MyOceanDisplay.gif" 
-              alt="Gif display"
-              className="h-200 w-400 object-contain" // Ensure the image scales to fit
-            />
+          
+          <div className="right-container w-full md:w-1/2 object-cover" style={{ paddingLeft: "0.9rem" }}>
+            <UpcomingTaskList />
           </div>
-        </div> 
+        </div>
       </div> 
     </div> 
   ); 

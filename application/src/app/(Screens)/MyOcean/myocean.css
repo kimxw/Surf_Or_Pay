@@ -1,0 +1,22 @@
+ /* @media screen and (max-width: 1000px) {
+    .dashboard-wrapper {
+      flex-direction: column;
+      min-height: 100vh;
+      overflow-y: auto;  
+    }
+    .dashboard-wrapper::-webkit-scrollbar {
+      scrollbar-width: none;
+    }
+    .left-container {
+        width: 95%;
+    }
+    .right-container {
+      width: 100%;
+    }
+    .right-container {
+      padding-right: 2rem;
+      margin-bottom: 5rem;
+    }
+  } 
+
+   */

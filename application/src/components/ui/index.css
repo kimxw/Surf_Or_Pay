@@ -53,7 +53,6 @@
 
 .rbc-toolbar{
     justify-content: space-between;
-    flex-wrap: nowrap;
 }
 
 .rbc-toolbar-label{
@@ -88,4 +87,23 @@
 .rbc-toolbar button.rbc-active:hover{
     background-color: rgba(41, 89, 126, .4);
     color: #29597e;
+}
+
+@media screen and (max-width: 768px) {
+  .rbc-toolbar {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    align-items: center;
+  }
+  .rbc-toolbar-label {
+    width: 100% !important;
+    text-align: center;
+    margin: 0.5rem 0;
+  }
+  .rbc-btn-group {
+    width: 100% !important;
+    display: flex;
+    justify-content: center;
+    margin: 0.25rem 0;
+  }
 }
