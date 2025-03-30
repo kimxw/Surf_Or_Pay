@@ -164,7 +164,7 @@ export default function SharkMode() {
                 label: username,
                 bgcolour: "transparent",
                 textcolour: "#8ab5d6",
-                href: "#",
+                href: "/MyOcean/Profile",
                 icon: (
                   <Image
                     src="/icons/UserIcon.svg"
