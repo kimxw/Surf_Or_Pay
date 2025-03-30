@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Clock } from 'lucide-react';
+import { CircleAlert, Clock } from 'lucide-react';
 import "./upcomingTasks.css";
 
 const tasks = [
@@ -57,11 +57,17 @@ export default function UpcomingTaskList() {
           {tasksToday.map(task => (
             <li key={task.id} className="ut-task">
               <div className="ut-task-info">
-                <Clock className="ut-icon" />
+                <CircleAlert className="ut-icon" />
                 <span className="ut-task-title">{task.title}</span>
               </div>
-              <div className="ut-task-deadline">
-                {useClientTime(task.deadline)}
+              <div className="ut-right-items">
+                <div className = "ut-task-forfeit-container">
+                    <span className="ut-forfeit-text">{"-$"+ task.forfeitAmount}</span>
+                </div>
+                <div className = "ut-task-deadline-container">
+                    <Clock className="ut-deadline-icon" />
+                    <span className="ut-deadline-text">{useClientTime(task.deadline)}</span>
+                </div>
               </div>
             </li>
           ))}
@@ -73,11 +79,17 @@ export default function UpcomingTaskList() {
           {tasksTomorrow.map(task => (
             <li key={task.id} className="ut-task">
               <div className="ut-task-info">
-                <Clock className="ut-icon" />
+                <CircleAlert className="ut-icon" />
                 <span className="ut-task-title">{task.title}</span>
               </div>
-              <div className="ut-task-deadline">
-                {useClientTime(task.deadline)}
+              <div className="ut-right-items">
+                <div className = "ut-task-forfeit-container">
+                    <span className="ut-forfeit-text">{"-$"+ task.forfeitAmount}</span>
+                </div>
+                <div className = "ut-task-deadline-container">
+                    <Clock className="ut-deadline-icon" />
+                    <span className="ut-deadline-text">{useClientTime(task.deadline)}</span>
+                </div>
               </div>
             </li>
           ))}

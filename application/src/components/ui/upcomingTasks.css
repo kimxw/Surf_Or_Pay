@@ -63,11 +63,47 @@
     color: #b2fff2;
     width:1.9rem;
   }
-  
-  /* Deadline styling */
-  .ut-task-deadline {
-    font-size: 0.9rem;
-    color: #7a4545;
+  /* Right items styling*/
+  .ut-right-items {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  /* Forfeit amt styling*/
+  .ut-task-forfeit-container {
+    background-color: #961a1ad2;
+    display: flex;
+    border-radius: 10;
     margin-right: 0.5rem;
   }
+
+  .ut-forfeit-text {
+    color: rgb(240, 224, 224);
+    margin: 0.3rem;
+  }
+
+
+  /* Deadline styling */
+  .ut-task-deadline-container {
+    border-color: #091d3b95;
+    background-color:#b2fff2be ;
+    border-width: 0.2rem;
+    margin-right: 0.5rem;
+    border-radius: 16;
+    display: flex; 
+    align-items: center;
+  }
+  .ut-deadline-icon {
+    font-size: 1.2rem;
+    stroke-width: 0.18rem;
+    color: #091d3b95;
+    margin: 0.2rem;
+  }
+
+  .ut-deadline-text {
+    font-size: 0.9rem;
+    color: #091d3b95;
+    margin: 0.2rem;
+  }
+
   
