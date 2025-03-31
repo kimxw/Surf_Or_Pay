@@ -11,7 +11,14 @@ import '@/styles/fonts.css';
 
 export function SignUpPage() {
   return (
-    <div className="bg-[#ffffff] flex items-center justify-center min-h-screen bg-black py-10">
+    <div
+        className="flex items-center justify-center min-h-screen py-10"
+        style={{
+          backgroundImage: "url('/login.png')", // Provide the path to your login.png image
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+        }}
+      >
 
       <div className="bg-white shadow-lg rounded-lg p-5 w-full max-w-md mx-4" style={{borderRadius:'20px'}}>
         <SignUpComponent />
