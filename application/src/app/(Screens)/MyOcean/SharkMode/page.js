@@ -19,6 +19,10 @@ export default function SharkMode() {
   const [username, setUsername] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+   //for filters
+  const [filterSurfer, setFilterSurfer] = useState("");
+  const [filterDescription, setFilterDescription] = useState("");
+
   useEffect(() => {
     if (!loggedInUser?.email) {
       setLoading(false);
@@ -122,6 +126,13 @@ export default function SharkMode() {
 
   const forfeits = forfeit;
 
+  const filteredForfeits = forfeits.filter((forfeit) => {
+    return (
+      (filterSurfer === "" || forfeit.friendUsername.toLowerCase().includes(filterSurfer.toLowerCase())) &&
+      (filterDescription === "" || forfeit.desc.toLowerCase().includes(filterDescription.toLowerCase()))
+    );
+  });
+
 
   return (
     <div
@@ -189,9 +200,31 @@ export default function SharkMode() {
               Shark Mode - Forfeit
             </h1>
 
+            
+            {/*filters with listeners*/}  
+            <div className="flex gap-2">
+                <div className="h-20 w-full rounded-lg items-center grid grid-cols-[14%_33%]">
+                  <input
+                    type="text"
+                    placeholder="Filter by surfer"
+                    value={filterSurfer}
+                    onChange={(e) => setFilterSurfer(e.target.value)}
+                    className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 text-black opacity-70 mr-3"
+                  />
+
+                  <input
+                    type="text"
+                    placeholder="Filter by task description"
+                    value={filterDescription}
+                    onChange={(e) => setFilterDescription(e.target.value)}
+                    className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 text-black opacity-70 mx-6"
+                  />
+                </div>
+              </div>
+
           <div className="flex gap-2 flex-1">
-            <div className="h-full w-full rounded-lg bg-transparent opacity-75">
-              <ForfeitTable forfeits={forfeits} />
+            <div className="h-full w-full rounded-lg bg-transparent">
+              <ForfeitTable forfeits={filteredForfeits} />
             </div>
           </div>
         </div>

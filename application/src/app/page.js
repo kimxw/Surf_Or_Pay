@@ -39,7 +39,7 @@ export default function Home() {
                   />
                 </div>
                 {/* Text */}
-                <span className="relative z-10">Log In</span>
+                <span className="relative z-10 text-white">Log In</span>
               </button>
             </Link>
             <Link href="https://buymeacoffee.com/">
@@ -63,7 +63,7 @@ export default function Home() {
         {/* Tabs Section */}
         <div className="mt-[110vw] flex flex-col justify-center items-center w-screen z-10">
           <TabsDemo />
-          <p className="pt-10 lucky-guy text-center whitespace-pre-line text-[50px]">
+          <p className="pt-10 lucky-guy text-center whitespace-pre-line text-[50px] text-white">
             STOP WASTING TIME! TAKE ACTION NOW  
           </p>
         </div>
