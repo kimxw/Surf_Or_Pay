@@ -265,17 +265,12 @@ export default function SurferMode() {
               onClick={handleAddClick}
               className="bg-[#29597e] text-white pb-0.5 m-2 mt-5 rounded-lg flex-shrink-0 w-auto px-4 flex items-center space-x-2"
             >
-              <img
-                src="/icons/AddTask.svg"
-                alt="Icon"
-                className="h-10 w-auto mt-0.5"
-              />
-              <span className="lucky-guy text-2xl text-[#c6e5fc]">Add</span>
+              <span className="lucky-guy text-2xl text-[#c6e5fc]">New Task</span>
             </button>
           </div>
 
           <div className="flex gap-2 flex-1">
-            <div className="h-full w-full rounded-lg bg-transparent opacity-75">
+            <div className="h-full w-full rounded-lg bg-transparent">
               <TaskTable tasks={task_test} />
             </div>
           </div>

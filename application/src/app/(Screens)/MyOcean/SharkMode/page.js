@@ -190,7 +190,7 @@ export default function SharkMode() {
             </h1>
 
           <div className="flex gap-2 flex-1">
-            <div className="h-full w-full rounded-lg bg-transparent opacity-75">
+            <div className="h-full w-full rounded-lg bg-transparent">
               <ForfeitTable forfeits={forfeits} />
             </div>
           </div>
