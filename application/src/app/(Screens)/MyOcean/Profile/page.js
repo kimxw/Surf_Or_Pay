@@ -162,7 +162,7 @@ export default function Profile() {
           </div>
         </SidebarBody>
       </Sidebar>
-      <ProfileDashboard username={username} email={loggedInUser.email} profilePic={"/icons/UserIcon.svg"} tasksCompleted={12} moneyOwed={120} moneyClaimed={120}/>
+      <ProfileDashboard username={username} email={"defaultemail@gmail.com"} profilePic={"/icons/UserIcon.svg"} tasksCompleted={12} moneyOwed={120} moneyClaimed={120}/>
     </div>
   );
 }
