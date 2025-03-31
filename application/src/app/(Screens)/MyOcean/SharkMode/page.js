@@ -18,6 +18,37 @@ export default function SharkMode() {
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+
+   //for filters
+  const [filterSurfer, setFilterSurfer] = useState("");
+  const [filterDescription, setFilterDescription] = useState("");
+
+  useEffect(() => {
+    if (!loggedInUser?.email) {
+      setLoading(false);
+      return;
+    }
+
+    const unsubscribe = onSnapshot(
+      doc(db, "Users", loggedInUser?.email),
+      (doc) => {
+        if (doc.exists()) {
+          setUsername(doc.data()?.username || "User");
+        } else {
+          setUsername("User");
+        }
+        setLoading(false);
+      },
+      (error) => {
+        console.error("Error fetching username:", error);
+        setUsername("User");
+        setLoading(false);
+      }
+    );
+
+    return unsubscribe;
+  }, [loggedInUser]);
+
   const handleAddClick = () => {
     setIsModalOpen(true);
   };
@@ -95,6 +126,13 @@ export default function SharkMode() {
 
   const forfeits = forfeit;
 
+  const filteredForfeits = forfeits.filter((forfeit) => {
+    return (
+      (filterSurfer === "" || forfeit.friendUsername.toLowerCase().includes(filterSurfer.toLowerCase())) &&
+      (filterDescription === "" || forfeit.desc.toLowerCase().includes(filterDescription.toLowerCase()))
+    );
+  });
+
 
   return (
     <div
@@ -106,7 +144,25 @@ export default function SharkMode() {
       <Sidebar>
         <SidebarBody className="justify-between gap-10">
           <div className="flex flex-col flex-1 overflow-y-auto overflow-x-hidden">
-            <Logo />
+            <div>
+              <SidebarLink
+                link={{
+                  label: "Surf or Pay",
+                  bgcolour: "transparent",
+                  textcolour: "#8ab5d6",
+                  href: "#",
+                  icon: (
+                    <Image
+                      src="/icons/AppLogo.svg"
+                      className="h-18 w-20 flex-shrink-0 rounded-xl"
+                      width={50}
+                      height={50}
+                      alt="Avatar"
+                    />
+                  ),
+                }}
+              />
+            </div>
             <div className="mt-8 flex flex-col gap-2">
               {links.map((link, idx) => (
                 <SidebarLink key={idx} link={link} />
@@ -114,14 +170,16 @@ export default function SharkMode() {
             </div>
           </div>
           <div>
-            <SidebarLink
+          <SidebarLink
               link={{
                 label: username,
+                bgcolour: "transparent",
+                textcolour: "#8ab5d6",
                 href: "#",
                 icon: (
                   <Image
-                  src="/icons/AddFriendIcon.svg"
-                    className="h-7 w-7 flex-shrink-0 rounded-full"
+                    src="/icons/UserIcon.svg"
+                    className="h-20 w-20 flex-shrink-0 rounded-full"
                     width={50}
                     height={50}
                     alt="Avatar"
@@ -142,9 +200,31 @@ export default function SharkMode() {
               Shark Mode - Forfeit
             </h1>
 
+            
+            {/*filters with listeners*/}  
+            <div className="flex gap-2">
+                <div className="h-20 w-full rounded-lg items-center grid grid-cols-[14%_33%]">
+                  <input
+                    type="text"
+                    placeholder="Filter by surfer"
+                    value={filterSurfer}
+                    onChange={(e) => setFilterSurfer(e.target.value)}
+                    className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 text-black opacity-70 mr-3"
+                  />
+
+                  <input
+                    type="text"
+                    placeholder="Filter by task description"
+                    value={filterDescription}
+                    onChange={(e) => setFilterDescription(e.target.value)}
+                    className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 text-black opacity-70 mx-6"
+                  />
+                </div>
+              </div>
+
           <div className="flex gap-2 flex-1">
-            <div className="h-full w-full rounded-lg bg-transparent opacity-75">
-              <ForfeitTable forfeits={forfeits} />
+            <div className="h-full w-full rounded-lg bg-transparent">
+              <ForfeitTable forfeits={filteredForfeits} />
             </div>
           </div>
         </div>
@@ -219,52 +299,6 @@ export default function SharkMode() {
     </div>
   );
 }
-
-export const Logo = () => { 
-  return ( 
-    <Link 
-      href="#" 
-      className="font-normal flex space-x-5 items-center text-sm text-black py-1 relative z-20" 
-    > 
-      <div> 
-        <Image 
-          src="/icons/AppLogo.svg" 
-          className="h-18 w-20 flex-shrink-0 rounded-xl" 
-          width={50} 
-          height={50} 
-          alt="Avatar" 
-        /> 
-      </div> 
-      <motion.span 
-        initial={{ opacity: 0 }} 
-        animate={{ opacity: 1 }} 
-        className="font-medium lucky-guy text-4xl text-[#8ab5d6] dark:[#8ab5d6] whitespace-pre" 
-      > 
-        Surf or Pay 
-      </motion.span> 
-    </Link> 
-  ); 
-}; 
- 
-export const LogoIcon = () => { 
-  return ( 
-    <Link 
-      href="#" 
-      className="font-normal flex space-x-2 items-center text-sm text-white py-1 relative z-20" 
-    > 
-    <div> 
-        <Image 
-          src="/icons/AppLogo.svg" 
-          className="h-18 w-20 flex-shrink-0 rounded-xl" 
-          width={50} 
-          height={50} 
-          alt="Avatar" 
-        /> 
-      </div>    
-    </Link> 
-  ); 
-};
-
 
 // Dummy dashboard component with content
 const Dashboard = () => {

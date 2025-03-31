@@ -44,11 +44,17 @@ export const SurferProvider = ({ children }) => {
             const data = docSnapshot.data();
             taskIds.push(docSnapshot.id);
         
+            // Fetch the friend's username asynchronously
+            const username = await fetchUsername(data.friendUsername);
+
+            const formattedDeadline = moment(data.deadline).format("D MMM h:mm A"); 
+        
+            // Push the task with the fetched username
             tasks.push({
               friendUsername: data.friendUsername,
               desc: data.desc,
               credits: data.credits,
-              deadline: data.deadline,
+              deadline: formattedDeadline,
               completionStatus: data.completionStatus,
               verificationStatus: data.verificationStatus,
             });
@@ -68,12 +74,16 @@ export const SurferProvider = ({ children }) => {
           for (const docSnapshot of querySnapshot.docs) {
             const data = docSnapshot.data();
             forfeitIds.push(docSnapshot.id);
+            
+            const username = await fetchUsername(data.friendUsername);
+
+            const formattedDeadline = moment(data.deadline).format("D MMM h:mm A"); 
 
             forfeits.push({
               friendUsername: data.user,
               desc: data.desc,
               credits: data.credits,
-              deadline: data.deadline,
+              deadline: formattedDeadline, 
               completionStatus: data.completionStatus,
               verificationStatus: data.verificationStatus,
             });

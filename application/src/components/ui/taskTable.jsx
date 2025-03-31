@@ -6,8 +6,7 @@ import { useSurfer } from "@/app/contexts/SurferContext";
 // Inline CSS for card styles
 const cardStyles = `
   .card {
-    background-color: white;
-    opacity: 0.95;
+    background-color: rgba(255, 255, 255, 0.8);
     border: 1px solid #ddd;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
@@ -22,7 +21,7 @@ const cardStyles = `
   }
 
   .card:hover {
-    transform: translateY(-4px);
+    transform: translateY(-2px);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
   }
 

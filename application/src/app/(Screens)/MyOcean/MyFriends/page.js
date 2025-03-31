@@ -94,21 +94,6 @@ export default function MyFriends() {
 
   const links = [
     {
-      label: "Surf or Pay",
-      bgcolour: "transparent",
-      textcolour: "#8ab5d6",
-      href: "#",
-      icon: (
-        <Image
-          src="/icons/AppLogo.svg"
-          className="h-18 w-20 flex-shrink-0 rounded-xl"
-          width={50}
-          height={50}
-          alt="Avatar"
-        />
-      ),
-    },
-    {
       label: "My Ocean",
       bgcolour: "#68c5c0",
       textcolour: "#357b78",
@@ -178,7 +163,7 @@ export default function MyFriends() {
     return (
       <div className="flex flex-1 flex-col">
         <div
-          className="p-2 md:p-10 rounded-tl-2xl border border-neutral-200 dark:border-neutral-700 flex flex-col gap-2 flex-1 w-full h-full bg-[url('/Background.png')]"
+          className="p-2 md:p-10 rounded-tl-2xl border-transparent flex flex-col gap-2 flex-1 w-full h-full bg-[url('/Background.png')]"
           style={{ backgroundSize: 'cover', backgroundPosition: 'center' }}
         >
           <h1 className="lucky-guy text-4xl text-[#29597e] dark:[#29597e]">
@@ -233,6 +218,25 @@ export default function MyFriends() {
       <Sidebar open={open} setOpen={setOpen}>
         <SidebarBody className="justify-between gap-10">
           <div className="flex flex-col flex-1 overflow-y-auto overflow-x-hidden">
+            <div>
+              <SidebarLink
+                link={{
+                  label: "Surf or Pay",
+                  bgcolour: "transparent",
+                  textcolour: "#8ab5d6",
+                  href: "#",
+                  icon: (
+                    <Image
+                      src="/icons/AppLogo.svg"
+                      className="h-18 w-20 flex-shrink-0 rounded-xl"
+                      width={50}
+                      height={50}
+                      alt="Avatar"
+                    />
+                  ),
+                }}
+              />
+            </div>
             <div className="mt-8 flex flex-col gap-2">
               {links.map((link, idx) => (
                 <SidebarLink key={idx} link={link} />
@@ -243,11 +247,13 @@ export default function MyFriends() {
             <SidebarLink
               link={{
                 label: username,
+                bgcolour: "transparent",
+                textcolour: "#8ab5d6",
                 href: "#",
                 icon: (
                   <Image
-                    src="/icons/AddFriendIcon.svg"
-                    className="h-7 w-7 flex-shrink-0 rounded-full"
+                    src="/icons/UserIcon.svg"
+                    className="h-20 w-20 flex-shrink-0 rounded-full"
                     width={50}
                     height={50}
                     alt="Avatar"
