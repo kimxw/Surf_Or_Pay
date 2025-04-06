@@ -128,6 +128,33 @@ export const SurferProvider = ({ children }) => {
     await updateDoc(taskDoc, { completionStatus: "Completed", verificationStatus: "Verified"});
   };
 
+  useEffect(() => {
+    if (!loggedInUser?.email || username === "User") return;
+  
+    const taskQuery = query(
+      collection(db, "Surfers"),
+      where("user", "==", username),
+      orderBy("deadline", "asc")
+    );
+  
+    const unsubscribeOverdueListener = onSnapshot(taskQuery, async (querySnapshot) => {
+      const now = new Date();
+  
+      for (const docSnapshot of querySnapshot.docs) {
+        const data = docSnapshot.data();
+        const deadline = data.deadline.toDate?.() || new Date(data.deadline);
+  
+        if (data.completionStatus === "Incomplete" && deadline < now) {
+          await updateDoc(doc(db, "Surfers", docSnapshot.id), {
+            completionStatus: "Overdue"
+          });
+        }
+      }
+    });
+  
+    return () => unsubscribeOverdueListener();
+  }, [loggedInUser, username]);
+  
   return (
     <SurferContext.Provider value={{ task, loading, deleteTask, completed, taskId, forfeit, forfeitId, handleVerify, events}}>
       {children}
