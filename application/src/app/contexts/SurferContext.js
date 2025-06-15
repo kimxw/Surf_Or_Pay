@@ -11,6 +11,7 @@ export const useSurfer = () => useContext(SurferContext);
 
 export const SurferProvider = ({ children }) => {
   const [task, setTask] = useState([]);
+  const [taskForDashboard, setTaskForDashboard] = useState([]);
   const [taskId, setTaskId] = useState([]);
   const [friends, setFriends] = useState([]);
   const [forfeit, setForfeit] = useState([]);
@@ -39,6 +40,7 @@ export const SurferProvider = ({ children }) => {
         const unsubscribeTasks = onSnapshot(taskQuery, async (querySnapshot) => {
           const tasks = [];
           const taskIds = [];
+          const taskForDashboard = []
         
           for (const docSnapshot of querySnapshot.docs) {
             const data = docSnapshot.data();
@@ -52,10 +54,18 @@ export const SurferProvider = ({ children }) => {
               completionStatus: data.completionStatus,
               verificationStatus: data.verificationStatus,
             });
+            
+            taskForDashboard.push({
+              id: docSnapshot.id,
+              title: data.desc,
+              deadline: moment(data.deadline).toISOString(),
+              forfeit: data.credits
+            });
           }
 
           setTaskId(taskIds);
           setTask(tasks);
+          setTaskForDashboard(taskForDashboard)
         });
 
         const unsubscribeForfeits = onSnapshot(sharkQuery, async (querySnapshot) => {
@@ -156,7 +166,7 @@ export const SurferProvider = ({ children }) => {
   }, [loggedInUser, username]);
   
   return (
-    <SurferContext.Provider value={{ task, loading, deleteTask, completed, taskId, forfeit, forfeitId, handleVerify, events}}>
+    <SurferContext.Provider value={{ task, loading, deleteTask, completed, taskId, forfeit, forfeitId, handleVerify, events, taskForDashboard}}>
       {children}
     </SurferContext.Provider>
   );
