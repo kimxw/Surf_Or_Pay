@@ -24,19 +24,20 @@ export default function MyOcean() {
       return;
     }
 
+    //HERE 1
     const unsubscribe = onSnapshot(
       doc(db, "Users", loggedInUser?.email),
       (doc) => {
         if (doc.exists()) {
-          setUsername(doc.data()?.username || "User");
+          setUsername(doc.data()?.username || "Loading...");
         } else {
-          setUsername("User");
+          setUsername("Loading...");
         }
         setLoading(false);
       },
       (error) => {
         console.error("Error fetching username:", error);
-        setUsername("User");
+        setUsername("Loading...");
         setLoading(false);
       }
     );

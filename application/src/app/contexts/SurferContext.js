@@ -21,7 +21,7 @@ export const SurferProvider = ({ children }) => {
   const { loggedInUser, username } = useAuth();
 
   useEffect(() => {
-    if (!loggedInUser?.email || username == "User") return;
+    if (!loggedInUser?.email || username == "Loading...") return;
 
     const fetchTasksAndFriends = async () => {
       try {
@@ -139,7 +139,7 @@ export const SurferProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    if (!loggedInUser?.email || username === "User") return;
+    if (!loggedInUser?.email || username === "Loading...") return;
   
     const taskQuery = query(
       collection(db, "Surfers"),

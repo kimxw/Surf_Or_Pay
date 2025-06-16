@@ -15,7 +15,7 @@ export const FriendProvider = ({ children }) => {
     console.log("Username used in query:", username);
   
     useEffect(() => {
-        if (!loggedInUser?.email || username === "User") return;
+        if (!loggedInUser?.email || username === "Loading...") return;
     
         console.log("Fetching friends for:", username);
     
