@@ -14,84 +14,61 @@ import { collection, query, where, getDocs, addDoc, doc, getDoc, onSnapshot } fr
 import '@/styles/fonts.css'; 
 
 export default function MyFriends() {
-  const { loggedInUser } = useAuth();
+  const { loggedInUser, username } = useAuth();
   const { friend } = useFriends();
   const [friendList, setFriendList] = useState([]);
   const [newFriend, setNewFriend] = useState("");
-  const [username, setUsername] = useState('');
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    if (!loggedInUser?.email) {
-      setLoading(false);
-      return;
-    }
-
-    const unsubscribe = onSnapshot(
-      doc(db, "Users", loggedInUser?.email),
-      (doc) => {
-        if (doc.exists()) {
-          setUsername(doc.data()?.username || "User");
-        } else {
-          setUsername("User");
-        }
-        setLoading(false);
-      },
-      (error) => {
-        console.error("Error fetching username:", error);
-        setUsername("User");
-        setLoading(false);
-      }
-    );
-
-    return unsubscribe;
-  }, [loggedInUser]);
-
-
-  const handleAddFriend = async (friendEmail) => {
+  const handleAddFriend = async (friendUsername) => {
     if (!loggedInUser?.email) return;
 
     try {
-      const userDoc = await getDoc(doc(db, "Users", friendEmail));
-      if (userDoc.exists()) {
-        const userData = userDoc.data();
-        const friendUsername = userData.username;
+      const q = query(collection(db, "Users"), where("username", "==", friendUsername));
+      const querySnapshot = await getDocs(q);
 
-        await addDoc(collection(db, "friends"), {
-          email: loggedInUser?.email,
-          friend: friendEmail,
-          friendUsername: friendUsername
+      if (!querySnapshot.empty) { // check if friend exists, then add them
+
+        await addDoc(collection(db, "Friend"), {
+          user: username,
+          friend: friendUsername
         });
-
-        await addDoc(collection(db, "friends"), {
-          email: friendEmail,
-          friend: loggedInUser?.email,
-          friendUsername: username
+  
+        await addDoc(collection(db, "Friend"), {
+          user: friendUsername,
+          friend: username
         });
-
+  
         alert("Friend added successfully!");
+
+      } else {
+        console.warn(`No user found with username: ${friendUsername}`);
+        return null;
       }
+      
     } catch (error) {
       console.error("Error adding friend:", error);
       alert("Failed to add friend. Please try again.");
     }
   };
 
-  const getUserDataByEmail = async (email) => {
+  const getUserEmail = async (friendUsername) => {
     try {
-      const userDoc = await getDoc(doc(db, "Users", email));
-      if (userDoc.exists()) {
-        const userData = userDoc.data();
+      const q = query(collection(db, "Users"), where("username", "==", friendUsername));
+      const querySnapshot = await getDocs(q);
+
+      if (!querySnapshot.empty) {
+        const userDoc = querySnapshot.docs[0];
         return {
-          username: userData.username,
-          email: email,
+          username: friendUsername,
+          email: userDoc.id,
         };
       } else {
-        console.warn(`No user found with email: ${email}`);
+        console.warn(`No user found with username: ${friendUsername}`);
         return null;
       }
     } catch (error) {
-      console.error(`Error fetching user data for ${email}:`, error);
+      console.error(`Error fetching user data for ${friendUsername}:`, error);
       return null;
     }
   };
@@ -99,27 +76,11 @@ export default function MyFriends() {
   useEffect(() => {
     if (!loggedInUser?.email) return;
 
-    const unsubscribe = onSnapshot(
-      doc(db, "Users", loggedInUser?.email),
-      (doc) => {
-        if (doc.exists()) {
-          const userData = doc.data();
-          setUsername(userData?.username);
-        }
-        setLoading(false);
-      },
-      (error) => {
-        console.error("Error fetching username:", error);
-        setUsername("sleep time");
-        setLoading(false);
-      }
-    );
-
     const fetchFriendData = async () => {
       setLoading(true);
       const updatedFriendList = [];
       for (const f of friend) {
-        const friendData = await getUserDataByEmail(f);
+        const friendData = await getUserEmail(f);
         if (friendData) {
           updatedFriendList.push(friendData);
         }
@@ -129,8 +90,6 @@ export default function MyFriends() {
     };
 
     fetchFriendData();
-
-    return () => unsubscribe();
   }, [loggedInUser, friend]);
 
   const links = [
@@ -217,7 +176,7 @@ export default function MyFriends() {
                 id="username"
                 type="email"
                 name="username"
-                placeholder="Enter your friend's email address"
+                placeholder="Enter your friend's username"
                 className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 text-black opacity-70"
               />
               <button

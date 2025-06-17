@@ -11,27 +11,30 @@ export const useFriends = () => useContext(FriendContext);
 export const FriendProvider = ({ children }) => {
     const [friend, setFriend] = useState([]);
     const [loading, setLoading] = useState(true);
-    const { loggedInUser } = useAuth();
+    const { loggedInUser, username } = useAuth();
+    console.log("Username used in query:", username);
   
     useEffect(() => {
-        if (!loggedInUser?.email) return;
+        if (!loggedInUser?.email || username === "Loading...") return;
     
-        const q = query(collection(db, "friends"), where("email", "==", loggedInUser?.email), orderBy("friend", "asc"));
-        
+        console.log("Fetching friends for:", username);
+    
+        const q = query(collection(db, "Friend"), where("user", "==", username), orderBy("friend", "asc"));
+    
         const unsubscribe = onSnapshot(q, (querySnapshot) => {
             const friendData = [];
             querySnapshot.forEach((doc) => {
-                const data = doc.data();
-                friendData.push(data.friend);
+                friendData.push(doc.data().friend);
             });
-            console.log(friendData, "my friends");
+    
+            console.log("Updated friend list:", friendData);
             setFriend(friendData);
             setLoading(false);
         });
     
         return () => unsubscribe();
-    }, [loggedInUser]);
-
+    }, [loggedInUser, username]);
+    
     return (
         <FriendContext.Provider value={{ friend, loading}}>
           {children}
