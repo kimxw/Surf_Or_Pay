@@ -18,7 +18,6 @@ const components = {
 
 export default function Calendar(props) {
     const {events} = useSurfer();
-
     const eventsList = events;
 
     return <BigCalendar {...props} 
