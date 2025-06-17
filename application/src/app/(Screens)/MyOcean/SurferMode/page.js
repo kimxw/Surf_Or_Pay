@@ -21,7 +21,7 @@ export default function SurferMode() {
 
   const [taskDescription, setTaskDescription] = useState("");
   const [sharkName, setSharkName] = useState("");
-  const [forfeit, setForfeit] = useState("");
+  const [forfeit, setForfeit] = useState("0");
   const [deadline, setDeadline] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -43,7 +43,7 @@ export default function SurferMode() {
       console.log("Task added successfully!");
       setTaskDescription("");
       setSharkName("");
-      setForfeit("");
+      setForfeit("0");
       setDeadline("");
       setIsModalOpen(false);
     } catch (error) {
@@ -59,7 +59,7 @@ export default function SurferMode() {
     setIsModalOpen(false);
     setTaskDescription("");
     setSharkName("");
-    setForfeit("");
+    setForfeit("0");
     setDeadline("");
   };
 
