@@ -33,7 +33,7 @@ export default function UpcomingTaskList() {
       <div className="ut-section">
         <h1 className="ut-title">Today's Tasks</h1>
         <ul className="ut-list">
-          {tasksToday.length === 0 && <li>No tasks for today</li>}
+          {tasksToday.length === 0 && <li style={{color: "#FFFFFF"}}>No tasks for today</li>}
           {tasksToday.map(task => (
             <li key={task.id} className="ut-task">
               <div className="ut-task-info">
@@ -57,7 +57,7 @@ export default function UpcomingTaskList() {
       <div className="ut-section">
         <h1 className="ut-title">Tomorrow's Tasks</h1>
         <ul className="ut-list">
-          {tasksTomorrow.length === 0 && <li>No tasks for tomorrow</li>}
+          {tasksTomorrow.length === 0 && <li style={{color: "#FFFFFF"}}>No tasks for tomorrow</li>}
           {tasksTomorrow.map(task => (
             <li key={task.id} className="ut-task">
               <div className="ut-task-info">
