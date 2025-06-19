@@ -13,7 +13,15 @@ const cardStyles = `
     margin-bottom: 8px;
     padding: 10px;
     display: grid;
-    grid-template-columns: 3% 12% 1fr 8% 15% 13% minmax(100px, auto) minmax(40px, auto);
+    grid-template-columns: 
+      3% 
+      12% 
+      1fr 
+      10% 
+      minmax(140px, 200px) /* deadline wider */
+      23% 
+      minmax(100px, 150px) /* verification */
+      minmax(40px, 40px);
     text-align: left;
     color: black;
     transition: transform 0.2s ease, box-shadow 0.3s ease;
@@ -46,6 +54,18 @@ const cardStyles = `
   }
 `;
 
+function formatDateTime(isoString) {
+  const date = new Date(isoString);
+  return date.toLocaleString("en-SG", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+    hour: "numeric",
+    minute: "2-digit",
+    hour12: true,
+  });
+}
+
 const ForfeitTable = ({ forfeits }) => {
   const { forfeitId, handleVerify, deleteTask } = useSurfer();
 
@@ -76,8 +96,8 @@ const ForfeitTable = ({ forfeits }) => {
               <div className="card-section">{index + 1}</div>
               <div className="card-section">{task.friendUsername}</div>
               <div className="card-section">{task.desc}</div>
-              <div className="card-section">{task.credits}</div>
-              <div className="card-section">{task.deadline}</div>
+              <div className="card-section">${task.credits}</div>
+              <div className="card-section">{formatDateTime(task.deadline)}</div>
               <div className="card-section">{task.completionStatus}</div>
               <div className="card-section">
                 {task.completionStatus === "Completed" && task.verificationStatus === "Verified" ? (

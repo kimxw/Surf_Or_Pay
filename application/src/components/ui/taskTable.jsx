@@ -13,7 +13,16 @@ const cardStyles = `
     margin-bottom: 8px;
     padding: 10px;
     display: grid;
-    grid-template-columns: 3% 12% 33% 8% 15% 13% 8% 8%; /* Adjusted column widths */
+    grid-template-columns: 
+      3%                     /* index */
+      12%                    /* surfer */
+      minmax(150px, 1fr)     /* task description */
+      8%                     /* forfeit */
+      minmax(180px, 18%)     /* deadline: wider now */
+      13%                    /* status */
+      minmax(100px, 12%)     /* verification */
+      minmax(40px, 40px);    /* delete */
+
     text-align: left;
     color: black;
     transition: transform 0.2s ease, box-shadow 0.3s ease;
@@ -46,6 +55,18 @@ const cardStyles = `
   }
 `;
 
+function formatDateTime(isoString) {
+  const date = new Date(isoString);
+  return date.toLocaleString("en-SG", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+    hour: "numeric",
+    minute: "2-digit",
+    hour12: true,
+  });
+}
+
 const TaskTable = ({ tasks }) => {
   const { deleteTask, completed, taskId } = useSurfer();
 
@@ -71,8 +92,8 @@ const TaskTable = ({ tasks }) => {
             <div className="card-section">{index + 1}</div>
             <div className="card-section">{task.friendUsername}</div>
             <div className="card-section">{task.desc}</div>
-            <div className="card-section">{task.credits}</div>
-            <div className="card-section">{task.deadline}</div>
+            <div className="card-section">${task.credits}</div>
+            <div className="card-section">{formatDateTime(task.deadline)}</div>
             <div className="card-section">{task.completionStatus}</div>
             <div className="card-section">
             {(task.completionStatus === "Completed" && task.verificationStatus === "Verified") ? (
