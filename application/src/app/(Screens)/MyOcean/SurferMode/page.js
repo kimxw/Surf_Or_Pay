@@ -251,7 +251,7 @@ export default function SurferMode() {
                 placeholder="Filter by shark"
                 value={filterShark}
                 onChange={(e) => setFilterShark(e.target.value)}
-                className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 text-black opacity-70 mr-3"
+                className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 text-black opacity-70 mr-3 font-[Arial] font-bold"
               />
 
               <input
@@ -259,7 +259,7 @@ export default function SurferMode() {
                 placeholder="Filter by task description"
                 value={filterDescription}
                 onChange={(e) => setFilterDescription(e.target.value)}
-                className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 text-black opacity-70 mx-6"
+                className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 text-black opacity-70 mx-6 font-[Arial] font-bold"
               />
             </div>
 
