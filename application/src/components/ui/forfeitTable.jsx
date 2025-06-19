@@ -174,7 +174,7 @@ const ForfeitTable = ({ forfeits }) => {
                         style={{ width: "50px", height: "28px", objectFit: "contain" }}
                       />
                     </button>
-                  ) : task.completionStatus === "Incomplete" ? (
+                  ) : (task.completionStatus === "Incomplete" || task.verificationStatus === "Pending") ? (
                     <button
                       onClick={() => deleteTask(forfeitId[index])}
                       className="ml-1 rounded-md flex items-center justify-center bg-[#dd5f50] text-white text-lg"
