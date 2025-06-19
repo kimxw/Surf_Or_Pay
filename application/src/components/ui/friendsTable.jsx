@@ -14,6 +14,7 @@ const cardStyles = `
     text-align: left; /* Ensure all content inside the card is left-aligned */
     color: black;
     transition: transform 0.2s ease, box-shadow 0.3s ease;
+    font-family: Arial, sans-serif;
   }
 
   .card:hover {

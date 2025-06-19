@@ -29,6 +29,7 @@ const cardStyles = `
     align-items: center;
     overflow: hidden; /* hide overflow on card level */
     box-sizing: border-box;
+    font-family: Arial, sans-serif;
   }
 
   .card:hover {
