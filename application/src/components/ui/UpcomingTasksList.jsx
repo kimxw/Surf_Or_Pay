@@ -6,20 +6,31 @@ import "./upcomingTasks.css";
 export default function UpcomingTaskList() {
   const { taskForDashboard } = useSurfer();
 
-  const todayDateStr = new Date().toISOString().split('T')[0];
+  const [todayDateStr, setTodayDateStr] = React.useState("");
+  const [tomorrowDateStr, setTomorrowDateStr] = React.useState("");
 
-  const tomorrowDateStr = new Date(Date.now() + 24 * 60 * 60 * 1000)
-    .toISOString()
-    .split('T')[0];
+  React.useEffect(() => {
+    const today = new Date();
+    const todayStr = today.toISOString().split('T')[0];
+    const tomorrow = new Date(today.getTime() + 24 * 60 * 60 * 1000);
+    const tomorrowStr = tomorrow.toISOString().split('T')[0];
+    setTodayDateStr(todayStr);
+    setTomorrowDateStr(tomorrowStr);
+  }, []);
 
+  const tasksToday = React.useMemo(() => {
+    if (!todayDateStr) return [];
+    return taskForDashboard.filter(task =>
+      task.deadline.split('T')[0] === todayDateStr
+    );
+  }, [taskForDashboard, todayDateStr]);
 
-  const tasksToday = taskForDashboard.filter(task =>
-    task.deadline.split('T')[0] === todayDateStr
-  );
-
-  const tasksTomorrow = taskForDashboard.filter(task =>
-    task.deadline.split('T')[0] === tomorrowDateStr
-  );
+  const tasksTomorrow = React.useMemo(() => {
+    if (!tomorrowDateStr) return [];
+    return taskForDashboard.filter(task =>
+      task.deadline.split('T')[0] === tomorrowDateStr
+    );
+  }, [taskForDashboard, tomorrowDateStr]);
 
   function formatClientTime(dateString) {
     return new Date(dateString).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
