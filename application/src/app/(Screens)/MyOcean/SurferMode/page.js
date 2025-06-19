@@ -270,7 +270,7 @@ export default function SurferMode() {
 
           </div>
 
-          <div className="flex gap-2 flex-1">
+          <div className="flex gap-2 flex-1 overflow-y-auto">
             <div className="h-full w-full rounded-lg bg-transparent">
               <TaskTable tasks={filteredTasks} />
             </div>
@@ -278,7 +278,7 @@ export default function SurferMode() {
         </div>
 
         {isModalOpen && (
-          <div className="absolute inset-0 flex rounded-tl-2xl items-center justify-center bg-black bg-opacity-50">
+          <div className="absolute inset-0 flex rounded-tl-2xl items-center justify-center bg-black bg-opacity-50 z-10">
             <div className="bg-white rounded-lg p-6 w-3/4 max-w-lg shadow-lg relative mb-36">
               <h2 className="text-xl font-bold mb-4 text-center text-black">
                 Promise your task!

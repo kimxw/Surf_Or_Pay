@@ -108,7 +108,7 @@ const TaskTable = ({ tasks }) => {
       <style>{cardStyles}</style>
       <div>
         {/* Header Row Styled as a Card */}
-        <div className="card" style={{ fontWeight: "bold", backgroundColor: "#f9f9f9" }}>
+        <div className="card" style={{ fontWeight: "bold", backgroundColor: "#f9f9f9", position: "sticky", top: 0, zIndex: 2 }}>
           <div className="card-section">#</div>
           <div className="card-section">Shark</div>
           <div className="card-section">Task Description</div>
