@@ -239,7 +239,7 @@ export default function SurferMode() {
               onClick={handleAddClick}
               className="bg-[#29597e] text-white pb-0.5 m-2 mt-5 rounded-lg flex-shrink-0 w-auto px-4 flex items-center space-x-2"
             >
-              <span className="lucky-guy text-2xl text-[#c6e5fc] items-center">New Task</span>
+              <span className="flex lucky-guy text-2xl text-[#c6e5fc] items-center">New Task</span>
             </button>
           </div>
 
@@ -265,7 +265,7 @@ export default function SurferMode() {
 
           </div>
 
-          <div className="flex gap-2 flex-1">
+          <div className="flex gap-2 flex-1 overflow-y-auto">
             <div className="h-full w-full rounded-lg bg-transparent">
               <TaskTable tasks={filteredTasks} />
             </div>
