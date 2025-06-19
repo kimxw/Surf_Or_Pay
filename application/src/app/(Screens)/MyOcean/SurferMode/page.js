@@ -401,10 +401,14 @@ export default function SurferMode() {
                 >
                   Cancel
                 </button>
+                
               </div>
+              <div className="flex justify-end gap-4">
                 {warningMessage && (
-                  <p className="text-sm text-red-600 mt-2">{warningMessage}</p>
+                  <p className="text-sm text-red-600 mt-2 font-bold justify-end ">⚠️ {warningMessage}</p>
                 )}
+              </div>
+                
             </div>
           </div>
         )}
