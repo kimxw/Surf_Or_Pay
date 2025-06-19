@@ -4,6 +4,7 @@ import React from "react";
 import { useSurfer } from "@/app/contexts/SurferContext";
 
 // Inline CSS for card styles
+// In cardStyles
 const cardStyles = `
   .card {
     background-color: rgba(255, 255, 255, 0.8);
@@ -13,19 +14,21 @@ const cardStyles = `
     margin-bottom: 8px;
     padding: 10px;
     display: grid;
-    grid-template-columns: 
-      3% 
-      12% 
-      1fr 
-      10% 
-      minmax(140px, 200px) /* deadline wider */
-      23% 
-      minmax(100px, 150px) /* verification */
-      minmax(40px, 40px);
+    /* Make sure the whole table fits inside container */
+    grid-template-columns:
+      3%                /* # */
+      12%               /* Surfer */
+      minmax(150px, 2fr) /* Description wider, flexible but capped */
+      10%               /* Forfeit */
+      minmax(150px, 1.5fr) /* Deadline wider */
+      12%               /* Status */
+      minmax(100px, 120px) /* Verification */
+      40px;             /* Action button fixed width */
     text-align: left;
     color: black;
     transition: transform 0.2s ease, box-shadow 0.3s ease;
-    align-items: center; /* Vertically center items */
+    align-items: center;
+    overflow: hidden; /* prevent overflow */
   }
 
   .card:hover {
@@ -33,26 +36,45 @@ const cardStyles = `
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
   }
 
-  .card-section {
-    padding: 0 8px;
-  }
-
-  .card-section:first-child {
+  /* Header row styling with truncation */
+  .card.header, .card:first-child {
     font-weight: bold;
-    color: #333;
+    background-color: #f9f9f9;
+  }
+  .card.header .card-section {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
-  .card-section:last-child {
-    color: #555;
-    display: flex;
-    justify-content: center; /* Ensures the button stays aligned */
-    align-items: center;
+  /* Body rows allow wrapping in description only */
+  .card:not(.header) .card-section {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .card:not(.header) .card-section:nth-child(3) {
+    white-space: normal; /* allow wrapping for description */
+    overflow-wrap: break-word;
+    word-break: break-word;
   }
 
+  /* Buttons inside cards */
   .card-section button {
-    white-space: nowrap; /* Prevents text wrapping */
+    max-width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+
+  /* Images inside cards */
+  .card-section img {
+    max-width: 100%;
+    height: auto;
+    object-fit: contain;
+    display: block;
   }
 `;
+
 
 function formatDateTime(isoString) {
   const date = new Date(isoString);
@@ -126,7 +148,7 @@ const ForfeitTable = ({ forfeits }) => {
                     <img
                       src="/icons/OMPMIcon.svg"
                       alt="Icon"
-                      className="w-36 h-auto mt-2 ml-1"
+                      className="w-24 h-auto mt-2 ml-1"
                     />
                   </button>
                 ) : (
@@ -141,25 +163,25 @@ const ForfeitTable = ({ forfeits }) => {
               <div className="card-section">
                 {task.verificationStatus === "Verified" || task.completionStatus === "Overdue" 
                 ? (
-                  <button
-                    onClick={() => deleteTask(forfeitId[index])}
-                    className="p-2 rounded-lg flex items-center justify-center pt-0"
-                    style={{ width: "40px", height: "40px" }}
-                  >
-                    <img
-                      src="/icons/deleteIcon.png"
-                      alt="Delete"
-                      className="w-full h-full object-contain"
-                    />
-                  </button>
-                ) 
-                : task.completionStatus === "Incomplete"
-                ? (<button
-                    onClick={() => deleteTask(forfeitId[index])}
-                    className="bg-[#dd5f50] text-[#ffffff] py-0.25 px-1.5 mr-2 rounded-md text-lg"
-                  >
-                    ×
-                  </button>
+                    <button
+                      onClick={() => deleteTask(forfeitId[index])}
+                      className="rounded-lg flex items-center justify-center pr-4"
+                      style={{ width: "200px", height: "50px"}}
+                    >
+                      <img
+                        src="/icons/deleteIcon.png"
+                        alt="Delete"
+                        style={{ width: "50px", height: "28px", objectFit: "contain" }}
+                      />
+                    </button>
+                  ) : task.completionStatus === "Incomplete" ? (
+                    <button
+                      onClick={() => deleteTask(forfeitId[index])}
+                      className="ml-1 rounded-md flex items-center justify-center bg-[#dd5f50] text-white text-lg"
+                      style={{ width: "20px", height: "20px"}}
+                    >
+                      ×
+                    </button>
                   )
                 : (
                   <button></button>
