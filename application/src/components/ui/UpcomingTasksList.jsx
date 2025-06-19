@@ -29,54 +29,56 @@ export default function UpcomingTaskList() {
   // console.log("tasksTomorrow:", tasksTomorrow);
 
   return (
-    <div className="ut-container">
-      <div className="ut-section">
-        <h1 className="ut-title">Today's Tasks</h1>
-        <ul className="ut-list">
-          {tasksToday.length === 0 && <li style={{color: "#FFFFFF"}}>No tasks for today</li>}
-          {tasksToday.map(task => (
-            <li key={task.id} className="ut-task">
-              <div className="ut-task-info">
-                <CircleAlert className="ut-icon" />
-                <span className="ut-task-title">{task.title}</span>
-              </div>
-              <div className="ut-right-items">
-                <div className="ut-task-forfeit-container">
-                  <span className="ut-forfeit-text">{"-$" + task.forfeit}</span>
+    <span suppressHydrationWarning={true}>
+      <div className="ut-container">
+        <div className="ut-section">
+          <h1 className="ut-title">Today's Tasks</h1>
+          <ul className="ut-list">
+            {tasksToday.length === 0 && <li style={{color: "#FFFFFF"}}>No tasks for today</li>}
+            {tasksToday.map(task => (
+              <li key={task.id} className="ut-task">
+                <div className="ut-task-info">
+                  <CircleAlert className="ut-icon" />
+                  <span className="ut-task-title">{task.title}</span>
                 </div>
-                <div className="ut-task-deadline-container">
-                  <Clock className="ut-deadline-icon" />
-                  <span className="ut-deadline-text">{formatClientTime(task.deadline)}</span>
+                <div className="ut-right-items">
+                  <div className="ut-task-forfeit-container">
+                    <span className="ut-forfeit-text">{"-$" + task.forfeit}</span>
+                  </div>
+                  <div className="ut-task-deadline-container">
+                    <Clock className="ut-deadline-icon" />
+                    <span className="ut-deadline-text">{formatClientTime(task.deadline)}</span>
+                  </div>
                 </div>
-              </div>
-            </li>
-          ))}
-        </ul>
-      </div>
+              </li>
+            ))}
+          </ul>
+        </div>
 
-      <div className="ut-section">
-        <h1 className="ut-title">Tomorrow's Tasks</h1>
-        <ul className="ut-list">
-          {tasksTomorrow.length === 0 && <li style={{color: "#FFFFFF"}}>No tasks for tomorrow</li>}
-          {tasksTomorrow.map(task => (
-            <li key={task.id} className="ut-task">
-              <div className="ut-task-info">
-                <CircleAlert className="ut-icon" />
-                <span className="ut-task-title">{task.title}</span>
-              </div>
-              <div className="ut-right-items">
-                <div className="ut-task-forfeit-container">
-                  <span className="ut-forfeit-text">{"-$" + task.forfeit}</span>
+        <div className="ut-section">
+          <h1 className="ut-title">Tomorrow's Tasks</h1>
+          <ul className="ut-list">
+            {tasksTomorrow.length === 0 && <li style={{color: "#FFFFFF"}}>No tasks for tomorrow</li>}
+            {tasksTomorrow.map(task => (
+              <li key={task.id} className="ut-task">
+                <div className="ut-task-info">
+                  <CircleAlert className="ut-icon" />
+                  <span className="ut-task-title">{task.title}</span>
                 </div>
-                <div className="ut-task-deadline-container">
-                  <Clock className="ut-deadline-icon" />
-                  <span className="ut-deadline-text">{formatClientTime(task.deadline)}</span>
+                <div className="ut-right-items">
+                  <div className="ut-task-forfeit-container">
+                    <span className="ut-forfeit-text">{"-$" + task.forfeit}</span>
+                  </div>
+                  <div className="ut-task-deadline-container">
+                    <Clock className="ut-deadline-icon" />
+                    <span className="ut-deadline-text">{formatClientTime(task.deadline)}</span>
+                  </div>
                 </div>
-              </div>
-            </li>
-          ))}
-        </ul>
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
-    </div>
+    </span>
   );
 }
