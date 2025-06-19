@@ -13,7 +13,7 @@ const cardStyles = `
     margin-bottom: 8px;
     padding: 10px;
     display: grid;
-    grid-template-columns: 3% 12% 33% 8% 15% 13% 8% 8%; /* Adjusted column widths */
+    grid-template-columns: 3% 12% 1fr 8% 15% 13% minmax(100px, auto) minmax(40px, auto);
     text-align: left;
     color: black;
     transition: transform 0.2s ease, box-shadow 0.3s ease;
@@ -50,7 +50,7 @@ const ForfeitTable = ({ forfeits }) => {
   const { forfeitId, handleVerify, deleteTask } = useSurfer();
 
   return (
-    <div>
+    <div className="">
       <style>{cardStyles}</style>
       <div>
         {/* Header Row Styled as a Card */}
