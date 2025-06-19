@@ -237,9 +237,14 @@ export default function SurferMode() {
             <button
               type="button"
               onClick={handleAddClick}
-              className="bg-[#29597e] text-white pb-0.5 m-2 mt-5 rounded-lg flex-shrink-0 w-auto px-4 flex items-center space-x-2"
+              className="bg-[#0f5a81] text-white pb-0.5 m-2 mt-5 rounded-lg flex-shrink-0 w-auto px-4 flex items-center space-x-2"
             >
-              <span className="flex lucky-guy text-2xl text-[#c6e5fc] items-center">New Task</span>
+              <img
+                src="/icons/AddTask.svg"
+                alt="AddTask"
+                style={{ width: "28px", height: "28px", objectFit: "contain" }}
+              />
+              <span className="lucky-guy text-2xl text-[#c6e5fc] items-center">New Task</span>
             </button>
           </div>
 
@@ -251,7 +256,7 @@ export default function SurferMode() {
                 placeholder="Filter by shark"
                 value={filterShark}
                 onChange={(e) => setFilterShark(e.target.value)}
-                className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 text-black opacity-70 mr-3"
+                className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 text-black opacity-70 mr-3 font-[Arial] font-bold"
               />
 
               <input
@@ -259,7 +264,7 @@ export default function SurferMode() {
                 placeholder="Filter by task description"
                 value={filterDescription}
                 onChange={(e) => setFilterDescription(e.target.value)}
-                className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 text-black opacity-70 mx-6"
+                className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 text-black opacity-70 mx-6 font-[Arial] font-bold"
               />
             </div>
 
