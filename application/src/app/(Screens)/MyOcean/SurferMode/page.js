@@ -29,8 +29,27 @@ export default function SurferMode() {
   const [filterShark, setFilterShark] = useState("");
   const [filterDescription, setFilterDescription] = useState("");
 
+  const [warningMessage, setWarningMessage] = useState("");
+
+
   const handleAddTasks = async () => {
     try {
+      if (taskDescription === "" || taskDescription === null) {
+        setWarningMessage("Task description cannot be empty");
+        return;
+      } else if(parseFloat(forfeit) < 0) {
+        setWarningMessage("Forfeit value cannot be negative");
+        return;
+      } else if (sharkName === "") {
+        setWarningMessage("Choose a shark");
+        return;
+      } else if (deadline === "") {
+        setWarningMessage("Choose a deadline");
+        return;
+      }
+      
+      setWarningMessage("");
+
       await addDoc(collection(db, "Surfers"), {
         user: username,
         friendUsername: sharkName,
@@ -41,6 +60,15 @@ export default function SurferMode() {
         verificationStatus: "Submit",
       });
       console.log("Task added successfully!");
+      console.log({
+        user: username,
+        friendUsername: sharkName,
+        desc: taskDescription,
+        credits: parseFloat(forfeit),
+        deadline: deadline,
+        completionStatus: "Incomplete",
+        verificationStatus: "Submit",
+      })
       setTaskDescription("");
       setSharkName("");
       setForfeit("0");
@@ -61,6 +89,7 @@ export default function SurferMode() {
     setSharkName("");
     setForfeit("0");
     setDeadline("");
+    setWarningMessage("");
   };
 
 
@@ -140,63 +169,6 @@ export default function SurferMode() {
     console.log("Tasks:", task_test);
   }, [task_test]);
 
-  // useEffect(() => {
-  //   console.log("Filtered Task Ids:", filteredTasks);
-  // }, [filteredTasks]);
-
-  // useEffect(() => {
-  //   console.log("Filtered Task IDs:", filteredTasks.map((task) => task.id));
-  // }, [filteredTasks]);
-
-  // useEffect(() => {
-  //   console.log("Filtered Task IDs:", filteredTasks.map((task) => task.id));
-  // }, [task_test]);
-  
-  /*
-  [
-    {
-      friendUsername: "Alice Tan",
-      desc: "Complete report on market trends.",
-      credits: "$5.00",
-      deadline: "2025-01-25",
-      completionStatus: "Incomplete",
-      verificationStatus: "Submit",
-    },
-    {
-      friendUsername: "Bob Builder",
-      desc: "Prepare presentation for client meeting.",
-      credits: "$3.00",
-      deadline: "2025-01-20",
-      completionStatus: "Overdue",
-      verificationStatus: "Submit",
-    },
-    {
-      friendUsername: "David Hsu",
-      desc: "Review code for the latest features.",
-      credits: "$2.00",
-      deadline: "2025-01-30",
-      completionStatus: "Complete",
-      verificationStatus: "Pending",
-    },
-    {
-      friendUsername: "Eve Well",
-      desc: "Organize team lunch event.",
-      credits: "$1.00",
-      deadline: "2025-01-23",
-      completionStatus: "Complete",
-      verificationStatus: "Verified",
-    },
-    {
-      friendUsername: "Charlie Chan",
-      desc: "Update the project roadmap.",
-      credits: "$4.00",
-      deadline: "2025-01-22",
-      completionStatus: "Complete",
-      verificationStatus: "Verified",
-    },
-  ];
-  */
-
   return (
     <div
       className={cn(
@@ -267,7 +239,7 @@ export default function SurferMode() {
               onClick={handleAddClick}
               className="bg-[#29597e] text-white pb-0.5 m-2 mt-5 rounded-lg flex-shrink-0 w-auto px-4 flex items-center space-x-2"
             >
-              <span className="lucky-guy text-2xl text-[#c6e5fc]">New Task</span>
+              <span className="lucky-guy text-2xl text-[#c6e5fc] items-center">New Task</span>
             </button>
           </div>
 
@@ -372,7 +344,14 @@ export default function SurferMode() {
                 >
                   Cancel
                 </button>
+                
               </div>
+              <div className="flex justify-end gap-4">
+                {warningMessage && (
+                  <p className="text-sm text-red-600 mt-2 font-bold justify-end ">⚠️ {warningMessage}</p>
+                )}
+              </div>
+                
             </div>
           </div>
         )}

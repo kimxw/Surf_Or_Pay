@@ -13,11 +13,22 @@ const cardStyles = `
     margin-bottom: 8px;
     padding: 10px;
     display: grid;
-    grid-template-columns: 3% 12% 33% 8% 15% 13% 8% 8%; /* Adjusted column widths */
+    grid-template-columns: 
+      3%                     /* index */
+      12%                    /* surfer */
+      minmax(150px, 1fr)     /* task description */
+      8%                     /* forfeit */
+      minmax(180px, 18%)     /* deadline: wider */
+      13%                    /* status */
+      minmax(100px, 12%)     /* verification */
+      minmax(40px, 40px);    /* delete */
+
     text-align: left;
     color: black;
     transition: transform 0.2s ease, box-shadow 0.3s ease;
-    align-items: center; /* Vertically center items */
+    align-items: center;
+    overflow: hidden; /* hide overflow on card level */
+    box-sizing: border-box;
   }
 
   .card:hover {
@@ -27,24 +38,66 @@ const cardStyles = `
 
   .card-section {
     padding: 0 8px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    box-sizing: border-box;
+    max-width: 100%;
+    word-break: break-word; /* break long words */
   }
 
-  .card-section:first-child {
-    font-weight: bold;
-    color: #333;
+  /* Allow task description (3rd col) to wrap */
+  .card-section:nth-child(3) {
+    white-space: normal;
+    overflow-wrap: break-word;
+    word-break: break-word;
   }
 
+  /* Center content in last col */
   .card-section:last-child {
-    color: #555;
     display: flex;
-    justify-content: center; /* Ensures the button stays aligned */
+    justify-content: center;
     align-items: center;
+    padding: 0 4px;
   }
 
+  /* Make sure buttons fit inside cells */
   .card-section button {
-    white-space: nowrap; /* Prevents text wrapping */
+    max-width: 100%;
+    max-height: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    box-sizing: border-box;
+  }
+
+  /* Make images scale down and not overflow */
+  .card-section img {
+    max-width: 100%;
+    max-height: 100%;
+    height: auto;
+    object-fit: contain;
+    display: block;
+  }
+
+  /* Optional: limit max width of the container so table fits on screen */
+  .table-container {
+    max-width: 100%;
+    overflow-x: auto; /* horizontal scroll if needed */
   }
 `;
+
+
+function formatDateTime(isoString) {
+  const date = new Date(isoString);
+  return date.toLocaleString("en-SG", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+    hour: "numeric",
+    minute: "2-digit",
+    hour12: true,
+  });
+}
 
 const TaskTable = ({ tasks }) => {
   const { deleteTask, completed, taskId } = useSurfer();
@@ -71,8 +124,8 @@ const TaskTable = ({ tasks }) => {
             <div className="card-section">{index + 1}</div>
             <div className="card-section">{task.friendUsername}</div>
             <div className="card-section">{task.desc}</div>
-            <div className="card-section">{task.credits}</div>
-            <div className="card-section">{task.deadline}</div>
+            <div className="card-section">${task.credits}</div>
+            <div className="card-section">{formatDateTime(task.deadline)}</div>
             <div className="card-section">{task.completionStatus}</div>
             <div className="card-section">
             {(task.completionStatus === "Completed" && task.verificationStatus === "Verified") ? (
@@ -102,7 +155,7 @@ const TaskTable = ({ tasks }) => {
                 <img
                   src="/icons/OMPMIcon.svg"
                   alt="Icon"
-                  className="w-36 h-auto mt-2 ml-1"
+                  className="w-24 h-auto mt-2 ml-1"
                 />
               </button>
             ) : (

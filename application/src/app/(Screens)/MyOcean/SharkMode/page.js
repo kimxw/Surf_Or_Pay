@@ -106,7 +106,6 @@ export default function SharkMode() {
     );
   });
 
-
   return (
     <div
       className={cn(
