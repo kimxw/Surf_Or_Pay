@@ -119,7 +119,8 @@ const ForfeitTable = ({ forfeits }) => {
                 )}
               </div>
               <div className="card-section">
-                {task.verificationStatus === "Verified" || task.completionStatus === "Overdue" ? (
+                {task.verificationStatus === "Verified" || task.completionStatus === "Overdue" 
+                ? (
                   <button
                     onClick={() => deleteTask(forfeitId[index])}
                     className="p-2 rounded-lg flex items-center justify-center pt-0"
@@ -131,7 +132,16 @@ const ForfeitTable = ({ forfeits }) => {
                       className="w-full h-full object-contain"
                     />
                   </button>
-                ) : (
+                ) 
+                : task.completionStatus === "Incomplete"
+                ? (<button
+                    onClick={() => deleteTask(forfeitId[index])}
+                    className="bg-[#dd5f50] text-[#ffffff] py-0.25 px-1.5 mr-2 rounded-md text-lg"
+                  >
+                    ×
+                  </button>
+                  )
+                : (
                   <button></button>
                 )}
               </div>
