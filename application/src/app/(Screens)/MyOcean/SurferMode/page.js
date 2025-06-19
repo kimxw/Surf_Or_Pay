@@ -29,8 +29,27 @@ export default function SurferMode() {
   const [filterShark, setFilterShark] = useState("");
   const [filterDescription, setFilterDescription] = useState("");
 
+  const [warningMessage, setWarningMessage] = useState("");
+
+
   const handleAddTasks = async () => {
     try {
+      if (taskDescription === "" || taskDescription === null) {
+        setWarningMessage("Task description cannot be empty");
+        return;
+      } else if(parseFloat(forfeit) < 0) {
+        setWarningMessage("Forfeit value cannot be negative");
+        return;
+      } else if (sharkName === "") {
+        setWarningMessage("Choose a shark");
+        return;
+      } else if (deadline === "") {
+        setWarningMessage("Choose a deadline");
+        return;
+      }
+      
+      setWarningMessage("");
+
       await addDoc(collection(db, "Surfers"), {
         user: username,
         friendUsername: sharkName,
@@ -41,6 +60,15 @@ export default function SurferMode() {
         verificationStatus: "Submit",
       });
       console.log("Task added successfully!");
+      console.log({
+        user: username,
+        friendUsername: sharkName,
+        desc: taskDescription,
+        credits: parseFloat(forfeit),
+        deadline: deadline,
+        completionStatus: "Incomplete",
+        verificationStatus: "Submit",
+      })
       setTaskDescription("");
       setSharkName("");
       setForfeit("0");
@@ -61,6 +89,7 @@ export default function SurferMode() {
     setSharkName("");
     setForfeit("0");
     setDeadline("");
+    setWarningMessage("");
   };
 
 
@@ -267,7 +296,7 @@ export default function SurferMode() {
               onClick={handleAddClick}
               className="bg-[#29597e] text-white pb-0.5 m-2 mt-5 rounded-lg flex-shrink-0 w-auto px-4 flex items-center space-x-2"
             >
-              <span className="lucky-guy text-2xl text-[#c6e5fc]">New Task</span>
+              <span className="lucky-guy text-2xl text-[#c6e5fc] items-center">New Task</span>
             </button>
           </div>
 
@@ -373,6 +402,9 @@ export default function SurferMode() {
                   Cancel
                 </button>
               </div>
+                {warningMessage && (
+                  <p className="text-sm text-red-600 mt-2">{warningMessage}</p>
+                )}
             </div>
           </div>
         )}
