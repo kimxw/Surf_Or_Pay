@@ -89,7 +89,7 @@ function formatDateTime(isoString) {
 }
 
 const ForfeitTable = ({ forfeits }) => {
-  const { forfeitId, handleVerify, deleteTask } = useSurfer();
+  const { forfeitId, handleVerify, rejectTask, deleteTask } = useSurfer();
 
   return (
     <div className="">
@@ -136,7 +136,7 @@ const ForfeitTable = ({ forfeits }) => {
                   >
                     Verify
                   </button>
-                ) : task.completionStatus === "Incomplete" ? (
+                ) : task.verificationStatus === "Submit" ? (
                   <button
                     disabled
                     className="bg-[#a8aaab] text-[#3d3d3d] py-1 px-3 rounded-lg"
@@ -174,13 +174,28 @@ const ForfeitTable = ({ forfeits }) => {
                         style={{ width: "50px", height: "28px", objectFit: "contain" }}
                       />
                     </button>
-                  ) : (task.completionStatus === "Incomplete" || task.verificationStatus === "Pending") ? (
+                  ) : (task.completionStatus === "Completed" && task.verificationStatus === "Pending") 
+                  ? (
+                    <button
+                      onClick={() => rejectTask(forfeitId[index])}
+                      className="ml-1 rounded-md flex items-center justify-center bg-[#dd5f50] text-white text-lg"
+                      style={{ width: "20px", height: "20px"}}
+                    >
+                      <img
+                        src="/icons/rejectIcon.png"
+                        alt="Reject"
+                        style={{ width: "50px", height: "28px", objectFit: "contain" }}
+                      />
+                    </button>
+                  )
+                : (task.completionStatus === "Incomplete" || task.verificationStatus === "Pending") 
+                  ? (
                     <button
                       onClick={() => deleteTask(forfeitId[index])}
                       className="ml-1 rounded-md flex items-center justify-center bg-[#dd5f50] text-white text-lg"
                       style={{ width: "20px", height: "20px"}}
                     >
-                      ×
+                      −
                     </button>
                   )
                 : (

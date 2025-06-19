@@ -138,6 +138,11 @@ export const SurferProvider = ({ children }) => {
     await updateDoc(taskDoc, { completionStatus: "Completed", verificationStatus: "Verified"});
   };
 
+  const rejectTask = async (taskId) => {
+    const taskDoc = doc(db, "Surfers", taskId);
+    await updateDoc(taskDoc, { completionStatus: "Incomplete", verificationStatus: "Submit"});
+  };
+
   useEffect(() => {
     if (!loggedInUser?.email || username === "Loading...") return;
   
@@ -166,7 +171,7 @@ export const SurferProvider = ({ children }) => {
   }, [loggedInUser, username]);
   
   return (
-    <SurferContext.Provider value={{ task, loading, deleteTask, completed, taskId, forfeit, forfeitId, handleVerify, events, taskForDashboard}}>
+    <SurferContext.Provider value={{ task, loading, deleteTask, completed, taskId, forfeit, forfeitId, handleVerify, rejectTask, events, taskForDashboard}}>
       {children}
     </SurferContext.Provider>
   );

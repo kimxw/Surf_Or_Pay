@@ -237,8 +237,13 @@ export default function SurferMode() {
             <button
               type="button"
               onClick={handleAddClick}
-              className="bg-[#29597e] text-white pb-0.5 m-2 mt-5 rounded-lg flex-shrink-0 w-auto px-4 flex items-center space-x-2"
+              className="bg-[#0f5a81] text-white pb-0.5 m-2 mt-5 rounded-lg flex-shrink-0 w-auto px-4 flex items-center space-x-2"
             >
+              <img
+                src="/icons/AddTask.svg"
+                alt="AddTask"
+                style={{ width: "28px", height: "28px", objectFit: "contain" }}
+              />
               <span className="lucky-guy text-2xl text-[#c6e5fc] items-center">New Task</span>
             </button>
           </div>
