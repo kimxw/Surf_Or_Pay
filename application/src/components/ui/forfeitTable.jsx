@@ -137,7 +137,7 @@ const ForfeitTable = ({ forfeits }) => {
                   >
                     Verify
                   </button>
-                ) : task.verificationStatus === "Submit" ? (
+                ) : task.verificationStatus === "Submit" && task.completionStatus !== "Overdue" ? (
                   <button
                     disabled
                     className="bg-[#a8aaab] text-[#3d3d3d] py-1 px-3 rounded-lg"
