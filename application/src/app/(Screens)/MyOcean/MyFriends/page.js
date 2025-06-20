@@ -177,7 +177,7 @@ export default function MyFriends() {
                 type="email"
                 name="username"
                 placeholder="Enter your friend's username"
-                className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 text-black opacity-70"
+                className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 text-black opacity-70 font-[Arial] font-bold"
               />
               <button
                 type="button"
